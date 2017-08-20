@@ -4,6 +4,6 @@
 
 ```js
 module.exports = {
-  complete: '{{name}}\n{{@src}} → {{@dest}}'
+  complete: '{{answers.name}}\n{{src}} → {{dest}}'
 }
 ```

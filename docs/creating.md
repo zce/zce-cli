@@ -112,7 +112,7 @@ Config file can contain the following fields:
   }
   // or
   module.exports = {
-    complete: '{{name}}\n{{@src}} → {{@dest}}'
+    complete: '{{answers.name}}\n{{src}} → {{dest}}'
   }
   ```
 
