@@ -72,13 +72,14 @@ The above command use the template from `~/local/foo`, then ask some questions, 
 
 Current available templates list:
 
+- [template](https://github.com/zce-templates/template) - Templates template
 - [nm](https://github.com/zce-templates/nm) - Node module boilerplate
 - [webapp](https://github.com/zce-templates/webapp) - Modern web app
 - [react](https://github.com/zce-templates/react) - Modern web app by React.js
 - [vue](https://github.com/zce-templates/vue) - Modern web app by Vue.js
 - [jekyll](https://github.com/zce-templates/jekyll) - Static site by Jekyll
-- [x-pages](https://github.com/zce-templates/x-pages) - Static site by x-pages
 - [electron](https://github.com/zce-templates/electron) - Electron app
+- [x-pages](https://github.com/zce-templates/x-pages) - Static site by x-pages
 
 Maybe more: https://github.com/zce-templates
 
