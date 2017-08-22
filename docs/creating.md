@@ -10,7 +10,7 @@ In reading this section, you'll learn how to create and distribute your own temp
     │   ├── assets ·································· Any directory (Recurse all subdirectories)
     │   │   ├── logo.png ···························· Any file (Auto skip binary file)
     │   │   └── style.css ··························· Any file (Auto render mustache)
-    │   └── index.html ······························ Any file (Auto render mustache)
+    │   └── {{name}}.html ··························· Any file with mustache (Auto rename by answers)
     ├── index.js ···································· Entry point (Optional, Configuration file)
     └── README.md ··································· README (Optional)
 ```
@@ -33,28 +33,26 @@ It must export an object:
 module.exports = {}
 ```
 
-### Options
-
 Config file can contain the following fields:
 
-#### name
+### name
 
 - Type: `string`
 - Details: Name of template.
 
-#### version
+### version
 
 - Type: `string`
 - Details: Version of template.
 
-#### source
+### source
 
 - Type: `string`
 - Default: 'template'
 - Details: Template source files directory name.
 - Example: [custom-source](../test/mock/source)
 
-#### metadata
+### metadata
 
 - Type: `string`
 - Details: The metadata you can use in the template.
@@ -72,7 +70,7 @@ Config file can contain the following fields:
   // => 'hello zce-cli'
   ```
 
-#### prompts
+### prompts
 
 - Type: `Object`
 - Details: Used to collect user input in CLI.
@@ -92,7 +90,7 @@ Config file can contain the following fields:
   }
   ```
 
-#### complete
+### complete
 
 - Type: `string` or `Function`
 - Details: Generate completed callback. if got a string, print it to the console.
@@ -116,7 +114,7 @@ Config file can contain the following fields:
   }
   ```
 
-#### filters
+### filters
 
 - Type: `Object`
 - Details: Used to conditional filter files to output.
@@ -134,7 +132,7 @@ Config file can contain the following fields:
   }
   ```
 
-#### helpers
+### helpers
 
 - Type: `Object`
 - Details: Used to custom handlebars helpers.
@@ -153,7 +151,7 @@ Config file can contain the following fields:
   // => 'ZCE'
   ```
 
-#### plugin
+### plugin
 
 - Type: `Object`
 - Details: Used to add custom metalsmith middleware.
