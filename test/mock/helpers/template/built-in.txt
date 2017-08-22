@@ -1,2 +1,3 @@
+{{camel 'foo-bar'}}
 {{#eq 1 1}}hello {{name}}{{/eq}}
 {{#eq 1 2}}hello {{name}}{{/eq}}

@@ -76,7 +76,7 @@ describe('lib/generate', () => {
       return generate(src, dest, answers, options).then(files => {
         assert.equal(2, Object.keys(files).length)
         const builtInContent = fs.readFileSync(path.join(dest, 'built-in.txt'), 'utf8')
-        assert.equal('hello helpers', builtInContent.trim())
+        assert.equal('fooBar\nhello helpers', builtInContent.trim())
         const customContent = fs.readFileSync(path.join(dest, 'custom.txt'), 'utf8')
         assert.equal('HELPERS', customContent.trim())
       })
