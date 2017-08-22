@@ -105,10 +105,9 @@ To create and distribute your own template, refer to [our official documentation
 - [x] unit test
 - [x] Coverage
 - [x] Plugins
-- [ ] e2e test
-- [ ] CLI docs
+- [x] e2e test
+- [ ] Official documentation
 - [ ] Official Templates
-- [ ] Template docs
 - [ ] CLI update notify
 
 ## Contributing
