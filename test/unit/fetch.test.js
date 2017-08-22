@@ -1,6 +1,4 @@
-const os = require('os')
 const fs = require('fs')
-const path = require('path')
 const assert = require('assert')
 const rimraf = require('rimraf')
 const fetch = require('../../lib/fetch')
