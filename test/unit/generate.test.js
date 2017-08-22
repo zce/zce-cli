@@ -22,6 +22,20 @@ describe('lib/generate', () => {
     })
   })
 
+  describe('#rename', () => {
+    it('Should generate `rename` → `build/rename`', () => {
+      const src = path.join(__dirname, '../mock/rename')
+      const dest = path.join(__dirname, '../build/unit/rename')
+      const answers = { name: 'rename' }
+
+      return generate(src, dest, answers).then(files => {
+        assert.ok(files['rename.txt'])
+        const content = fs.readFileSync(path.join(dest, 'rename.txt'), 'utf8')
+        assert.equal('hey rename', content.trim())
+      })
+    })
+  })
+
   describe('#source-option', () => {
     it('Should generate `source` → `build/source`', () => {
       const src = path.join(__dirname, '../mock/source')
