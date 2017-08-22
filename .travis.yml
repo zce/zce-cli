@@ -24,9 +24,8 @@ before_script:
   - yarn
 
 script:
-  - yarn lint
   - yarn cover
 
 after_script:
   - yarn add codecov
-  - ./node_modules/.bin/codecov
+  - ./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov
