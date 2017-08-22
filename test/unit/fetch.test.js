@@ -7,7 +7,7 @@ const fetch = require('../../lib/fetch')
 
 describe('lib/fetch', function () {
   this.timeout(10000)
-  rimraf.sync(path.join(os.homedir(), '.zce-templates/*'))
+  rimraf.sync(fetch.cachePath)
 
   describe('#template-name', () => {
     it('Should fetch repo from `https://github.com/zce-mock/unit-test`', () => {
