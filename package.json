@@ -3,8 +3,8 @@
   "version": "0.1.0-alpha.6",
   "description": "A scaffolding CLI tool for myself, inspired by vue-cli & yeoman.",
   "keywords": [
-    "zce",
     "cli",
+    "zce",
     "zce-cli",
     "zce-template"
   ],
@@ -14,22 +14,30 @@
   },
   "license": "MIT",
   "author": "zce <w@zce.me> (https://zce.me/)",
+  "files": [
+    "bin",
+    "lib"
+  ],
   "main": "lib/generate.js",
   "bin": {
-    "zce": "bin/zce.js",
-    "zce-init": "bin/zce-init.js",
-    "zce-list": "bin/zce-list.js"
+    "zce": "bin/zce.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "doc": "doc",
+    "example": "example",
+    "test": "test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zce/zce-cli.git"
   },
   "scripts": {
-    "lint": "eslint . --fix",
-    "test:unit": "cross-env NODE_ENV=testing mocha test/unit/*.test.js",
-    "test:e2e": "cross-env NODE_ENV=testing mocha test/e2e/*.test.js",
+    "cover": "nyc npm run test",
+    "lint": "standard --fix",
     "test": "npm run lint && npm run test:unit && npm run test:e2e",
-    "cover": "nyc npm run test"
+    "test:e2e": "cross-env NODE_ENV=testing mocha test/e2e/*.test.js",
+    "test:unit": "cross-env NODE_ENV=testing mocha test/unit/*.test.js"
   },
   "dependencies": {
     "camelcase": "^4.1.0",
@@ -50,17 +58,22 @@
   "devDependencies": {
     "codecov": "^2.3.0",
     "cross-env": "^5.0.5",
-    "eslint": "^4.5.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.5.0",
-    "nyc": "^11.1.0"
+    "nyc": "^11.1.0",
+    "standard": "^10.0.3"
   },
   "engines": {
     "node": ">=6"
   },
-  "preferGlobal": true
+  "preferGlobal": true,
+  "standard": {
+    "globals": [
+      "describe",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it"
+    ]
+  }
 }

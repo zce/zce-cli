@@ -95,7 +95,7 @@ $ zce init <username>/<repo> my-project
 
 #### Create Templates
 
-To create and distribute your own template, refer to [our official documentation](docs/creating.md)
+To create and distribute your own template, refer to [our official documentation](doc/creating.md)
 
 > Maybe fork an official template is a better decision.
 
@@ -107,7 +107,7 @@ To create and distribute your own template, refer to [our official documentation
 - [x] Coverage
 - [x] Plugins
 - [x] e2e test
-- [ ] Official documentation
+- [x] Official documentation
 - [ ] Official Templates
 - [ ] CLI update notify
 

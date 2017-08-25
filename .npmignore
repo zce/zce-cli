@@ -1,9 +1,0 @@
-docs
-test
-
-.editorconfig
-.eslintignore
-.eslintrc
-.npmignore
-.travis.yml
-yarn.lock
