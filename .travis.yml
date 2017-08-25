@@ -17,13 +17,11 @@ notifications:
     on_success: never
     on_failure: change
 
-cache:
-  directories:
-
 before_script:
+  - yarn global add nyc codecov
 
 script:
   - yarn cover
 
 after_script:
-  - ./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov && ./node_modules/.bin/codecov
+  - nyc report --reporter=text-lcov > coverage.lcov && codecov
