@@ -1,6 +1,6 @@
 {
   "name": "zce-cli",
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.8",
   "description": "A scaffolding CLI tool for myself, inspired by vue-cli & yeoman.",
   "keywords": [
     "cli",
