@@ -4,7 +4,7 @@ const rimraf = require('rimraf')
 const fetch = require('../../lib/fetch')
 
 describe('lib/fetch', function () {
-  this.timeout(10000)
+  this.timeout(20000)
   rimraf.sync(fetch.cachePath)
 
   describe('#template-name', () => {

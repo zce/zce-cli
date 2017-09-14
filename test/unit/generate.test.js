@@ -30,8 +30,9 @@ describe('lib/generate', () => {
 
       return generate(src, dest, answers).then(files => {
         assert.ok(files['rename.txt'])
-        const content = fs.readFileSync(path.join(dest, 'rename.txt'), 'utf8')
-        assert.equal('hey rename', content.trim())
+        assert.ok(files[path.normalize('sub/rename.txt')])
+        assert.equal('hey rename', fs.readFileSync(path.join(dest, 'rename.txt'), 'utf8').trim())
+        assert.equal('hey rename', fs.readFileSync(path.join(dest, 'sub/rename.txt'), 'utf8').trim())
       })
     })
   })

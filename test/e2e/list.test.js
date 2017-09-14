@@ -2,7 +2,7 @@ const assert = require('assert')
 const list = require('../../lib/cli-list')
 
 describe('lib/cli-list', function () {
-  this.timeout(10000)
+  this.timeout(20000)
 
   describe('#normal', () => {
     it('Short return an array when user has some repos', () => {

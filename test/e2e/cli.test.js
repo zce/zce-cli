@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 const rimraf = require('rimraf')
 
 describe('cli', function () {
-  this.timeout(0)
+  this.timeout(20000)
   rimraf.sync(path.join(__dirname, '../build'))
 
   describe('#list', () => {
