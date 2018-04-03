@@ -1,7 +1,0 @@
-{{name}}
-{{description}}
-{{author}}
-{{version}}
-{{license}}
-{{repository}}
-{{sass}}

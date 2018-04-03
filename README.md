@@ -1,115 +1,71 @@
-<p align="center">
-  <a href="http://cli.zce.me"><img src="http://cli.zce.me/assets/logo.png" alt="zce-cli" height="380"></a>
-  <p align="center">A scaffolding CLI tool for myself, inspired by vue-cli &amp; yeoman.</p>
-</p>
-<p align="center">
-  <a href="https://travis-ci.org/zce/zce-cli"><img src="https://img.shields.io/travis/zce/zce-cli.svg" alt="Build Status"></a>
-  <a href="https://codecov.io/gh/zce/zce-cli"><img src="https://img.shields.io/codecov/c/github/zce/zce-cli.svg" alt="Coverage Status"></a>
-  <a href="https://npmjs.org/package/zce-cli"><img src="https://img.shields.io/npm/dm/zce-cli.svg" alt="NPM Downloads"></a>
-  <a href="https://npmjs.org/package/zce-cli"><img src="https://img.shields.io/npm/v/zce-cli.svg" alt="NPM Version"></a>
-  <br>
-  <a href="https://github.com/zce/zce-cli/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/zce-cli.svg" alt="License"></a>
-  <a href="http://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="Code Style"></a>
-  <a href="https://david-dm.org/zce/zce-cli"><img src="https://img.shields.io/david/zce/zce-cli.svg" alt="Dependencies Status"></a>
-  <a href="https://david-dm.org/zce/zce-cli?type=dev"><img src="https://img.shields.io/david/dev/zce/zce-cli.svg" alt="DevDependencies Status"></a>
-</p>
-<br>
+# zce-cli
+
+[![Build Status][travis-image]][travis-url]
+[![Coverage Status][codecov-image]][codecov-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![NPM Version][version-image]][version-url]
+[![License][license-image]][license-url]
+[![Dependency Status][dependency-image]][dependency-url]
+[![devDependency Status][devdependency-image]][devdependency-url]
+[![Code Style][style-image]][style-url]
+
+> A scaffolding CLI tool for my productivity, inspired by vue-cli &amp; yeoman.
 
 ## Installation
 
-```sh
-# install it globally
-$ yarn global add zce-cli
+```shell
+$ yarn add zce-cli
 
 # or npm
-$ npm install -g zce-cli
+$ npm install zce-cli
 ```
 
 ## Usage
 
-```sh
-# generate a new project from a template
-$ zce init <template-name> my-project [--offline] [--debug]
-
-# list available official templates
-$ zce list [-s|--short] [--debug]
+```javascript
+const zceCli = require('zce-cli')
+const result = zceCli('zce')
+console.log(result)
+// => 'zce@zce.me'
 ```
 
-### Commands
+## API
 
-- `init` - generate a new project from a template.
-- `list|ls` - list available official templates.
+### zceCli(name[, options])
 
-### Options 
+#### name
 
-- `--version, -V` - Print zce-cli version.
-- `--help, -h` - Print command help menu.
-- `--offline` - Offline mode (Use template cache if that exist).
-- `--debug` - Debug mode (Print full exception info).
-- `--short, -s` - Short mode (Print short list when `zce list`).
+- Type: `string`
+- Details: name string
 
-#### Example:
+#### options
 
-##### Use github repo template
+##### host
 
-```sh
-$ zce init nm my-module
+- Type: `string`
+- Details: host string
+- Default: `'zce.me'`
+
+## CLI Usage
+
+```shell
+$ yarn global add zce-cli
+
+# or npm
+$ npm install zce-cli -g
 ```
 
-The above command pulls the template from [zce-templates/nm](https://github.com/zce-templates/nm), then ask some questions, and generates the project at `./my-module/`.
+```shell
+$ zce-cli --help
 
-##### Use local template
+  Usage: creative <input>
 
-Instead of a GitHub repo, you can also use a template on your local file system, e.g.
+  Options:
 
-```sh
-$ zce init ~/local/foo my-foo
+    -V, --version  output the version number
+    -H, --host     Email host
+    -h, --help     output usage information
 ```
-
-The above command use the template from `~/local/foo`, then ask some questions, and generates the project at `./my-foo/`.
-
-### Official Templates (WIP)
-
-Current available templates list:
-
-- [template](https://github.com/zce-templates/template) - Templates template
-- [nm](https://github.com/zce-templates/nm) - Node module boilerplate
-- [webapp](https://github.com/zce-templates/webapp) - Modern web app
-- [react](https://github.com/zce-templates/react) - Modern web app by React.js
-- [vue](https://github.com/zce-templates/vue) - Modern web app by Vue.js
-- [jekyll](https://github.com/zce-templates/jekyll) - Static site by Jekyll
-- [electron](https://github.com/zce-templates/electron) - Electron app
-- [x-pages](https://github.com/zce-templates/x-pages) - Static site by x-pages
-
-Maybe more: https://github.com/zce-templates
-
-> You can also run `zce ls` to see all available official templates in real time.
-
-### Custom Templates
-
-You can simply create and distribute your own template on github, then use it via zce-cli with:
-
-```sh
-$ zce init <username>/<repo> my-project
-```
-
-#### Create Templates
-
-To create and distribute your own template, refer to [our official documentation](doc/creating.md)
-
-> Maybe fork an official template is a better decision.
-
-## TODOS
-
-- [x] Init command
-- [x] List command
-- [x] unit test
-- [x] Coverage
-- [x] Plugins
-- [x] e2e test
-- [x] Official documentation
-- [ ] Official Templates
-- [ ] CLI update notify
 
 ## Contributing
 
@@ -124,4 +80,23 @@ To create and distribute your own template, refer to [our official documentation
 
 ## License
 
-[MIT](LICENSE) &copy; [汪磊](https://zce.me)
+[MIT](LICENSE) &copy; zce <w@zce.me> (https://zce.me/)
+
+
+
+[travis-image]: https://img.shields.io/travis/zce/zce-cli.svg
+[travis-url]: https://travis-ci.org/zce/zce-cli
+[codecov-image]: https://img.shields.io/codecov/c/github/zce/zce-cli.svg
+[codecov-url]: https://codecov.io/gh/zce/zce-cli
+[downloads-image]: https://img.shields.io/npm/dm/zce-cli.svg
+[downloads-url]: https://npmjs.org/package/zce-cli
+[version-image]: https://img.shields.io/npm/v/zce-cli.svg
+[version-url]: https://npmjs.org/package/zce-cli
+[license-image]: https://img.shields.io/npm/l/zce-cli.svg
+[license-url]: https://github.com/zce/zce-cli/blob/master/LICENSE
+[dependency-image]: https://img.shields.io/david/zce/zce-cli.svg
+[dependency-url]: https://david-dm.org/zce/zce-cli
+[devdependency-image]: https://img.shields.io/david/dev/zce/zce-cli.svg
+[devdependency-url]: https://david-dm.org/zce/zce-cli?type=dev
+[style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
+[style-url]: http://standardjs.com

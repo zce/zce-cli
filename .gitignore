@@ -57,8 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
-# unit & e2e temp directory
-test/build
-
 # os files
 .DS_Store
