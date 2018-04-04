@@ -1,6 +1,6 @@
 {
   "name": "zce-cli",
-  "version": "0.2.0",
+  "version": "0.0.0",
   "description": "A scaffolding CLI tool for my productivity, inspired by vue-cli &amp; yeoman.",
   "keywords": [
     "cli",
@@ -36,6 +36,9 @@
   "dependencies": {
     "chalk": "^2.3.2",
     "commander": "^2.15.1",
+    "inquirer": "^5.2.0",
+    "ora": "^2.0.0",
+    "rc": "^1.2.6",
     "semver": "^5.5.0"
   },
   "devDependencies": {
@@ -44,7 +47,7 @@
     "standard": "^11.0.1"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "preferGlobal": true
 }
