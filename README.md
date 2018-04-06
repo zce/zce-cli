@@ -22,6 +22,13 @@ $ npm install zce-cli
 
 ## Usage
 
+ *
+ * https://github.com/tj/commander.js
+ * https://github.com/sindresorhus/log-update
+ * https://github.com/segmentio/metalsmith
+ * https://github.com/sindresorhus/fullname
+ * https://github.com/yeoman/update-notifier
+
 ```javascript
 const zceCli = require('zce-cli')
 const result = zceCli('zce')
