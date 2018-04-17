@@ -1,53 +1,67 @@
 #!/usr/bin/env node
 
 const chalk = require('chalk')
+const semver = require('semver')
 const program = require('commander')
 
-const { version } = require('../package')
-const { generator, util } = require('..')
+const pkg = require('../package')
+const { generator } = require('..')
 
-// error handler
+/**
+ * Command name
+ */
+const name = Object.keys(pkg.bin)[0] || 'zce'
+
+/**
+ * Global error handler
+ * @param {Error} err error
+ * @param {Promise} promise promise
+ */
 const onError = (err, promise) => {
-  // // 💀  ${err.message}
-  // util.error(err.message)
+  // log error
+  console.log()
 
-  // if (!!process.env.NODE_DEBUG) {
-  //   console.log(process.env.NODE_DEBUG)
-  //   throw err
-  // }
-
-  if (!program.debug) {
-    return util.error(err.message)
+  if (program.debug) {
+    console.error(err)
+    promise && console.error(promise)
+  } else {
+    console.error('💀', err instanceof Error ? err.message : err)
   }
 
-  // util.error('A promise was rejected but did not have a .catch() handler:')
-  util.error((err && err.stack) || err || promise)
-  // throw err
+  console.log()
+
+  // error exit
+  process.exit(1)
 }
 
-// check node version
-util.nodeVersionCheck()
+/**
+ * node version check
+ */
+const checkVersion = () => {
+  if (semver.satisfies(process.version, pkg.engines.node)) return true
 
-// command name
-const name = 'zce'
+  console.log(chalk.red(`You are using Node.js ${chalk.yellow(process.version)}, but this version of ${chalk.cyan(pkg.name)} requires Node.js ${chalk.green(pkg.engines.node)}.`))
+  console.log(chalk.red('Please upgrade your Node.js version before this operation.'))
+
+  process.exit(1)
+}
 
 // provide a title to the process
 process.title = name
-
-// Ensure if any promises aren't handled correctly then they get logged
+process.on('uncaughtException', onError)
 process.on('unhandledRejection', onError)
 
-// cli name & version
-program.name(name).version(version)
+checkVersion()
 
-// debug option
+// cli name & version
+program.name(pkg.name).version(pkg.version)
+
+// global option
 program.option('--debug', 'debug mode')
 
-/**
- * Init command
- */
+// `init` command
 program
-  .command('init <template> [project]').alias('create')
+  .command('init <template> [project]')
   .description('generate a new project from a template')
   .option('-f, --force', 'overwrite target directory if it exists')
   .option('-o, --offline', 'use cached template')
@@ -63,12 +77,9 @@ program
     console.log()
     console.log(chalk.gray('    # create a new project straight from a github template'))
     console.log(`    $ ${name} init <username>/<repo> [project]`)
-    console.log()
   })
 
-/**
- * List command
- */
+// `list` command
 program
   .command('list [username]').alias('ls')
   .description('list available official templates')
@@ -76,30 +87,26 @@ program
   .action((username, { short }) => {
     generator.list(username, { short }).catch(onError)
   })
-  .on('--help', console.log)
 
-// // clear console when sub command execute
-// program.commands.forEach(item => item.action(util.clearConsole))
-
-/**
- * Main command
- * output help information on unknown commands
- * add some useful info on help
- */
+// `unknown` command
+// output help information on unknown commands add some useful info on help
 program
   .arguments('command')
-  .action(cmd => {
-    program.outputHelp()
-    util.error(`Unknown command: ${chalk.yellow(cmd)}.`)
-    util.log()
+  .action(command => {
+    onError(`Unknown command: '${chalk.yellow(command)}'. See '${name} --help'.`)
   })
   .on('--help', () => {
     console.log()
     console.log('  Suggestions:')
     console.log()
     console.log(`    Run ${chalk.cyan(`${name} <command> --help`)} for detailed usage of given command.`)
-    console.log()
   })
 
-// bootstrap parse argv
+// // clear console when sub command execute
+// program.commands.forEach(item => item.action(util.clearConsole))
+
+// help end padding
+program.on('--help', console.log).commands.forEach(item => item.on('--help', console.log))
+
+// bootstrap
 program.parse(process.argv)
