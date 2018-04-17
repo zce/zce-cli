@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 const chalk = require('chalk')
-const semver = require('semver')
 const program = require('commander')
 
+const util = require('../lib/util')
 const pkg = require('../package')
+
 const { generator } = require('..')
 
 /**
@@ -25,7 +26,7 @@ const onError = (err, promise) => {
     console.error(err)
     promise && console.error(promise)
   } else {
-    console.error('💀', err instanceof Error ? err.message : err)
+    console.error('💀 ', err instanceof Error ? err.message : err)
   }
 
   console.log()
@@ -34,30 +35,21 @@ const onError = (err, promise) => {
   process.exit(1)
 }
 
-/**
- * node version check
- */
-const checkVersion = () => {
-  if (semver.satisfies(process.version, pkg.engines.node)) return true
-
-  console.log(chalk.red(`You are using Node.js ${chalk.yellow(process.version)}, but this version of ${chalk.cyan(pkg.name)} requires Node.js ${chalk.green(pkg.engines.node)}.`))
-  console.log(chalk.red('Please upgrade your Node.js version before this operation.'))
-
-  process.exit(1)
-}
-
 // provide a title to the process
 process.title = name
 process.on('uncaughtException', onError)
 process.on('unhandledRejection', onError)
 
-checkVersion()
+// node version required
+util.checkNodeVersion()
 
 // cli name & version
 program.name(pkg.name).version(pkg.version)
 
 // global option
 program.option('--debug', 'debug mode')
+
+// #region register commands
 
 // `init` command
 program
@@ -87,6 +79,8 @@ program
   .action((username, { short }) => {
     generator.list(username, { short }).catch(onError)
   })
+
+// #endregion
 
 // `unknown` command
 // output help information on unknown commands add some useful info on help

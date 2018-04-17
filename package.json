@@ -31,7 +31,11 @@
   },
   "scripts": {
     "lint": "standard --fix",
-    "test": "npm run lint && nyc ava"
+    "test:unit": "ava test/unit/**/*.test.js --verbose",
+    "test:e2e": "ava test/e2e/**/*.test.js --verbose",
+    "test": "npm run test:unit && npm run test:e2e",
+    "nyc": "nyc npm test",
+    "nyc:report": "nyc report --reporter=html"
   },
   "dependencies": {
     "boxen": "^1.3.0",
