@@ -2,7 +2,6 @@ const test = require('ava')
 
 const confirm = require('../../../lib/generator/confirm')
 
-const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
 

@@ -1,5 +1,19 @@
 const test = require('ava')
 
-test('generator#load', t => {
-  t.pass()
+const load = require('../../../lib/generator/load')
+
+const path = require('path')
+
+test('generator:load:normal', async t => {
+  const options = await load(path.join(__dirname, '../../mock/minima'))
+  t.is(options.name, 'minima')
+})
+
+test('generator:load:empty', async t => {
+  const options = await load(path.join(__dirname, '../../mock'))
+  t.is(options.name, undefined)
+})
+
+test('generator:load:error', async t => {
+  await t.throws(load(path.join(__dirname, '../../mock/minima/README.md')), SyntaxError)
 })

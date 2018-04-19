@@ -42,7 +42,6 @@ const sleep = timeout => new Promise((resolve, reject) => {
 //   t.pass()
 // })
 
-
 test('ava:demo1', async t => {
   process.chdir('/Users/zce/Local/Coding/zce-cli/test/tool')
   await sleep(1000)

@@ -1,5 +1,5 @@
 const test = require('ava')
 
-test('generator#init', t => {
+test('generator:init', t => {
   t.pass()
 })

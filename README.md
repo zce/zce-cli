@@ -22,36 +22,12 @@ $ npm install zce-cli
 
 ## Usage
 
- *
- * https://github.com/tj/commander.js
- * https://github.com/sindresorhus/log-update
- * https://github.com/segmentio/metalsmith
- * https://github.com/sindresorhus/fullname
- * https://github.com/yeoman/update-notifier
-
 ```javascript
-const zceCli = require('zce-cli')
-const result = zceCli('zce')
-console.log(result)
-// => 'zce@zce.me'
 ```
 
 ## API
 
-### zceCli(name[, options])
 
-#### name
-
-- Type: `string`
-- Details: name string
-
-#### options
-
-##### host
-
-- Type: `string`
-- Details: host string
-- Default: `'zce.me'`
 
 ## CLI Usage
 
@@ -87,7 +63,7 @@ $ zce-cli --help
 
 ## License
 
-[MIT](LICENSE) &copy; zce <w@zce.me> (https://zce.me/)
+[MIT](LICENSE) &copy; [汪磊](https://zce.me/)
 
 
 
@@ -107,3 +83,11 @@ $ zce-cli --help
 [devdependency-url]: https://david-dm.org/zce/zce-cli?type=dev
 [style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [style-url]: http://standardjs.com
+
+<!--
+- https://github.com/tj/commander.js
+- https://github.com/sindresorhus/log-update
+- https://github.com/segmentio/metalsmith
+- https://github.com/sindresorhus/fullname
+- https://github.com/yeoman/update-notifier
+ -->

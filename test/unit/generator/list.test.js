@@ -2,7 +2,7 @@ const test = require('ava')
 
 const { generator } = require('../../..')
 
-test('generator#list', async t => {
+test('generator:list', async t => {
   await Promise.all([
     generator.list(),
     generator.list('zce-templates'),

@@ -5,4 +5,3 @@ test('ava:demo3', async t => {
   console.log(process.cwd())
   t.pass()
 })
-
