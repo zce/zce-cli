@@ -63,8 +63,5 @@
   "engines": {
     "node": ">=8"
   },
-  "preferGlobal": true,
-  "gitHooks": {
-    "pre-commit": "npm test"
-  }
+  "preferGlobal": true
 }
