@@ -6,38 +6,52 @@ const sleep = timeout => new Promise((resolve, reject) => {
   }, timeout)
 })
 
-let counter = 0
+// let counter = 0
 
-test.before(t => {
-  console.log('before')
-})
+// test.before(t => {
+//   console.log('before')
+// })
 
-test.after(t => {
-  console.log('after')
-})
+// test.after(t => {
+//   console.log('after')
+// })
 
-test.beforeEach(t => {
-  console.log('beforeEach')
-})
+// test.beforeEach(t => {
+//   console.log('beforeEach')
+// })
 
-test.afterEach(t => {
-  console.log('afterEach')
-})
+// test.afterEach(t => {
+//   console.log('afterEach')
+// })
+
+// test('ava:demo1', async t => {
+//   await sleep(1000)
+//   console.log(counter++)
+//   t.pass()
+// })
+
+// test('ava:demo2', async t => {
+//   await sleep(1000)
+//   console.log(counter++)
+//   t.pass()
+// })
+
+// test('ava:demo3', async t => {
+//   await sleep(1000)
+//   console.log(counter++)
+//   t.pass()
+// })
+
 
 test('ava:demo1', async t => {
+  process.chdir('/Users/zce/Local/Coding/zce-cli/test/tool')
   await sleep(1000)
-  console.log(counter++)
+  console.log(process.cwd())
   t.pass()
 })
 
 test('ava:demo2', async t => {
-  await sleep(1000)
-  console.log(counter++)
-  t.pass()
-})
-
-test('ava:demo3', async t => {
-  await sleep(1000)
-  console.log(counter++)
+  process.chdir('/Users/zce/Local/Coding/zce-cli/test')
+  console.log(process.cwd())
   t.pass()
 })

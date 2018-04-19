@@ -1,4 +1,5 @@
 /**
+ * Can not be used in parallel environments!!!
  * https://github.com/SBoudrias/Inquirer.js/issues/379#issuecomment-368479630
  */
 
@@ -97,9 +98,10 @@ const inquirerHandler = inputs => {
 
 /**
  * Mock prompt
- * @param {Object|Object[]} inputs
+ * @param {Object} inputs Default return answers
+ * @param {Number} times  Continue to use a few times
  */
-module.exports = (inputs, disposable = true) => {
+module.exports = (inputs, times = 1) => {
   if (typeof inputs !== 'object') {
     throw new TypeError('The mocked answers must be an objects.')
   }
@@ -107,14 +109,15 @@ module.exports = (inputs, disposable = true) => {
   const promptOriginal = inquirer.prompt
 
   const promptMock = async questions => {
+    times--
     try {
       const answers = await inquirerHandler(inputs)(questions)
-      if (disposable) {
+      if (!times) {
         inquirer.prompt = promptOriginal
       }
       return Promise.resolve(answers)
     } catch (err) {
-      if (disposable) {
+      if (!times) {
         inquirer.prompt = promptOriginal
       }
       return Promise.reject(err)

@@ -29,25 +29,57 @@ const main = async () => {
 
   // console.log(sure)
 
-  mockPrompt({
-    sure: true
-  })
+  // mockPrompt({
+  //   sure: true
+  // })
 
-  const { sure } = await inquirer.prompt({
+  // const { sure } = await inquirer.prompt({
+  //   name: 'sure',
+  //   type: 'confirm',
+  //   message: 'Generate project in current directory?'
+  // })
+
+  // console.log(sure)
+
+  // const { ok } = await inquirer.prompt({
+  //   name: 'ok',
+  //   type: 'confirm',
+  //   message: 'Generate project in current directory?'
+  // })
+
+  // console.log(ok)
+
+  // ----------------- times ------------------
+
+  let answers
+
+  mockPrompt({ sure: false }, 2)
+
+  answers = await inquirer.prompt({
     name: 'sure',
     type: 'confirm',
-    message: 'Generate project in current directory?'
+    message: 'Are you sure?'
   })
 
-  console.log(sure)
+  console.log(answers)
 
-  const { ok } = await inquirer.prompt({
-    name: 'ok',
+  // mockPrompt({ sure: true })
+
+  answers = await inquirer.prompt({
+    name: 'sure',
     type: 'confirm',
-    message: 'Generate project in current directory?'
+    message: 'Are you sure?'
   })
 
-  console.log(ok)
+  console.log(answers)
+
+  answers = await inquirer.prompt({
+    name: 'sure',
+    type: 'confirm',
+    message: 'Are you sure?'
+  })
+
+  console.log(answers)
 }
 
 main()
