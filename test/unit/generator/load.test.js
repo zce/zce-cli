@@ -14,6 +14,10 @@ test('generator:load:empty', async t => {
   t.is(options.name, undefined)
 })
 
-test('generator:load:error', async t => {
+test('generator:load:error1', async t => {
+  await t.throws(load(path.join(__dirname, '../../tool/mock-prompt')), TypeError)
+})
+
+test('generator:load:error2', async t => {
   await t.throws(load(path.join(__dirname, '../../mock/minima/README.md')), SyntaxError)
 })

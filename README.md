@@ -90,4 +90,9 @@ $ zce-cli --help
 - https://github.com/segmentio/metalsmith
 - https://github.com/sindresorhus/fullname
 - https://github.com/yeoman/update-notifier
+- https://github.com/catdad/mock-stdio
+- https://cnodejs.org/topic/549cd2cd8ade094b67f3fcb6
+- https://github.com/sindresorhus/hook-std
+- https://www.npmjs.com/package/pad-stdio
+- https://www.npmjs.com/package/mock-stdio
  -->

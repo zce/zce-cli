@@ -11,6 +11,8 @@ const rimraf = promisify(require('rimraf'))
 
 const pkg = require('../../../package')
 
+const binName = Object.keys(pkg.bin)[0] + '-test'
+
 test('generator:resolve:isLocalPath', t => {
   t.true(resolve.isLocalPath('./foo'))
   t.true(resolve.isLocalPath('/foo'))
@@ -41,7 +43,7 @@ test('generator:resolve:default', async t => {
 
 test.serial('generator:resolve:offline_fail', async t => {
   // clean cache
-  await rimraf(path.join(os.homedir(), '.cache', pkg.name))
+  await rimraf(path.join(os.homedir(), '.config', binName, 'generator/cache/*'))
   const src = await resolve('zce-mock/unit-test', true)
   const files = fs.readdirSync(src)
   t.is(files.length, 3)

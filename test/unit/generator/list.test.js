@@ -8,8 +8,8 @@ test('generator:list', async t => {
     generator.list('zce-templates'),
     generator.list('zce-templates', { short: true }),
     generator.list('fake-users'),
-    generator.list('wedn'),
-    generator.list('wedn', { short: true }),
+    generator.list('zce-mock'),
+    generator.list('zce-mock', { short: true }),
     generator.list('fake-users-12580')
   ])
   t.pass()

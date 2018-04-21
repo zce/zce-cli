@@ -5,144 +5,35 @@
 
 const inquirer = require('inquirer')
 
-const isNumber = i => typeof i === 'number'
-const isFunction = i => typeof i === 'function'
-const isUndefined = i => typeof i === 'undefined'
-
 /**
- * Prompt handler
- * @param  {Object} prompt
- * @param  {Object} answers
- * @param  {string} input
+ * Mock inquirer prompt
+ * @param {Object} fills Default return answers
  */
-const promptHandler = async (prompt, answers, input) => {
-  if (prompt.when === false) return
-
-  if (isFunction(prompt.when) && !await prompt.when(answers)) return
-
-  isFunction(prompt.message) && prompt.message(answers)
-
-  isFunction(prompt.transformer) && prompt.message(input)
-
-  let answer = input
-  if (isUndefined(answer)) {
-    if (isFunction(prompt.default)) {
-      answer = await prompt.default(answers)
-    } else {
-      answer = prompt.default
-    }
-
-    if (isNumber(answer) && prompt.type in ['list', 'rawlist', 'expand']) {
-      if (isFunction(prompt.choiches)) {
-        answer = await prompt.choiches(answers)[answer]
-      } else {
-        answer = prompt.choiches[answer]
-      }
-    }
-
-    switch (prompt.type) {
-      case 'expand':
-        answer = {
-          key: 'h',
-          name: 'Help, list all options',
-          value: 'help'
-        }
-        break
-      case 'checkbox':
-        answer = []
-        break
-      case 'confirm':
-        answer = false
-        break
-      default:
-        if (Array.isArray(prompt.choiches)) {
-          [answer] = prompt.choiches
-        } else if (isFunction(prompt.choiches)) {
-          [answer] = await prompt.choiches(answers)
-        } else {
-          answer = ''
-        }
-    }
-  }
-
-  if (isFunction(prompt.filter)) {
-    answer = await prompt.filter(answer)
-  }
-
-  if (isFunction(prompt.validate)) {
-    const valid = await prompt.validate(answer, answers)
-    if (valid !== true) {
-      throw new Error(valid)
-    }
-  }
-  return answer
-}
-
-/**
- * @param  {Object} inputs
- * @return {Function}
- */
-const inquirerHandler = inputs => {
-  /**
-   * @param  {Object} prompts
-   * @return {Promise.<Object>}
-   */
-  return async prompts => {
-    const answers = {}
-    for (const prompt of [].concat(prompts)) {
-      answers[prompt.name] = await promptHandler(prompt, answers, inputs[prompt.name])
-    }
-    return answers
-  }
-}
-
-/**
- * Mock prompt
- * @param {Object} inputs Default return answers
- * @param {Number} times  Continue to use a few times
- */
-module.exports = (inputs, times = 1) => {
-  if (typeof inputs !== 'object') {
+module.exports = fills => {
+  if (typeof fills !== 'object') {
     throw new TypeError('The mocked answers must be an objects.')
   }
 
-  const promptOriginal = inquirer.prompt
+  const originalPrompt = inquirer.prompt
 
-  const promptMock = async questions => {
-    times--
-    try {
-      const answers = await inquirerHandler(inputs)(questions)
-      if (!times) {
-        inquirer.prompt = promptOriginal
+  const mockPrompt = async questions => {
+    const answers = {}
+    for (const item of [].concat(questions)) {
+      let result = fills[item.name]
+
+      if (!result && item.default) {
+        result = typeof item.default === 'function' ? await item.default() : item.default
       }
-      return Promise.resolve(answers)
-    } catch (err) {
-      if (!times) {
-        inquirer.prompt = promptOriginal
-      }
-      return Promise.reject(err)
+
+      answers[item.name] = result
     }
+    return answers
   }
 
-  promptMock.prompts = inquirer.prompt.prompts
-  promptMock.registerPrompt = inquirer.prompt.registerPrompt
-  promptMock.restoreDefaultPrompts = inquirer.prompt.restoreDefaultPrompts
-  inquirer.prompt = promptMock
-}
+  inquirer.prompt = mockPrompt
 
-// module.exports = inputs => {
-//   inquirer.prompt = questions => {
-//     const result = {}
-//     const patchItem = question => {
-//       const key = question.name
-//       if (question.validate) {
-//         question.validate(inputs[key])
-//         // const valid = question.validate(inputs[key])
-//         // if (!valid) throw new Error(valid)
-//       }
-//       result[key] = inputs[key] || question.default
-//     }
-//     Array.isArray(questions) ? questions.forEach(patchItem) : patchItem(questions)
-//     return Promise.resolve(result)
-//   }
-// }
+  return () => {
+    inquirer.prompt = originalPrompt
+    originalPrompt = null
+  }
+}
