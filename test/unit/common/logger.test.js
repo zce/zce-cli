@@ -1,7 +1,13 @@
-const test = require('ava')
+/**
+ * common:logger
+ */
 
+const test = require('ava')
 const { logger } = require('../../../lib/common')
 
+/**
+ * test dependencies
+ */
 const symbols = require('log-symbols')
 const mockStdio = require('../../tool/mock-stdio')
 
@@ -39,4 +45,11 @@ test('common:logger:boxen', t => {
   const stop = mockStdio.stdout()
   logger.boxen('zce-cli')
   t.true(stop().includes('zce-cli'))
+})
+
+test('common:logger:clear', t => {
+  const stop = mockStdio.stdout()
+  logger.clear()
+  logger.clear('zce-cli')
+  t.true(stop().endsWith('zce-cli\n'))
 })

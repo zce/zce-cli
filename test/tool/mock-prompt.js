@@ -34,6 +34,5 @@ module.exports = fills => {
 
   return () => {
     inquirer.prompt = originalPrompt
-    originalPrompt = null
   }
 }

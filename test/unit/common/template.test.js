@@ -1,5 +1,8 @@
-const test = require('ava')
+/**
+ * common:template
+ */
 
+const test = require('ava')
 const { template } = require('../../../lib/common')
 
 test('common:template:default', t => {

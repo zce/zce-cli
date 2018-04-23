@@ -8,17 +8,22 @@
   ],
   "homepage": "https://github.com/zce/zce-cli#readme",
   "bugs": {
-    "url": "https://github.com/zce/zce-cli/issues"
+    "url": "https://github.com/zce/zce-cli/issues",
+    "email": "cli@zce.me"
   },
   "license": "MIT",
-  "author": "zce <w@zce.me> (https://zce.me/)",
+  "author": {
+    "name": "zce",
+    "email": "w@zce.me",
+    "url": "https://zce.me"
+  },
   "files": [
     "bin",
     "lib"
   ],
-  "main": "lib/index.js",
+  "main": "lib",
   "bin": {
-    "zce": "bin/zce.js"
+    "zce": "bin/zce"
   },
   "directories": {
     "lib": "lib",
@@ -30,10 +35,10 @@
     "url": "git+https://github.com/zce/zce-cli.git"
   },
   "scripts": {
-    "coverage": "nyc npm test",
+    "coverage": "nyc yarn test",
     "coverage:report": "nyc report --reporter=html",
     "lint": "standard --fix",
-    "test": "npm run lint && npm run test:unit && npm run test:e2e",
+    "test": "yarn lint && yarn test:unit && yarn test:e2e",
     "test:e2e": "ava test/e2e/** --verbose",
     "test:unit": "ava test/unit/** --verbose"
   },
@@ -46,6 +51,7 @@
     "inquirer": "^5.2.0",
     "lodash": "^4.17.5",
     "log-symbols": "^2.2.0",
+    "mkdirp": "^0.5.1",
     "metalsmith": "^2.3.0",
     "minimatch": "^3.0.4",
     "ora": "^2.0.0",
@@ -56,12 +62,12 @@
   },
   "devDependencies": {
     "ava": "^1.0.0-beta.4",
-    "mkdirp": "^0.5.1",
     "nyc": "^11.7.1",
     "standard": "^11.0.1"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=8",
+    "yarn": ">=1"
   },
   "preferGlobal": true
 }
