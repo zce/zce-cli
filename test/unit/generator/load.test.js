@@ -11,12 +11,13 @@ const load = require('../../../lib/generator/load')
 const path = require('path')
 
 test('generator:load:normal', async t => {
-  const options = await load(path.join(__dirname, '../../mock/minima'))
-  t.is(options.name, 'minima')
+  const options = await load(path.join(__dirname, '../../mock/templates/options'))
+  t.is(options.name, 'options-template')
+  t.is(options.version, '0.1.0')
 })
 
 test('generator:load:empty', async t => {
-  const options = await load(path.join(__dirname, '../../mock'))
+  const options = await load(path.join(__dirname, '../../mock/templates/minima'))
   t.is(options.name, undefined)
 })
 
@@ -25,5 +26,5 @@ test('generator:load:error1', async t => {
 })
 
 test('generator:load:error2', async t => {
-  await t.throws(load(path.join(__dirname, '../../mock/minima/README.md')), SyntaxError)
+  await t.throws(load(path.join(__dirname, '../../mock/templates/minima/README.md')), SyntaxError)
 })

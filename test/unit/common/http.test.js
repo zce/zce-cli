@@ -13,22 +13,19 @@ const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
 const rc = require('rc')
-const rimraf = require('rimraf')
-const mkdirp = require('mkdirp')
+const util = require('../../../lib/common/util')
 
 const readdir = promisify(fs.readdir)
-const mkdir = promisify(mkdirp)
-const rm = promisify(rimraf)
 const { registry } = rc('npm', { registry: 'https://registry.npmjs.org/' })
 
 test.before(async t => {
   t.context.tmpdir = path.join(os.tmpdir(), 'zce-test/http')
-  await mkdir(t.context.tmpdir)
+  await util.mkdirp(t.context.tmpdir)
 })
 
+// cleanup
 test.after(async t => {
-  // clear
-  await rm(t.context.tmpdir)
+  await util.rimraf(t.context.tmpdir)
 })
 
 test('common:http:request', async t => {

@@ -43,8 +43,8 @@ test('generator:resolve:getTemplateUrl', t => {
 })
 
 test('generator:resolve:local', async t => {
-  const src = await resolve(path.join(__dirname, '../../mock/minima'))
-  t.is(src, path.join(__dirname, '../../mock/minima'))
+  const src = await resolve(__dirname)
+  t.is(src, path.join(__dirname))
 })
 
 test('generator:resolve:short_name', async t => {
