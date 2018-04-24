@@ -1,16 +1,51 @@
+/**
+ * generator:list
+ */
+
 const test = require('ava')
+const list = require('../../../lib/generator/list')
 
-const { generator } = require('../../..')
+/**
+ * test dependencies
+ */
+const mockStdio = require('../../tool/mock-stdio')
 
-test('generator:list', async t => {
-  await Promise.all([
-    generator.list(),
-    generator.list('zce-templates'),
-    generator.list('zce-templates', { short: true }),
-    generator.list('fake-users'),
-    generator.list('zce-mock'),
-    generator.list('zce-mock', { short: true }),
-    generator.list('fake-users-12580')
-  ])
+test.before(t => {
+  // turn off stdout
+  t.context.stop = mockStdio.stdout()
+})
+
+test.after(t => {
+  // turn on stdout
+  t.context.stop()
+})
+
+test('generator:list:offical', async t => {
+  await list()
+  t.pass()
+})
+
+test('generator:list:offical_short', async t => {
+  await list('zce-templates', { short: true })
+  t.pass()
+})
+
+test('generator:list:empty', async t => {
+  await list('fake-users')
+  t.pass()
+})
+
+test('generator:list:other', async t => {
+  await list('zce-mock')
+  t.pass()
+})
+
+test('generator:list:other_short', async t => {
+  await list('zce-mock', { short: true })
+  t.pass()
+})
+
+test('generator:list:not_found', async t => {
+  await list('zce-faker-12315')
   t.pass()
 })

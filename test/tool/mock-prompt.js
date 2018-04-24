@@ -18,15 +18,26 @@ module.exports = fills => {
 
   const mockPrompt = async questions => {
     const answers = {}
+
     for (const item of [].concat(questions)) {
       let result = fills[item.name]
 
+      // value
       if (!result && item.default) {
-        result = typeof item.default === 'function' ? await item.default() : item.default
+        result = typeof item.default === 'function'
+          ? await item.default()
+          : item.default
+      }
+
+      // validate
+      if (typeof item.validate === 'function') {
+        const valid = item.validate(result)
+        if (valid !== true) throw new Error(valid)
       }
 
       answers[item.name] = result
     }
+
     return answers
   }
 

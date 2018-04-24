@@ -53,8 +53,9 @@ program
   .description('generate a new project from a template')
   .option('-f, --force', 'overwrite target directory if it exists')
   .option('-o, --offline', 'offline mode, use cached template')
-  .action((template, project, { force, offline }) => {
-    console.log(template, project, { force, offline })
+  .option('-s, --save', 'save the answers for the next')
+  .action((template, project, { force, offline, save }) => {
+    console.log(template, project, { force, offline, save })
     // generator.init(template, project, { force, offline }).catch(onError)
   })
   .on('--help', () => {

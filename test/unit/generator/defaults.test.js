@@ -5,6 +5,15 @@
 const test = require('ava')
 const Defaults = require('../../../lib/generator/defaults')
 
+/**
+ * test dependencies
+ */
+const util = require('../../../lib/common/util')
+
+test.before(async t => {
+  await util.rimraf(util.getDataPath('generator/config.json'))
+})
+
 test('generator:defaults:all', async t => {
   const defaults = await Defaults.init(__dirname)
   t.is(defaults.name(), 'generator')
@@ -23,7 +32,9 @@ test('generator:defaults:error', async t => {
 })
 
 test('generator:defaults:save', async t => {
-  await Defaults.save({ foo: 'bar' })
+  const answers = { foo: 'bar' }
+  await Defaults.save(answers)
+  t.is(answers.foo, 'bar')
   await Defaults.save({ bar: 'baz', repo: 'demo' })
   const defaults = await Defaults.init(__dirname)
   t.is(defaults.foo, 'bar')

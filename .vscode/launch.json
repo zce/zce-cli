@@ -1,0 +1,22 @@
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  // https://github.com/avajs/ava/blob/master/docs/recipes/debugging-with-vscode.md
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run AVA test",
+      "program": "${workspaceFolder}/node_modules/ava/profile.js",
+      "args": [
+        "--verbose",
+        "${file}"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    }
+  ]
+}
