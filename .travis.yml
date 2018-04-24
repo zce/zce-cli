@@ -2,16 +2,14 @@ sudo: false
 
 language: node_js
 
-# os:
-#   - linux
-#   - osx
-#   - windows
+os:
+  - linux
+  - osx
+  - windows
 
 node_js:
-  # - 6
-  # - 7
-  # - 8
-  - stable
+  - 8
+  - 9
 
 notifications:
   email:
@@ -22,7 +20,7 @@ before_script:
   - yarn global add nyc codecov
 
 script:
-  - yarn test
+  - yarn coverage
 
 after_script:
   - nyc report --reporter=text-lcov > coverage.lcov && codecov
