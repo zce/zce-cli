@@ -48,7 +48,7 @@ if (!semver.satisfies(process.version, pkg.engines.node)) {
 
 // `init` command
 program
-  .command('init <template> [project] [options]')
+  .command('init <template> [project]')
   .description('generate a new project from a template')
   .option('-f, --force', 'overwrite target directory if it exists')
   .option('-o, --offline', 'offline mode, use cached template')
