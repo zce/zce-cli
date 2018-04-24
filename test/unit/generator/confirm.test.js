@@ -1,28 +1,45 @@
-const test = require('ava')
+/**
+ * generator:confirm
+ */
 
+const test = require('ava')
 const confirm = require('../../../lib/generator/confirm')
 
+/**
+ * test dependencies
+ */
+const os = require('os')
+const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
-
-const mkdirp = promisify(require('mkdirp'))
-const rimraf = promisify(require('rimraf'))
+const util = require('../../../lib/common/util')
 
 const mockPrompt = require('../../tool/mock-prompt')
+const mockStdio = require('../../tool/mock-stdio')
+const writeFile = promisify(fs.writeFile)
 
 // prepare cwd
 test.before(async t => {
-  const tempDir = path.join(__dirname, '../../temp/confirm')
-  await mkdirp(tempDir)
-  t.context.tempDir = tempDir
-  t.context.realCwd = process.cwd()
-  process.chdir(tempDir)
+  // turn off stdout
+  t.context.stop = mockStdio.stdout()
+
+  const tmpdir = path.join(os.tmpdir(), 'zce-test/confirm')
+  await util.mkdirp(tmpdir)
+
+  // realpathSync https://github.com/nodejs/node/issues/7545
+  t.context.tmpdir = fs.realpathSync(tmpdir)
+
+  t.context.originalCwd = process.cwd()
+  process.chdir(t.context.tmpdir)
 })
 
 // cleanup
 test.after(async t => {
-  process.chdir(t.context.realCwd)
-  await rimraf(t.context.tempDir)
+  process.chdir(t.context.originalCwd)
+  await util.rimraf(t.context.tmpdir)
+
+  // turn on stdout
+  t.context.stop()
 })
 
 /**
@@ -39,15 +56,15 @@ test.serial('generator:confirm:default_parameters', async t => {
  */
 test('generator:confirm:not_exists_dir', async t => {
   const dest = await confirm('project1')
-  t.is(dest, path.join(t.context.tempDir, 'project1'))
+  t.is(dest, path.join(t.context.tmpdir, 'project1'))
 })
 
 /**
  * Test case 2
  */
-test.serial('generator:confirm:exists_dir_empty1', async t => {
-  const dir = path.join(t.context.tempDir, 'project2')
-  await mkdirp(dir)
+test.serial('generator:confirm:exists_dir_empty', async t => {
+  const dir = path.join(t.context.tmpdir, 'project2')
+  await util.mkdirp(dir)
   mockPrompt({ sure: true })
   t.is(await confirm('project2'), dir)
 })
@@ -55,58 +72,78 @@ test.serial('generator:confirm:exists_dir_empty1', async t => {
 /**
  * Test case 3
  */
-test.serial('generator:confirm:exists_dir_empty2', async t => {
-  const dir = path.join(t.context.tempDir, 'project3')
-  await mkdirp(dir)
-  mockPrompt({ sure: true })
-  t.is(await confirm('project3'), dir)
+test('generator:confirm:exists_dir_force', async t => {
+  const dir = path.join(t.context.tmpdir, 'project3')
+  await util.mkdirp(dir)
+  t.is(await confirm('project3', true), dir)
 })
 
 /**
  * Test case 4
  */
-test('generator:confirm:exists_dir_not_empty_force', async t => {
-  const dir = path.join(t.context.tempDir, 'project4')
-  await mkdirp(dir)
-  t.is(await confirm('project4', true), dir)
+test('generator:confirm:exists_file', async t => {
+  const filename = path.join(t.context.tmpdir, 'project4')
+  await writeFile(filename, '')
+  await t.throws(confirm('project4'), 'Cannot init project4: File exists.')
 })
 
 /**
  * Test case 5
  */
-test.serial('generator:confirm:exists_dir_not_empty_overwrite', async t => {
-  const dir = path.join(t.context.tempDir, 'project5')
-  await mkdirp(path.join(dir, 'foo'))
-  mockPrompt({ sure: true, choose: 'overwrite' }, 2)
-  t.is(await confirm('project5'), dir)
+test('generator:confirm:exists_file_force', async t => {
+  const filename = path.join(t.context.tmpdir, 'project5')
+  await writeFile(filename, '')
+  t.is(await confirm('project5', true), filename)
 })
 
 /**
  * Test case 6
  */
-test.serial('generator:confirm:exists_dir_not_empty_merge', async t => {
-  const dir = path.join(t.context.tempDir, 'project6')
-  await mkdirp(path.join(dir, 'foo'))
-  mockPrompt({ sure: true, choose: 'merge' }, 2)
+test.serial('generator:confirm:exists_dir_not_empty_overwrite', async t => {
+  const dir = path.join(t.context.tmpdir, 'project6')
+
+  // create exist file
+  await util.mkdirp(path.join(dir, 'foo'))
+
+  mockPrompt({ sure: true, choose: 'overwrite' })
+
   t.is(await confirm('project6'), dir)
+  // foo has being removed
+  t.false(await util.exists(path.join(dir, 'foo')))
 })
 
 /**
  * Test case 7
  */
-test.serial('generator:confirm:exists_dir_not_empty_cancel1', async t => {
-  const dir = path.join(t.context.tempDir, 'project7')
-  await mkdirp(path.join(dir, 'foo'))
-  mockPrompt({ sure: false })
-  await t.throws(confirm('project7'), 'You have to cancel the init task.')
+test.serial('generator:confirm:exists_dir_not_empty_merge', async t => {
+  const dir = path.join(t.context.tmpdir, 'project7')
+
+  // create exist file
+  await util.mkdirp(path.join(dir, 'foo'))
+
+  mockPrompt({ sure: true, choose: 'merge' })
+
+  t.is(await confirm('project7'), dir)
+  // foo has not removed
+  t.true(await util.exists(path.join(dir, 'foo')))
 })
 
 /**
  * Test case 8
  */
-test.serial('generator:confirm:exists_dir_not_empty_cancel2', async t => {
-  const dir = path.join(t.context.tempDir, 'project8')
-  await mkdirp(path.join(dir, 'foo'))
-  mockPrompt({ sure: true, choose: 'cancel' }, 2)
+test.serial('generator:confirm:exists_dir_not_empty_cancel1', async t => {
+  const dir = path.join(t.context.tmpdir, 'project8')
+  await util.mkdirp(path.join(dir, 'foo'))
+  mockPrompt({ sure: false })
   await t.throws(confirm('project8'), 'You have to cancel the init task.')
+})
+
+/**
+ * Test case 9
+ */
+test.serial('generator:confirm:exists_dir_not_empty_cancel2', async t => {
+  const dir = path.join(t.context.tmpdir, 'project9')
+  await util.mkdirp(path.join(dir, 'foo'))
+  mockPrompt({ sure: true, choose: 'cancel' })
+  await t.throws(confirm('project9'), 'You have to cancel the init task.')
 })

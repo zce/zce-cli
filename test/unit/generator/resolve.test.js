@@ -1,17 +1,30 @@
-const test = require('ava')
+/**
+ * generator:resolve
+ */
 
+const test = require('ava')
 const resolve = require('../../../lib/generator/resolve')
 
-const os = require('os')
+/**
+ * test dependencies
+ */
 const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
+const util = require('../../../lib/common/util')
+const mockStdio = require('../../tool/mock-stdio')
 
-const rimraf = promisify(require('rimraf'))
+const readdir = promisify(fs.readdir)
 
-const pkg = require('../../../package')
+test.before(t => {
+  // turn off stdout
+  t.context.stop = mockStdio.stdout()
+})
 
-const binName = Object.keys(pkg.bin)[0] + '-test'
+test.after(t => {
+  // turn on stdout
+  t.context.stop()
+})
 
 test('generator:resolve:isLocalPath', t => {
   t.true(resolve.isLocalPath('./foo'))
@@ -31,27 +44,26 @@ test('generator:resolve:getTemplateUrl', t => {
 
 test('generator:resolve:local', async t => {
   const src = await resolve(path.join(__dirname, '../../mock/minima'))
-  const files = fs.readdirSync(src)
-  t.is(files.length, 3)
+  t.is(src, path.join(__dirname, '../../mock/minima'))
 })
 
-test('generator:resolve:default', async t => {
+test('generator:resolve:short_name', async t => {
   const src = await resolve('zce-mock/unit-test')
-  const files = fs.readdirSync(src)
+  const files = await readdir(src)
   t.is(files.length, 3)
 })
 
 test.serial('generator:resolve:offline_fail', async t => {
   // clean cache
-  await rimraf(path.join(os.homedir(), '.config', binName, 'generator/cache/*'))
+  await util.rimraf(util.getDataPath('generator/cache/*'))
   const src = await resolve('zce-mock/unit-test', true)
-  const files = fs.readdirSync(src)
+  const files = await readdir(src)
   t.is(files.length, 3)
 })
 
 test.serial('generator:resolve:offline_success', async t => {
   const src = await resolve('zce-mock/unit-test', true)
-  const files = fs.readdirSync(src)
+  const files = await readdir(src)
   t.is(files.length, 3)
 })
 

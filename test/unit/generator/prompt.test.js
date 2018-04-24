@@ -1,10 +1,16 @@
-const test = require('ava')
+/**
+ * generator:prompt
+ */
 
+const test = require('ava')
 const prompt = require('../../../lib/generator/prompt')
 
+/**
+ * test dependencies
+ */
 const mockPrompt = require('../../tool/mock-prompt')
 
-test('generator:prompt:default', async t => {
+test.serial('generator:prompt:default', async t => {
   const questions = {
     name: { type: 'input', message: 'name' }
   }
@@ -16,7 +22,7 @@ test('generator:prompt:default', async t => {
   t.is(answers.name, 'generator')
 })
 
-test('generator:prompt:input', async t => {
+test.serial('generator:prompt:input', async t => {
   const questions = {
     name: { type: 'input', message: 'name', default: 'zce' },
     repo: { type: 'input', message: 'repo' }

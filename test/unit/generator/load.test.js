@@ -1,7 +1,13 @@
-const test = require('ava')
+/**
+ * generator:load
+ */
 
+const test = require('ava')
 const load = require('../../../lib/generator/load')
 
+/**
+ * test dependencies
+ */
 const path = require('path')
 
 test('generator:load:normal', async t => {

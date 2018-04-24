@@ -48,6 +48,13 @@ test('common:util:isEmpty', async t => {
   )
 })
 
+test('common:util:mkdirp&rimraf', async t => {
+  const tempFilename = path.join(tmp, 'zce-test/util/rimraf')
+  await util.mkdirp(tempFilename)
+  await util.rimraf(tempFilename)
+  t.false(await util.exists(tempFilename))
+})
+
 test('common:util:tildify', t => {
   t.is(util.tildify(path.join(home, 'foo')), '~/foo')
   t.is(util.tildify(home), '~')
@@ -59,10 +66,6 @@ test('common:util:untildify', t => {
   t.is(util.untildify('~/foo'), path.join(home, 'foo'))
   t.is(util.untildify('~'), home)
   t.is(util.untildify('/foo'), '/foo')
-})
-
-test('common:util:md5', t => {
-  t.is(util.md5('zce'), 'f1963aa09931b5dade50485239cc40bc')
 })
 
 test('common:util:getDataPath', t => {
@@ -85,6 +88,14 @@ test('common:util:getTempPath', t => {
 
   const expected3 = path.join(tmp, 'zce-test/unit/test')
   t.is(util.getTempPath('unit', 'test'), expected3)
+})
+
+test('common:util:md5', t => {
+  t.is(util.md5('zce'), 'f1963aa09931b5dade50485239cc40bc')
+})
+
+test('common:util:execute', async t => {
+  t.is(await util.execute('echo zce-cli'), 'zce-cli')
 })
 
 test('common:util:checkUpdate', async t => {
