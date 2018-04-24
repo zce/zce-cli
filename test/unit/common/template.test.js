@@ -10,7 +10,7 @@ test('common:template:default', t => {
   t.is(result, 'hello world')
 })
 
-test('common:template:es2015_delimiter', t => {
+test('common:template:delimiter', t => {
   /* eslint-disable no-template-curly-in-string */
   const result = template.render('hello ${ message }', { message: 'world' })
   t.is(result, 'hello world')

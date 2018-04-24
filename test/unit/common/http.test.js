@@ -10,7 +10,6 @@ const { http } = require('../../../lib/common')
  */
 const os = require('os')
 const fs = require('fs')
-const url = require('url')
 const path = require('path')
 const { promisify } = require('util')
 const rc = require('rc')
@@ -36,19 +35,23 @@ test('common:http:request', async t => {
   const res = await http.request(registry)
   t.truthy(res.body)
   t.is(res.body.db_name, 'registry')
+})
 
-  const err = await t.throws(http.request(url.resolve(registry, 'faaaaaaake')))
+test('common:http:request_error', async t => {
+  const err = await t.throws(http.request(`${registry}faaaaaaaaaaaaaaaker`))
   t.is(err.statusCode, 404)
 })
 
 test('common:http:download', async t => {
-  const dest1 = path.join(__dirname, '../../temp/http-download', 'test1')
-  await http.download('https://registry.npmjs.org/zce-cli/-/zce-cli-0.1.0-alpha.1.tgz', dest1)
-  const files1 = await readdir(dest1)
-  t.truthy(files1.length)
+  const dest = path.join(t.context.tmpdir, 'download')
+  await http.download(`${registry}zce-cli/-/zce-cli-0.1.0-alpha.1.tgz`, dest)
+  const files = await readdir(dest)
+  t.truthy(files.length)
+})
 
-  const dest2 = path.join(__dirname, '../../temp/http-download', 'test2')
-  await http.download('https://registry.npmjs.org/zce-cli/-/zce-cli-0.1.0-alpha.1.tgz', dest2, { extract: true, strip: 1, mode: 666 })
-  const files2 = await readdir(dest2)
-  t.truthy(files2.length)
+test('common:http:download_with_extract', async t => {
+  const dest = path.join(t.context.tmpdir, 'download_with_extract')
+  await http.download(`${registry}zce-cli/-/zce-cli-0.1.0-alpha.1.tgz`, dest, { extract: true, strip: 1, mode: 666 })
+  const files = await readdir(dest)
+  t.truthy(files.length)
 })

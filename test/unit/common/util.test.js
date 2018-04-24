@@ -89,7 +89,7 @@ test('common:util:getTempPath', t => {
 
 test('common:util:checkUpdate', async t => {
   const stop = mockStdio.stdout()
-  await util.checkUpdate()
+  const need = await util.checkUpdate()
   stop()
-  t.pass()
+  t.is(typeof need, 'boolean')
 })
