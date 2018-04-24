@@ -28,9 +28,9 @@ test('generator:complete:callback', t => {
   t.is(stop(), `${__dirname}\n`)
 })
 
-test('generator:complete:error', t => {
-  t.throws(() => complete(1), TypeError)
-  t.throws(() => complete(true), TypeError)
-  t.throws(() => complete({}), TypeError)
-  t.throws(() => complete([]), TypeError)
-})
+// test('generator:complete:error', t => {
+//   t.throws(() => complete(1), TypeError)
+//   t.throws(() => complete(true), TypeError)
+//   t.throws(() => complete({}), TypeError)
+//   t.throws(() => complete([]), TypeError)
+// })

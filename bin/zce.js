@@ -49,14 +49,12 @@ if (!semver.satisfies(process.version, pkg.engines.node)) {
 // `init` command
 program
   .command('init <template> [project] [options]')
-  .usage('<template> [project] [options]')
   .description('generate a new project from a template')
   .option('-f, --force', 'overwrite target directory if it exists')
   .option('-o, --offline', 'offline mode, use cached template')
   .option('-s, --save', 'save the answers for the next')
   .action((template, project, { force, offline, save }) => {
-    console.log(template, project, { force, offline, save })
-    // generator.init(template, project, { force, offline }).catch(onError)
+    generator.init(template, project, { force, offline, save }).catch(onError)
   })
   .on('--help', () => {
     console.log()
