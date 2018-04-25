@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0-alpha.2 / 2018-04-25
+
+- test & coverage
+
 ## 0.2.0-alpha.1 / 2018-04-25
 
 - Refactor the project & test
