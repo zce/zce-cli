@@ -117,3 +117,5 @@ program.on('--help', console.log).commands.forEach(item => item.on('--help', con
 
 // bootstrap
 program.parse(process.argv)
+
+program.args.length || program.help()
