@@ -34,7 +34,7 @@ const onError = (err, promise) => {
  * Global exit handler
  */
 const onExit = () => {
-  console.log('\n\n👋  You have to cancel the init task.\n')
+  console.log('\n\n👋  You have to cancel the task.\n')
   process.exit(1)
 }
 
