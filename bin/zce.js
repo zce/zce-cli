@@ -21,7 +21,7 @@ const onError = (err, promise) => {
     console.error(err)
     promise && console.error(promise)
   } else {
-    console.error('💀 ', err instanceof Error ? err.message : err)
+    console.error('💀 ', chalk.red(err instanceof Error ? err.message : err))
   }
 
   console.log()
