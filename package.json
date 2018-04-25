@@ -23,7 +23,7 @@
   ],
   "main": "lib",
   "bin": {
-    "zce": "bin/zce"
+    "zce": "bin/zce.js"
   },
   "directories": {
     "lib": "lib",
