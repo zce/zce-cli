@@ -4,6 +4,7 @@
 
 - Refactor the project & test
 - Rewriting all official templates
+- Remember last answers
 
 ## 0.1.0-alpha.10 / 2018-03-31
 
