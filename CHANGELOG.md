@@ -1,6 +1,13 @@
 # Changelog
 
+## 0.2.0-alpha.1 / 2018-04-25
+
+- Refactor the project & test
+- Rewriting all official templates
+
 ## 0.1.0-alpha.10 / 2018-03-31
+
+- upgrade deps
 
 ## 0.1.0-alpha.9 / 2017-11-20
 
