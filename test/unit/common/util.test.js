@@ -11,6 +11,7 @@ const { util } = require('../../../lib/common')
 const os = require('os')
 const path = require('path')
 const mockStdio = require('../../tool/mock-stdio')
+const pkg = require('../../../package')
 
 const home = os.homedir()
 const tmp = os.tmpdir()
@@ -56,16 +57,16 @@ test('common:util:mkdirp&rimraf', async t => {
 })
 
 test('common:util:tildify', t => {
-  t.is(util.tildify(path.join(home, 'foo')), '~/foo')
+  t.is(util.tildify(path.join(home, 'foo')), path.normalize('~/foo'))
   t.is(util.tildify(home), '~')
   t.is(util.tildify(home + 'foo'), home + 'foo')
-  t.is(util.tildify('/foo'), '/foo')
+  t.is(util.tildify('/foo'), path.normalize('/foo'))
 })
 
 test('common:util:untildify', t => {
   t.is(util.untildify('~/foo'), path.join(home, 'foo'))
   t.is(util.untildify('~'), home)
-  t.is(util.untildify('/foo'), '/foo')
+  t.is(util.untildify('/foo'), path.normalize('/foo'))
 })
 
 test('common:util:getDataPath', t => {
@@ -96,11 +97,16 @@ test('common:util:md5', t => {
 
 test('common:util:execute', async t => {
   t.is(await util.execute('echo zce-cli'), 'zce-cli')
+  t.is(await util.execute('zce-faker notfound'), undefined)
 })
 
 test('common:util:checkUpdate', async t => {
   const stop = mockStdio.stdout()
-  const need = await util.checkUpdate()
+  pkg.version = '0.0.0'
+  const need1 = await util.checkUpdate()
+  t.true(need1)
+  pkg.version = '100.0.0'
+  const need2 = await util.checkUpdate()
+  t.false(need2)
   stop()
-  t.is(typeof need, 'boolean')
 })
