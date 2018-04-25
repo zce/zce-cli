@@ -35,12 +35,12 @@
     "url": "git+https://github.com/zce/zce-cli.git"
   },
   "scripts": {
-    "coverage": "nyc yarn test",
-    "coverage:report": "nyc report --reporter=html",
     "lint": "standard --fix",
-    "test": "yarn lint && yarn test:unit && yarn test:e2e",
+    "test": "yarn test:unit && yarn test:e2e",
     "test:e2e": "ava test/e2e/** --verbose",
-    "test:unit": "ava test/unit/** --verbose"
+    "test:unit": "ava test/unit/** --verbose",
+    "coverage": "nyc yarn test",
+    "coverage:report": "nyc report --reporter=html"
   },
   "dependencies": {
     "boxen": "^1.3.0",

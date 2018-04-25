@@ -30,11 +30,20 @@ const onError = (err, promise) => {
   process.exit(1)
 }
 
+/**
+ * Global exit handler
+ */
+const onExit = () => {
+  console.log('\n\n👋  You have to cancel the init task.\n')
+  process.exit(1)
+}
+
 // provide a title to the process
 process.title = pkg.name
 // unhandled exception & rejection
 process.on('uncaughtException', onError)
 process.on('unhandledRejection', onError)
+process.on('SIGINT', onExit)
 
 // istanbul ignore if
 if (!semver.satisfies(process.version, pkg.engines.node)) {

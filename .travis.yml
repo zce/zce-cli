@@ -20,6 +20,7 @@ before_script:
   - yarn global add nyc codecov
 
 script:
+  - yarn lint
   - yarn coverage
 
 after_script:
