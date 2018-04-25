@@ -52,6 +52,9 @@ test.serial('generator:init:local', async t => {
 
   const content = await readFile(path.join(t.context.tmpdir, 'zce.txt'), 'utf8')
   t.is(content.trim(), 'hey project-minima')
+
+  // // git init test
+  // t.true(await util.exists(path.join(t.context.tmpdir, '.git')))
 })
 
 test.serial('generator:init:remote', async t => {
