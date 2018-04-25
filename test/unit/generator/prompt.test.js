@@ -13,7 +13,7 @@ const mockStdio = require('../../tool/mock-stdio')
 const util = require('../../../lib/common/util')
 
 test.before(async t => {
-  await util.rimraf(util.getDataPath('generator/config.json'))
+  await util.rimraf(util.getDataPath('generator/answers.json'))
   // turn off stdout
   t.context.stop = mockStdio.stdout()
 })

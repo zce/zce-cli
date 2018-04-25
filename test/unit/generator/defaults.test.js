@@ -11,7 +11,7 @@ const Defaults = require('../../../lib/generator/defaults')
 const util = require('../../../lib/common/util')
 
 test.before(async t => {
-  await util.rimraf(util.getDataPath('generator/config.json'))
+  await util.rimraf(util.getDataPath('generator/answers.json'))
 })
 
 test('generator:defaults:all', async t => {
