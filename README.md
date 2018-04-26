@@ -95,7 +95,7 @@ Maybe more: https://github.com/zce-templates
 
 #### Create Your Template
 
-To create and distribute your own template, refer to [How to create template](doc/template.md)
+To create and distribute your own template, refer to [Create new template](doc/create-template.md).
 
 > Maybe fork an official template or use [zce-templates/template](https://github.com/zce-templates/template) is a better decision.
 
@@ -174,16 +174,3 @@ generator.list(username, { short })
 [devdependency-url]: https://david-dm.org/zce/zce-cli?type=dev
 [style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [style-url]: http://standardjs.com
-
-<!--
-- https://github.com/tj/commander.js
-- https://github.com/sindresorhus/log-update
-- https://github.com/segmentio/metalsmith
-- https://github.com/sindresorhus/fullname
-- https://github.com/yeoman/update-notifier
-- https://github.com/catdad/mock-stdio
-- https://cnodejs.org/topic/549cd2cd8ade094b67f3fcb6
-- https://github.com/sindresorhus/hook-std
-- https://www.npmjs.com/package/pad-stdio
-- https://www.npmjs.com/package/mock-stdio
- -->

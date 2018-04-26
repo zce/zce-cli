@@ -1,15 +1,17 @@
 {
   "name": "zce-cli",
   "version": "0.2.0-alpha.3",
-  "description": "A scaffolding CLI tool for my productivity, inspired by vue-cli &amp; yeoman.",
+  "description": "A CLI tool for my personal productivity, inspired by vue-cli & yeoman & etc.",
   "keywords": [
     "cli",
+    "generator",
+    "productivity",
     "zce"
   ],
-  "homepage": "https://github.com/zce/zce-cli#readme",
+  "homepage": "https://cli.zce.me",
   "bugs": {
     "url": "https://github.com/zce/zce-cli/issues",
-    "email": "cli@zce.me"
+    "email": "w@zce.me"
   },
   "license": "MIT",
   "author": {
@@ -49,7 +51,7 @@
     "download": "^6.2.5",
     "fullname": "^3.3.0",
     "inquirer": "^5.2.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "log-symbols": "^2.2.0",
     "metalsmith": "^2.3.0",
     "minimatch": "^3.0.4",

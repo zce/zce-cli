@@ -1,4 +1,4 @@
-# How to create template
+# How to create a new template
 
 In reading this section, you'll learn how to create and distribute your own template.
 
