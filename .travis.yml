@@ -11,7 +11,8 @@ node_js:
   - 8
   - 9
 
-cache: yarn
+cache:
+  yarn: true
 
 notifications:
   email:
