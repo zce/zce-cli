@@ -1,6 +1,8 @@
 /**
  * Can not be used in parallel environments!!!
  * https://github.com/SBoudrias/Inquirer.js/issues/379#issuecomment-368479630
+ *
+ * Deprecated!!! use `mock-prompt` module instead
  */
 
 const inquirer = require('inquirer')
@@ -16,14 +18,14 @@ module.exports = fills => {
 
   const originalPrompt = inquirer.prompt
 
-  const mockPrompt = async questions => {
+  inquirer.prompt = async questions => {
     const answers = {}
 
     for (const item of [].concat(questions)) {
       let result = fills[item.name]
 
       // value
-      if (!result && item.default) {
+      if (!result && item.default !== undefined) {
         result = typeof item.default === 'function'
           ? await item.default()
           : item.default
@@ -40,8 +42,6 @@ module.exports = fills => {
 
     return answers
   }
-
-  inquirer.prompt = mockPrompt
 
   return () => {
     inquirer.prompt = originalPrompt

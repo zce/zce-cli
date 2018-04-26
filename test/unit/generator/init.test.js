@@ -12,9 +12,9 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const { promisify } = require('util')
+const mockPrompt = require('mock-prompt')
 const util = require('../../../lib/common/util')
 const mockStdio = require('../../tool/mock-stdio')
-const mockPrompt = require('../../tool/mock-prompt')
 
 const readFile = promisify(fs.readFile)
 

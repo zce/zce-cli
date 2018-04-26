@@ -22,7 +22,7 @@ test('generator:load:empty', async t => {
 })
 
 test('generator:load:error1', async t => {
-  await t.throws(load(path.join(__dirname, '../../tool/mock-prompt')), TypeError)
+  await t.throws(load(path.join(__dirname, '../../mock/templates/error')), TypeError)
 })
 
 test('generator:load:error2', async t => {

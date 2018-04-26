@@ -12,10 +12,10 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 const { promisify } = require('util')
+const mockPrompt = require('mock-prompt')
+const mockStdio = require('../../tool/mock-stdio')
 const util = require('../../../lib/common/util')
 
-const mockPrompt = require('../../tool/mock-prompt')
-const mockStdio = require('../../tool/mock-stdio')
 const writeFile = promisify(fs.writeFile)
 
 // prepare cwd

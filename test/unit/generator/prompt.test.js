@@ -8,9 +8,9 @@ const prompt = require('../../../lib/generator/prompt')
 /**
  * test dependencies
  */
-const mockPrompt = require('../../tool/mock-prompt')
-const mockStdio = require('../../tool/mock-stdio')
+const mockPrompt = require('mock-prompt')
 const util = require('../../../lib/common/util')
+const mockStdio = require('../../tool/mock-stdio')
 
 test.before(async t => {
   await util.rimraf(util.getDataPath('generator/answers.json'))
