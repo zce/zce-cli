@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0-alpha.4 / 2018-04-26
+
+- docs
+
+## 0.2.0-alpha.3 / 2018-04-25
+
+- windows test
+
 ## 0.2.0-alpha.2 / 2018-04-25
 
 - test & coverage
