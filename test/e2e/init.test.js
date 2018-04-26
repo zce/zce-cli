@@ -1,6 +1,4 @@
 const test = require('ava')
 
-test('init command', t => {
-  // TODO: init command e2e test
-  t.pass()
-})
+// TODO: will think about writing this later
+test.todo('init command e2e test')
