@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0-alpha.6 / 2018-04-26
+
+- Change default action when dest is not empty
+
+## 0.2.0-alpha.5 / 2018-04-26
+
 ## 0.2.0-alpha.4 / 2018-04-26
 
 - docs
