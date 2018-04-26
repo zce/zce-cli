@@ -93,6 +93,8 @@ Config file can contain the following fields:
     }
   }
   ```
+- Note:
+  the `name` / `username` / `fullname` / `email` / `url` / `author` / `version` / `license` / `repository` / `repo` prompt will got a default value from system info.
 
 ### complete
 
