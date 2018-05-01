@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://cli.zce.me"><img src="https://cli.zce.me/assets/logo.png" alt="zce-cli" height="380"></a>
+  <a href="https://github.com/zce/zce-cli"><img src="doc/logo.png" alt="zce-cli" height="360"></a>
   <p align="center">A CLI tool for my personal productivity, inspired by vue-cli &amp; yeoman &amp; etc.</p>
 </p>
 <p align="center">
