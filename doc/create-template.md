@@ -12,6 +12,7 @@ In reading this section, you'll learn how to create and distribute your own temp
     │   │   └── style.css ··························· Any file (Auto render interpolate content)
     │   └── ${name}.html ···························· Any file with interpolate (Auto rename by answers)
     ├── index.js ···································· Entry point (Optional, Configuration file)
+    ├── package.json ································ Package info (Optional,)
     └── README.md ··································· README (Optional)
 ```
 
@@ -60,7 +61,7 @@ Config file can contain the following fields:
   ```js
   module.exports = {
     metadata: {
-      title: 'hello zce-cli'
+      date: new Date()
     }
   }
   ```
@@ -141,13 +142,13 @@ Config file can contain the following fields:
   ```js
   module.exports = {
     helpers: {
-      uppercase: str => str.toUpperCase()
+      upperCase: str => str.toUpperCase()
     }
   }
   ```
   Upon registration, they can be used as follows:
   ```ejs
-  <%= uppercase('zce') %>
+  <%= upperCase('zce') %>
   // => 'ZCE'
   ```
 

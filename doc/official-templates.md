@@ -17,6 +17,6 @@ Maybe more: https://github.com/zce-templates
 
 #### Create Your Template
 
-To create and distribute your own template, refer to [How to create template](doc/template.md)
+To create and distribute your own template, refer to [How to create template](create-template.md)
 
 > Maybe fork an official template or use [zce-templates/template](https://github.com/zce-templates/template) is a better decision.
