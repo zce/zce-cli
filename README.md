@@ -29,7 +29,7 @@ $ npm install -g zce-cli
 
 ### Generator
 
-> Simple scaffolding for generate project.
+> Simple scaffolding for generate project. [How to work](doc/how-to-work.md).
 
 #### init
 
@@ -91,7 +91,7 @@ Current available templates list:
 
 Maybe more: https://github.com/zce-templates
 
-> You can also run `zce ls` to see all available official templates in real time.
+> You can also run `zce ls` to see all available [official templates](doc/official-templates.md) in real time.
 
 #### Create Your Template
 
