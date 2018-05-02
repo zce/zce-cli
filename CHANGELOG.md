@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0-alpha.8 / 2018-05-02
+
+- :art: Prepare to release
+
+## 0.2.0-alpha.7 / 2018-05-01
+
 ## 0.2.0-alpha.6 / 2018-04-26
 
 - Change default action when dest is not empty
