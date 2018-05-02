@@ -136,6 +136,7 @@ generator.list(username, { short })
 - [x] unit test
 - [ ] e2e test
 - [ ] Official Templates
+- [ ] Lodash template debug
 
 ### Server
 
