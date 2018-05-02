@@ -168,3 +168,26 @@ Config file can contain the following fields:
     }
   }
   ```
+
+## Dependencies
+
+Because the template does not automatically install its own dependencies before it works, it is not possible to load third-party modules in the template configuration file at this time. 
+
+e.g. template `index.js`
+
+```js
+const chalk = require('chalk')
+// => Cannot find module 'chalk'
+```
+
+To solve this problem, you can also host `node_modules` to Repository, these modules will work properly.
+
+I personally prefer to modify `index.js` module paths to sharing the dependencies of zce-cli
+
+```js
+// Sharing the dependencies of zce-cli
+module.paths = require.main.paths
+
+const chalk = require('chalk')
+// => require chalk module from zce-cli dependencies
+```
