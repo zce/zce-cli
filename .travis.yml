@@ -1,9 +1,9 @@
 sudo: false
 
-os:
-  - osx
-  - windows
-  - linux
+# os:
+#   - osx
+#   - windows
+#   - linux
 
 language: node_js
 
