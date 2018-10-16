@@ -68,5 +68,5 @@ test.serial('generator:resolve:offline_success', async t => {
 })
 
 test.serial('generator:resolve:download_error', async t => {
-  await t.throws(resolve('zce-mock/fake-tmpl-repo'), /Failed to fetch template/)
+  await t.throwsAsync(resolve('zce-mock/fake-tmpl-repo'), /Failed to fetch template/)
 })

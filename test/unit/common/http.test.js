@@ -35,7 +35,7 @@ test('common:http:request', async t => {
 })
 
 test('common:http:request_error', async t => {
-  const err = await t.throws(http.request(`${registry}faaaaaaaaaaaaaaaker`))
+  const err = await t.throwsAsync(http.request(`${registry}faaaaaaaaaaaaaaaker`))
   t.is(err.statusCode, 404)
 })
 
