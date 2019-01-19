@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0-alpha.10 / 2019-01-19
+
+- :memo: 2018 -> 2019
+- :white_check_mark: Fixed ora in ava test error
+- :arrow_up: Upgraded deps
+
+## 0.2.0-alpha.9 / 2018-10-16
+
 ## 0.2.0-alpha.8 / 2018-05-02
 
 - :art: Prepare to release
