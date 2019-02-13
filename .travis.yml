@@ -9,7 +9,7 @@ language: node_js
 
 node_js:
   - lts/*
-  - stable
+  - node
 
 cache:
   yarn: true
