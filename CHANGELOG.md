@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0-alpha.11 / 2019-02-13
+
+- :arrow_up: Upgraded deps
+
 ## 0.2.0-alpha.10 / 2019-01-19
 
 - :memo: 2018 -> 2019
