@@ -1,110 +1,92 @@
 #!/usr/bin/env node
 
+const pkg = require('../package.json')
+
+// node version check
+require('../lib/utils/node-version-check')(pkg)
+
+// update check
+require('../lib/utils/update-check')(pkg)
+
 const chalk = require('chalk')
-const semver = require('semver')
-const program = require('commander')
+const cli = require('commander')
 
-const pkg = require('../package')
+// enhance command error messages
+require('../lib/utils/enhance-command')(cli)
 
-const { generator } = require('..')
+// cli config
+cli
+  .version(pkg.version)
+  .description(pkg.description)
+  .usage('<command> [options]')
+  .action(command => {
+    // output help information on unknown commands
+    console.error('Unknown command: `%s`.', chalk.yellow(command))
+    console.error('Run `%s` for got useful info.', chalk.cyan(`${cli.name()} --help`))
+    // cli.outputHelp()
+  })
+  .on('--help', () => {
+    // add some useful info on help
+    console.log()
+    console.log('Run `%s` for detailed usage of given command.', chalk.cyan(`${cli.name()} <command> --help`))
+  })
 
-/**
- * Global error handler
- * @param {Error} err error
- * @param {Promise} promise promise
- */
-const onError = (err, promise) => {
-  // log error
-  console.log()
-
-  if (program.debug) {
-    console.error(err)
-    promise && console.error(promise)
-  } else {
-    console.error('💀 ', err instanceof Error ? err.message : err)
-  }
-
-  console.log()
-
-  // error exit
-  process.exit(1)
-}
-
-// provide a title to the process
-process.title = pkg.name
-// unhandled exception & rejection
-process.on('uncaughtException', onError)
-process.on('unhandledRejection', onError)
-
-// istanbul ignore if
-if (!semver.satisfies(process.version, pkg.engines.node)) {
-  console.log(chalk.red(`You are using Node.js ${chalk.yellow(process.version)}, but this version of ${chalk.cyan(pkg.name)} requires Node.js ${chalk.green(pkg.engines.node)}.`))
-  console.log(chalk.red('Please upgrade your Node.js version before this operation.'))
-  // node version required
-  process.exit(1)
-}
-
-// #region register commands
-
-// `init` command
-program
+// init command
+cli
   .command('init <template> [project]')
   .description('generate a new project from a template')
-  .option('-f, --force', 'overwrite target directory if it exists')
-  .option('-o, --offline', 'offline mode, use cached template')
-  .option('-s, --save', 'save the answers for the next')
-  .action((template, project, { force, offline, save }) => {
-    generator.init(template, project, { force, offline, save }).catch(onError)
+  .option('-v, --verbose', 'enable verbose output')
+  .action((template, project, options) => {
+    require('..').init(template, project, options)
   })
   .on('--help', () => {
     console.log()
-    console.log('  Examples:')
-    console.log()
-    console.log(chalk.gray('    # create a new project with an official template'))
-    console.log(`    $ ${program.name()} init <template> [project]`)
-    console.log()
-    console.log(chalk.gray('    # create a new project straight from a github template'))
-    console.log(`    $ ${program.name()} init <username>/<repo> [project]`)
+    console.log('Examples:')
+    console.log(chalk.gray('  # create a new project with an official template'))
+    console.log('  $ %s init <template> [project]', cli.name())
+    console.log(chalk.gray('  # create a new project straight from a github template'))
+    console.log('  $ %s init <username>/<repo> [project]', cli.name())
   })
 
-// `list` command
-program
+// list command
+cli
   .command('list [username]').alias('ls')
   .description('list available official templates')
-  .option('-s, --short', 'short mode')
-  .action((username, { short }) => {
-    generator.list(username, { short }).catch(onError)
+  .option('-j, --json', 'enable json mode output')
+  .option('-s, --short', 'enable short mode output')
+  .action((username, { json, short }) => {
+    require('..').list(username, { json, short })
   })
 
-// #endregion
+// cli parse
+cli.parse(process.argv)
 
-// #region main command
+// output help
+cli.args.length || cli.help()
 
-program
-  .version(pkg.version)
-  .usage('<command> [options]')
-  .option('--debug', 'run command in debug mode')
-  .action(command => {
-    // output help information on unknown commands add some useful info on help
-    onError(`Unknown command: '${chalk.yellow(command)}'. See '${program.name()} --help'.`)
-  })
-  .on('--help', () => {
-    console.log()
-    console.log('  Suggestions:')
-    console.log()
-    console.log(`    Run ${chalk.cyan(`${program.name()} <command> --help`)} for detailed usage of given command.`)
-  })
-// #endregion
+// /**
+//  * Global error handler
+//  * @param {Error} err error
+//  * @param {Promise} promise promise
+//  */
+// const onError = (err, promise) => {
+//   console.error('💀 ', chalk.red(err instanceof Error ? err.message : err))
+//   // error exit
+//   process.exit(1)
+// }
 
-// #region common action & help
+// /**
+//  * Global cancel handler
+//  */
+// const onCancel = () => {
+//   console.log('👋  You have to cancel the task.')
+//   process.exit()
+// }
 
-// // clear console when sub command execute
-// program.commands.forEach(item => item.action(clearConsole))
+// // provide a title to the process
+// process.title = pkg.name
 
-// help end padding
-program.on('--help', console.log).commands.forEach(item => item.on('--help', console.log))
-
-// #endregion
-
-// bootstrap
-program.parse(process.argv)
+// // unhandled exception & rejection
+// process.on('uncaughtException', onError)
+// process.on('unhandledRejection', onError)
+// process.on('SIGINT', onCancel)

@@ -20,9 +20,6 @@ coverage
 # nyc test coverage
 .nyc_output
 
-# test temp
-test/temp/
-
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -32,14 +29,14 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
+# Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
 # Dependency directories
 node_modules/
 jspm_packages/
 
-# Typescript v1 declaration files
+# TypeScript v1 declaration files
 typings/
 
 # Optional npm cache directory
@@ -60,5 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
-# os files
-.DS_Store
+# next.js build output
+.next

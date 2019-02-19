@@ -1,5 +1,9 @@
 # zce-cli
 
+- https://stackoverflow.com/a/49863557
+- https://glebbahmutov.com/blog/unit-testing-cli-programs/#advanced-stubbing-the-prompt-method-using-sinonjs
+- https://github.com/yeoman/update-notifier
+
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][codecov-image]][codecov-url]
 [![NPM Downloads][downloads-image]][downloads-url]
@@ -9,7 +13,7 @@
 [![devDependency Status][devdependency-image]][devdependency-url]
 [![Code Style][style-image]][style-url]
 
-> A scaffolding CLI tool for my productivity, inspired by vue-cli &amp; yeoman.
+> A CLI tool for my personal productivity, inspired by vue-cli & yeoman & etc.
 
 ## Installation
 
@@ -22,14 +26,36 @@ $ npm install zce-cli
 
 ## Usage
 
+<!-- TODO: Introduction of API use -->
+
 ```javascript
+const zceCli = require('zce-cli')
+const result = zceCli('zce')
+// result => 'zce@zce.me'
 ```
 
 ## API
 
+<!-- TODO: Introduction of API -->
 
+### zceCli(name[, options])
+
+#### name
+
+- Type: `string`
+- Details: name string
+
+#### options
+
+##### host
+
+- Type: `string`
+- Details: host string
+- Default: `'zce.me'`
 
 ## CLI Usage
+
+<!-- TODO: Introduction of CLI -->
 
 ```shell
 $ yarn global add zce-cli
@@ -41,7 +67,7 @@ $ npm install zce-cli -g
 ```shell
 $ zce-cli --help
 
-  Usage: creative <input>
+  Usage: zce-cli <input>
 
   Options:
 
@@ -63,7 +89,7 @@ $ zce-cli --help
 
 ## License
 
-[MIT](LICENSE) &copy; [汪磊](https://zce.me/)
+[MIT](LICENSE) &copy; zce <w@zce.me> (https://zce.me/)
 
 
 
@@ -83,16 +109,3 @@ $ zce-cli --help
 [devdependency-url]: https://david-dm.org/zce/zce-cli?type=dev
 [style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [style-url]: http://standardjs.com
-
-<!--
-- https://github.com/tj/commander.js
-- https://github.com/sindresorhus/log-update
-- https://github.com/segmentio/metalsmith
-- https://github.com/sindresorhus/fullname
-- https://github.com/yeoman/update-notifier
-- https://github.com/catdad/mock-stdio
-- https://cnodejs.org/topic/549cd2cd8ade094b67f3fcb6
-- https://github.com/sindresorhus/hook-std
-- https://www.npmjs.com/package/pad-stdio
-- https://www.npmjs.com/package/mock-stdio
- -->

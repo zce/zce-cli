@@ -1,15 +1,20 @@
 {
   "name": "zce-cli",
-  "version": "0.1.0-alpha.1",
-  "description": "A scaffolding CLI tool for my productivity, inspired by vue-cli &amp; yeoman.",
+  "version": "0.0.0",
+  "description": "A CLI tool for my personal productivity, inspired by vue-cli & yeoman & etc.",
   "keywords": [
     "cli",
-    "zce"
+    "zce",
+    "zce-cli"
   ],
   "homepage": "https://github.com/zce/zce-cli#readme",
   "bugs": {
     "url": "https://github.com/zce/zce-cli/issues",
     "email": "cli@zce.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zce/zce-cli.git"
   },
   "license": "MIT",
   "author": {
@@ -21,54 +26,36 @@
     "bin",
     "lib"
   ],
-  "main": "lib",
+  "main": "lib/index.js",
   "bin": {
-    "zce": "bin/zce"
+    "zce": "bin/zce.js"
   },
   "directories": {
     "lib": "lib",
+    "bin": "bin",
     "doc": "doc",
     "test": "test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zce/zce-cli.git"
-  },
   "scripts": {
-    "coverage": "nyc yarn test",
-    "coverage:report": "nyc report --reporter=html",
     "lint": "standard --fix",
-    "test": "yarn lint && yarn test:unit && yarn test:e2e",
-    "test:e2e": "ava test/e2e/** --verbose",
-    "test:unit": "ava test/unit/** --verbose"
+    "test": "ava"
   },
   "dependencies": {
-    "boxen": "^1.3.0",
-    "chalk": "^2.4.0",
-    "commander": "^2.15.1",
-    "download": "^6.2.5",
-    "fullname": "^3.3.0",
-    "inquirer": "^5.2.0",
-    "lodash": "^4.17.5",
-    "log-symbols": "^2.2.0",
-    "metalsmith": "^2.3.0",
-    "minimatch": "^3.0.4",
-    "mkdirp": "^0.5.1",
-    "ora": "^2.0.0",
-    "rc": "^1.2.6",
-    "rimraf": "^2.6.2",
-    "semver": "^5.5.0",
-    "username": "^3.0.0",
-    "validate-npm-package-name": "^3.0.0"
+    "boxen": "^2.1.0",
+    "chalk": "^2.4.2",
+    "commander": "^2.19.0",
+    "got": "^9.6.0",
+    "ora": "^3.1.0",
+    "semver": "^5.6.0",
+    "update-notifier": "^2.5.0"
   },
   "devDependencies": {
-    "ava": "^1.0.0-beta.4",
-    "nyc": "^11.7.1",
-    "standard": "^11.0.1"
+    "ava": "^1.1.0",
+    "nyc": "^13.1.0",
+    "sinon": "^7.2.3",
+    "standard": "^12.0.1"
   },
   "engines": {
-    "node": ">=8",
-    "yarn": ">=1"
-  },
-  "preferGlobal": true
+    "node": ">=8"
+  }
 }
