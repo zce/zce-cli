@@ -12,7 +12,7 @@ const chalk = require('chalk')
 const cli = require('commander')
 
 // enhance command error messages
-require('../lib/utils/enhance-command')(cli)
+require('../lib/utils/enhance-commander')(cli)
 
 // cli config
 cli
