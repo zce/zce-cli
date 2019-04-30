@@ -1,9 +1,5 @@
 # zce-cli
 
-- https://stackoverflow.com/a/49863557
-- https://glebbahmutov.com/blog/unit-testing-cli-programs/#advanced-stubbing-the-prompt-method-using-sinonjs
-- https://github.com/yeoman/update-notifier
-
 [![Build Status][travis-image]][travis-url]
 [![Coverage Status][codecov-image]][codecov-url]
 [![NPM Downloads][downloads-image]][downloads-url]
@@ -13,47 +9,18 @@
 [![devDependency Status][devdependency-image]][devdependency-url]
 [![Code Style][style-image]][style-url]
 
-> A CLI tool for my personal productivity, inspired by vue-cli & yeoman & etc.
+> A CLI tool for my personal productivity, inspired by gluegun & vue-cli & yeoman & etc.
 
 ## Installation
 
 ```shell
-$ yarn add zce-cli
+$ yarn global add zce-cli
 
 # or npm
-$ npm install zce-cli
+$ npm install zce-cli -g
 ```
 
 ## Usage
-
-<!-- TODO: Introduction of API use -->
-
-```javascript
-const zceCli = require('zce-cli')
-const result = zceCli('zce')
-// result => 'zce@zce.me'
-```
-
-## API
-
-<!-- TODO: Introduction of API -->
-
-### zceCli(name[, options])
-
-#### name
-
-- Type: `string`
-- Details: name string
-
-#### options
-
-##### host
-
-- Type: `string`
-- Details: host string
-- Default: `'zce.me'`
-
-## CLI Usage
 
 <!-- TODO: Introduction of CLI -->
 
@@ -65,7 +32,7 @@ $ npm install zce-cli -g
 ```
 
 ```shell
-$ zce-cli --help
+$ zce --help
 
   Usage: zce-cli <input>
 
@@ -89,20 +56,20 @@ $ zce-cli --help
 
 ## License
 
-[MIT](LICENSE) &copy; zce <w@zce.me> (https://zce.me/)
+[MIT](LICENSE) &copy; [汪磊](https://zce.me/)
 
 
 
-[travis-image]: https://img.shields.io/travis/zce/zce-cli.svg
+[travis-image]: https://img.shields.io/travis/zce/zce-cli/next.svg
 [travis-url]: https://travis-ci.org/zce/zce-cli
-[codecov-image]: https://img.shields.io/codecov/c/github/zce/zce-cli.svg
+[codecov-image]: https://img.shields.io/codecov/c/github/zce/zce-cli/next.svg
 [codecov-url]: https://codecov.io/gh/zce/zce-cli
 [downloads-image]: https://img.shields.io/npm/dm/zce-cli.svg
 [downloads-url]: https://npmjs.org/package/zce-cli
 [version-image]: https://img.shields.io/npm/v/zce-cli.svg
 [version-url]: https://npmjs.org/package/zce-cli
-[license-image]: https://img.shields.io/npm/l/zce-cli.svg
-[license-url]: https://github.com/zce/zce-cli/blob/master/LICENSE
+[license-image]: https://img.shields.io/github/license/zce/pages-boilerplate.svg
+[license-url]: https://github.com/zce/zce-cli/blob/next/LICENSE
 [dependency-image]: https://img.shields.io/david/zce/zce-cli.svg
 [dependency-url]: https://david-dm.org/zce/zce-cli
 [devdependency-image]: https://img.shields.io/david/dev/zce/zce-cli.svg

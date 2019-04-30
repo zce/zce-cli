@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "A CLI tool for my personal productivity.",
   "keywords": [
-    "zce-cli",
     "cli",
     "zce"
   ],
@@ -32,7 +31,7 @@
   "directories": {
     "lib": "lib",
     "bin": "bin",
-    "doc": "docs",
+    "doc": "doc",
     "test": "test"
   },
   "scripts": {
@@ -41,9 +40,16 @@
     "compile": "tsc -p .",
     "build": "yarn format && yarn lint && yarn compile",
     "test": "jest",
-    "watch": "jest --watch",
-    "snapupdate": "jest --updateSnapshot",
     "coverage": "jest --coverage"
+  },
+  "prettier": {
+    "endOfLine": "lf",
+    "semi": false,
+    "singleQuote": true
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   },
   "dependencies": {
     "gluegun": "^3.2.1",
@@ -63,13 +69,5 @@
   },
   "engines": {
     "node": ">=7.6"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true
   }
 }

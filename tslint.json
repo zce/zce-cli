@@ -2,10 +2,7 @@
   "env": {
     "jest": true
   },
-  "extends": [
-    "tslint-config-standard",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint-config-standard", "tslint-config-prettier"],
   "rules": {
     "strict-type-predicates": false
   }

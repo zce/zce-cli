@@ -2,7 +2,8 @@ const path = require('path')
 const { filesystem, system } = require('gluegun')
 const pkg = require('../package.json')
 
-const runCommand = async cmd => system.run(`node ${path.join(__dirname, '../bin/zce')} ${cmd}`)
+const runCommand = async cmd =>
+  system.run(`node ${path.join(__dirname, '../bin/zce')} ${cmd}`)
 
 test('integration:version-command', async () => {
   const output = await runCommand('--version')
@@ -28,11 +29,11 @@ test('integration:hello-command', async () => {
 test('integration:generate-command', async () => {
   const output = await runCommand('generate foo')
   expect(output).toContain('Generated file at models/foo-model.ts')
-  
+
   const content = filesystem.read('models/foo-model.ts')
   expect(content).toContain(`module.exports = {`)
   expect(content).toContain(`name: 'foo'`)
 
   // cleanup artifact
-  filesystem.remove('models')
+  // filesystem.remove('models')
 })

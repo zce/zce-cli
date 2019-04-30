@@ -5,12 +5,20 @@ language: node_js
 node_js:
   - lts/*
 
+cache:
+  yarn: true
+
 notifications:
   email:
     on_success: never
     on_failure: change
 
+before_script:
+  - yarn global add codecov
+
 script:
   - yarn build
   - yarn test
-  - yarn coverage
+
+after_script:
+  - yarn coverage && codecov

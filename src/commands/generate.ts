@@ -2,7 +2,6 @@ import { GluegunToolbox } from 'gluegun'
 
 module.exports = {
   name: 'generate',
-  alias: ['init'],
   run: async (toolbox: GluegunToolbox) => {
     const {
       parameters,
