@@ -5,7 +5,7 @@ const runCommand = async (cmd?: string) =>
   system.run(`node ${join(__dirname, '../../bin/zce')} ${cmd}`)
 
 test('integration:generate-command', async () => {
-  const output = await runCommand('generate foo')
+  const output = await runCommand('init foo')
   expect(output).toContain('Generated file at models/foo-model.ts')
 
   const content = filesystem.read('models/foo-model.ts')
