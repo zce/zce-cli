@@ -13,12 +13,12 @@ notifications:
     on_success: never
     on_failure: change
 
-before_script:
+install:
   - yarn global add codecov
 
 script:
   - yarn build
-  - yarn test
+  - yarn coverage
 
 after_script:
-  - yarn coverage && codecov
+  - codecov

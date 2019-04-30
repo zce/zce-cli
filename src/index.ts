@@ -3,7 +3,7 @@ import { build } from 'gluegun'
 /**
  * Create the cli and kick it off
  */
-module.exports = async (argv: string[]) => {
+export default async (argv?: string[]) => {
   // create a CLI runtime
   const cli = build()
     .brand('zce')

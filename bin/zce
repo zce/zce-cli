@@ -12,12 +12,12 @@ let cli
 
 if (wantsCompiled || !devMode) {
   // import cli from the compiled
-  cli = require(path.join(__dirname, '../lib'))
+  cli = require(path.join(__dirname, '../lib')).default
 } else {
   // hook into ts-node so we can run typescript on the fly
   require('ts-node').register({ project: path.join(__dirname, '../tsconfig.json') })
   // import cli from the source
-  cli = require(path.join(__dirname, '../src'))
+  cli = require(path.join(__dirname, '../src')).default
 }
 
 // run the CLI with the current process arguments
