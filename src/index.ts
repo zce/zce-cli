@@ -1,9 +1,9 @@
-import { build } from 'gluegun'
+import { build, GluegunToolbox } from 'gluegun'
 
 /**
  * Create the cli and kick it off
  */
-export default async (argv?: string[]) => {
+export default async (argv?: string[]): Promise<GluegunToolbox> => {
   // create a CLI runtime
   const cli = build()
     .brand('zce')

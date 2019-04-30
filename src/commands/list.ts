@@ -3,8 +3,8 @@ import { http, GluegunToolbox } from 'gluegun'
 const api = http.create({
   baseURL: 'https://api.github.com',
   params: {
-    client_id: '0cb723972877555ffb54',
-    client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38'
+    client_id: '0cb723972877555ffb54', // eslint-disable-line @typescript-eslint/camelcase
+    client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38' // eslint-disable-line @typescript-eslint/camelcase
   },
   timeout: 20000
 })
@@ -13,7 +13,7 @@ module.exports = {
   name: 'list',
   alias: 'ls',
   description: 'list available official templates',
-  run: async (toolbox: GluegunToolbox) => {
+  run: async (toolbox: GluegunToolbox): Promise<void> => {
     const { colors, info, warning, error, success, spin } = toolbox.print
 
     const spinner = spin('Loading available list from remote...')
@@ -23,7 +23,7 @@ module.exports = {
 
     const response = await api.get(
       `/users/${username || 'zce-templates'}/repos`,
-      { per_page: 100 }
+      { per_page: 100 } // eslint-disable-line @typescript-eslint/camelcase
     )
 
     spinner.stop()
@@ -38,6 +38,7 @@ module.exports = {
       return error(`Failed to load list from remote: \`${response.problem}\`.`)
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const repos: any = response.data
 
     // no repos

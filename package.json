@@ -26,7 +26,7 @@
   ],
   "main": "lib/index.js",
   "bin": {
-    "zce": "bin/zce"
+    "zce": "bin/zce.js"
   },
   "directories": {
     "lib": "lib",
@@ -35,8 +35,8 @@
     "test": "test"
   },
   "scripts": {
-    "format": "prettier --write **/*.{ts,json}",
-    "lint": "tslint -p .",
+    "format": "prettier --write \"**/*.ts\"",
+    "lint": "eslint \"**/*.ts\"",
     "compile": "tsc -p .",
     "build": "yarn format && yarn lint && yarn compile",
     "test": "jest",
@@ -58,11 +58,7 @@
   "lint-staged": {
     "*.ts": [
       "prettier --write",
-      "tslint",
-      "git add"
-    ],
-    "*.json": [
-      "prettier --write",
+      "eslint --fix",
       "git add"
     ],
     "*.md": [
@@ -93,8 +89,11 @@
     "@commitlint/config-conventional": "^7.5.0",
     "@types/jest": "^24.0.12",
     "@types/node": "^11.13.8",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.16.0",
     "husky": "^2.1.0",
     "jest": "^24.7.1",
     "lint-staged": "^8.1.5",
@@ -103,9 +102,6 @@
     "standard-version": "^5.0.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.1.0",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^8.0.1",
     "typescript": "^3.4.5"
   },
   "engines": {

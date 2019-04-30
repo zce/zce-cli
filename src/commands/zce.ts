@@ -4,7 +4,7 @@ module.exports = {
   name: 'zce',
   hidden: true,
   dashed: true,
-  run: async (toolbox: GluegunToolbox) => {
+  run: async (toolbox: GluegunToolbox): Promise<void> => {
     const { colors, error } = toolbox.print
 
     if (toolbox.parameters.first) {

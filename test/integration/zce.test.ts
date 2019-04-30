@@ -1,10 +1,10 @@
 import { join } from 'path'
 import { system } from 'gluegun'
 
-const runCommand = async (cmd?: string) =>
+const runCommand = async (cmd?: string): Promise<string> =>
   system.run(`node ${join(__dirname, '../../bin/zce')} ${cmd}`)
 
-test('integration:zce-command', async () => {
-  const output = await runCommand()
+test('integration:zce', async (): Promise<void> => {
+  const output = await runCommand('')
   expect(output).toBe('')
 })
