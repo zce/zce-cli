@@ -40,7 +40,32 @@
     "compile": "tsc -p .",
     "build": "yarn format && yarn lint && yarn compile",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "commit": "git-cz",
+    "release": "standard-version"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,json}": [
+      "yarn format",
+      "yarn lint",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "prettier": {
     "endOfLine": "lf",
@@ -56,11 +81,18 @@
     "zce": "^0.1.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
     "@types/jest": "^24.0.12",
     "@types/node": "^11.13.8",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^2.1.0",
     "jest": "^24.7.1",
+    "lint-staged": "^8.1.5",
     "prettier": "^1.17.0",
     "sinon": "^7.3.2",
+    "standard-version": "^5.0.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",

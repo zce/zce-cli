@@ -1,4 +1,13 @@
-import { GluegunToolbox } from 'gluegun'
+import { http, GluegunToolbox } from 'gluegun'
+
+const api = http.create({
+  baseURL: 'https://api.github.com',
+  params: {
+    client_id: '0cb723972877555ffb54',
+    client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38'
+  },
+  timeout: 20000
+})
 
 module.exports = {
   name: 'list',
@@ -10,8 +19,9 @@ module.exports = {
     const spinner = spin('Loading available list from remote...')
 
     const username = toolbox.parameters.first
+    const isOffical = username === 'zce-templates'
 
-    const response = await toolbox.request(
+    const response = await api.get(
       `/users/${username || 'zce-templates'}/repos`,
       { per_page: 100 }
     )
@@ -28,18 +38,19 @@ module.exports = {
       return error(`Failed to load list from remote: \`${response.problem}\`.`)
     }
 
+    const repos: any = response.data
+
     // no repos
-    if (!response.data || !response.data.length) {
+    if (!repos || !repos.length) {
       return warning('No available templates.')
     }
 
     // output results
-    const isOffical = username === 'zce-templates'
 
     // json output
     if (toolbox.parameters.options.json) {
       const json = JSON.stringify(
-        response.data.map(item => ({
+        repos.map(item => ({
           name: isOffical ? item.name : item.full_name,
           description: item.description
         }))
@@ -49,14 +60,14 @@ module.exports = {
 
     // short output
     if (toolbox.parameters.options.short) {
-      return response.data.forEach(item =>
+      return repos.forEach(item =>
         info(`→ ${isOffical ? item.name : item.full_name}`)
       )
     }
 
     // full output
     success(`Available ${isOffical ? 'official' : username}'s templates:`)
-    response.data.forEach(item =>
+    repos.forEach(item =>
       info(
         ` ${colors.yellow('→')} ${colors.blue(
           username === 'zce-templates' ? item.name : item.full_name
@@ -65,6 +76,6 @@ module.exports = {
     )
 
     // send it back (for testing, mostly)
-    return response.data
+    return repos
   }
 }
