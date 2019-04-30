@@ -56,9 +56,17 @@
     ]
   },
   "lint-staged": {
-    "*.{ts,json}": [
-      "yarn format",
-      "yarn lint",
+    "*.ts": [
+      "prettier --write",
+      "tslint",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.md": [
+      "prettier --write",
       "git add"
     ]
   },
