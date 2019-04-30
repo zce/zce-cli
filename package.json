@@ -37,8 +37,8 @@
   },
   "scripts": {
     "format": "prettier --write **/*.{ts,json}",
-    "lint": "tslint",
-    "compile": "tsc",
+    "lint": "tslint -p .",
+    "compile": "tsc -p .",
     "build": "yarn format && yarn lint && yarn compile",
     "test": "jest",
     "watch": "jest --watch",

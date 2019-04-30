@@ -18,6 +18,6 @@ module.exports = {
       props: { name }
     })
 
-    info(`Generated file at models/${name}-model.js`)
+    info(`Generated file at models/${name}-model.ts`)
   }
 }

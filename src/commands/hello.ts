@@ -1,8 +1,8 @@
 import { GluegunToolbox } from 'gluegun'
 
 module.exports = {
-  name: 'zce',
   run: async (toolbox: GluegunToolbox) => {
-    toolbox.zce()
+    toolbox.hello()
+    toolbox.print.info('Hello, world!')
   }
 }
