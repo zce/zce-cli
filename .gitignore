@@ -2,5 +2,6 @@ node_modules/
 .nyc_output/
 coverage/
 lib/
+.DS_Store
 yarn-error.log*
 *.tgz
