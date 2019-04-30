@@ -2,24 +2,15 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": false,
     "experimentalDecorators": true,
-    "inlineSourceMap": true,
-    "lib": [
-      "es2015",
-      "scripthost",
-      "es2015.promise",
-      "es2015.generator",
-      "es2015.iterable",
-      "dom"
-    ],
+    "lib": ["es2015"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "outDir": "lib",
-    "sourceMap": false,
-    "strict": false,
-    "target": "es5"
+    "strict": true,
+    "target": "es2015"
   },
   "exclude": ["node_modules"],
   "include": ["src/**/*"]

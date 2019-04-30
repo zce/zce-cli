@@ -4,7 +4,7 @@ import * as zce from 'zce'
 // add your CLI-specific functionality here, which will then be accessible
 // to your commands
 module.exports = (toolbox: GluegunToolbox) => {
-  toolbox.zce = process.env.NODE_ENV !== 'test' ? zce : () => {}
+  toolbox.zce = process.env.NODE_ENV !== 'test' ? zce : () => null
 
   // enable this if you want to read configuration in from
   // the current folder's package.json (in a "zce" property),

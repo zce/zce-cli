@@ -52,11 +52,12 @@ module.exports = {
         message: 'State?',
         choices: ['Oregon', 'Washington', 'California'],
         // You can leave this off unless you want to customize behavior
-        suggest(s, choices) {
-          return choices.filter(choice => {
-            return choice.message.toLowerCase().startsWith(s.toLowerCase())
-          })
-        }
+        suggest: (input, choices) =>
+          choices.filter(choice =>
+            choice.message
+              ? choice.message.toLowerCase().startsWith(input.toLowerCase())
+              : false
+          )
       }
     ])
 
