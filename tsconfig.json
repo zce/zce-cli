@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": false,
+    "baseUrl": "src",
     "experimentalDecorators": true,
     "lib": ["es2015"],
     "module": "commonjs",
@@ -10,7 +11,7 @@
     "noUnusedLocals": true,
     "outDir": "lib",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     },
     "strict": true,
     "target": "es2015"

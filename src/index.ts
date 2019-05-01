@@ -1,4 +1,5 @@
 import { build, GluegunToolbox } from 'gluegun'
+import { zce, version, help } from './common'
 
 export default async (argv?: string[]): Promise<GluegunToolbox> => {
   // create a CLI runtime
@@ -6,8 +7,9 @@ export default async (argv?: string[]): Promise<GluegunToolbox> => {
     .brand('zce')
     .exclude(['config', 'semver', 'http', 'strings', 'system', 'patching'])
     .src(__dirname)
-    .help()
-    .version()
+    .defaultCommand(zce)
+    .version(version)
+    .help(help)
     .create()
 
   // and run CLI
@@ -16,14 +18,3 @@ export default async (argv?: string[]): Promise<GluegunToolbox> => {
   // send it back (for testing, mostly)
   return toolbox
 }
-
-// .exclude(['config', 'filesystem', 'semver', 'http', 'parameters', 'print', 'prompt', 'strings', 'system', 'template', 'patching'])
-// .plugins('node_modules', { matching: 'zce-cli-*', hidden: true })
-// {
-//   name: 'help',
-//   dashed: true,
-//   description: 'Output all commands',
-//   run: async (toolbox: GluegunToolbox): Promise<void> => {
-//     toolbox.print.printHelp(toolbox)
-//   }
-// }

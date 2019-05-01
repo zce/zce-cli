@@ -1,5 +1,16 @@
 import { http, GluegunToolbox } from 'gluegun'
 
+const description = 'List available official templates'
+
+const helpMessage = {
+  description,
+  usage: 'zce list [username]',
+  options: {
+    '-j, --json': 'Enable json mode output',
+    '-s, --short': 'enable short mode output'
+  }
+}
+
 const api = http.create({
   baseURL: 'https://api.github.com',
   params: {
@@ -9,11 +20,17 @@ const api = http.create({
   timeout: 20000
 })
 
+type RepoList = [{ name: string; full_name: string; description: string }]
+
 export default {
   name: 'list',
   alias: 'ls',
-  description: 'List available official templates',
-  run: async (toolbox: GluegunToolbox): Promise<void> => {
+  description,
+  run: async (toolbox: GluegunToolbox): Promise<void | RepoList> => {
+    if (toolbox.parameters.options.help || toolbox.parameters.options.h) {
+      return toolbox.help(helpMessage)
+    }
+
     const { colors, info, warning, error, success, spin } = toolbox.print
 
     const spinner = spin('Loading available list from remote...')
@@ -38,7 +55,7 @@ export default {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const repos: any = response.data
+    const repos = response.data as RepoList
 
     // no repos
     if (!repos || !repos.length) {

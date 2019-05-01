@@ -41,6 +41,33 @@ $ zce --help
     -V, --version  output the version number
     -H, --host     Email host
     -h, --help     output usage information
+
+Usage: zce <command> [options]
+
+Options:
+  -V, --version                        output the version number
+  --debug                              run command in debug mode
+  -h, --help                           output usage information
+
+Commands:
+  init [options] <template> [project]  generate a new project from a template
+  list|ls [options] [username]         list available official templates
+
+Suggestions:
+  Run zce <command> --help for detailed usage of given command.
+```
+
+```js
+// .exclude(['config', 'filesystem', 'semver', 'http', 'parameters', 'print', 'prompt', 'strings', 'system', 'template', 'patching'])
+// .plugins('node_modules', { matching: 'zce-cli-*', hidden: true })
+// {
+//   name: 'help',
+//   dashed: true,
+//   description: 'Output all commands',
+//   run: async (toolbox: GluegunToolbox): Promise<void> => {
+//     toolbox.print.printHelp(toolbox)
+//   }
+// }
 ```
 
 ## Contributing
@@ -57,8 +84,6 @@ $ zce --help
 ## License
 
 [MIT](LICENSE) &copy; [汪磊](https://zce.me/)
-
-
 
 [travis-image]: https://img.shields.io/travis/zce/zce-cli/next.svg
 [travis-url]: https://travis-ci.org/zce/zce-cli
