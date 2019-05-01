@@ -60,7 +60,7 @@
     "rc": "^1.2.8",
     "rimraf": "^2.6.3",
     "semver": "^5.6.0",
-    "username": "^4.1.0",
+    "username": "^5.0.0",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
