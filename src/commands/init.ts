@@ -1,8 +1,7 @@
 import { GluegunToolbox } from 'gluegun'
 
-module.exports = {
+export default {
   name: 'init',
-  alias: [],
   description: 'Generate a new project from a template',
   run: async (toolbox: GluegunToolbox): Promise<void> => {
     // const { parameters, template, print } = toolbox

@@ -9,22 +9,21 @@ const api = http.create({
   timeout: 20000
 })
 
-module.exports = {
+export default {
   name: 'list',
   alias: 'ls',
-  description: 'list available official templates',
+  description: 'List available official templates',
   run: async (toolbox: GluegunToolbox): Promise<void> => {
     const { colors, info, warning, error, success, spin } = toolbox.print
 
     const spinner = spin('Loading available list from remote...')
 
-    const username = toolbox.parameters.first
+    const username = toolbox.parameters.first || 'zce-templates'
     const isOffical = username === 'zce-templates'
 
-    const response = await api.get(
-      `/users/${username || 'zce-templates'}/repos`,
-      { per_page: 100 } // eslint-disable-line @typescript-eslint/camelcase
-    )
+    const response = await api.get(`/users/${username}/repos`, {
+      per_page: 100 // eslint-disable-line @typescript-eslint/camelcase
+    })
 
     spinner.stop()
 
@@ -49,32 +48,33 @@ module.exports = {
     // output results
 
     // json output
-    if (toolbox.parameters.options.json) {
-      const json = JSON.stringify(
+    if (toolbox.parameters.options.json || toolbox.parameters.options.j) {
+      const result = JSON.stringify(
         repos.map(item => ({
           name: isOffical ? item.name : item.full_name,
           description: item.description
         }))
       )
-      return info(json)
+      return info(result)
     }
 
     // short output
-    if (toolbox.parameters.options.short) {
-      return repos.forEach(item =>
-        info(`→ ${isOffical ? item.name : item.full_name}`)
+    if (toolbox.parameters.options.short || toolbox.parameters.options.s) {
+      const result = repos.map(
+        item => `→ ${isOffical ? item.name : item.full_name}`
       )
+      return info(result.join('\n'))
     }
 
     // full output
     success(`Available ${isOffical ? 'official' : username}'s templates:`)
-    repos.forEach(item =>
-      info(
+    const result = repos.map(
+      item =>
         ` ${colors.yellow('→')} ${colors.blue(
-          username === 'zce-templates' ? item.name : item.full_name
+          isOffical ? item.name : item.full_name
         )} ${colors.gray('-')} ${item.description}`
-      )
     )
+    info(result.join('\n'))
 
     // send it back (for testing, mostly)
     return repos

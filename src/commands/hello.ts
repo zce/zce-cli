@@ -1,6 +1,6 @@
 import { GluegunToolbox } from 'gluegun'
 
-module.exports = {
+export default {
   name: 'hello',
   description: 'Gluegun demo command',
   run: async (toolbox: GluegunToolbox): Promise<void> => {

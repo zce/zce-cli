@@ -2,7 +2,7 @@ import { GluegunToolbox } from 'gluegun'
 
 // add your CLI-specific functionality here, which will then be accessible
 // to your commands
-module.exports = async (toolbox: GluegunToolbox): Promise<void> => {
+export default async (toolbox: GluegunToolbox): Promise<void> => {
   toolbox.hello = (): void => {
     toolbox.print.info('Hello from an extension!')
   }

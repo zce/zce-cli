@@ -1,6 +1,6 @@
 import { GluegunToolbox } from 'gluegun'
 
-module.exports = {
+export default {
   name: 'zce',
   hidden: true,
   dashed: true,
