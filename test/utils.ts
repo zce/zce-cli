@@ -27,12 +27,14 @@ export const createFakeToolbox = (): Toolbox => {
   toolbox.parameters = { first: undefined, options: {} }
   toolbox.print = {
     colors: {
-      green: stub(),
-      gray: stub()
+      green: stub().returns('green string'),
+      gray: stub().returns('gray string'),
+      rainbow: stub().returns('rainbow string')
     },
     info: stub(),
     error: stub(),
-    table: stub()
+    table: stub(),
+    newline: stub()
   }
   toolbox.prompt = {
     ask: async () => ({ answer: undefined }),
