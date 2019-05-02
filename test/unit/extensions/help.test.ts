@@ -16,9 +16,7 @@ test('unit:extensions:help:call-with-string', async (): Promise<void> => {
   expect(info.getCall(0).args[0]).toBe('help info')
 })
 
-test('unit:extensions:help:call-with-message-object', async (): Promise<
-void
-> => {
+test('unit:extensions:help:call-with-object', async (): Promise<void> => {
   const toolbox = createFakeToolbox()
   await help(toolbox)
   toolbox.help({
@@ -29,9 +27,7 @@ void
   expect(info.getCall(1).args[0]).toBe('  $ zce foo')
 })
 
-test('unit:extensions:help:call-with-full-message-object', async (): Promise<
-void
-> => {
+test('unit:extensions:help:call-with-full-object', async (): Promise<void> => {
   const toolbox = createFakeToolbox()
   await help(toolbox)
   toolbox.help({
@@ -56,9 +52,7 @@ void
   expect(table.callCount).toBe(4)
 })
 
-test('unit:extensions:help:call-with-full-message-object2', async (): Promise<
-void
-> => {
+test('unit:extensions:help:call-with-full-object2', async (): Promise<void> => {
   const toolbox = createFakeToolbox()
   await help(toolbox)
   toolbox.help({
