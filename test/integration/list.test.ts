@@ -1,10 +1,6 @@
-import { join } from 'path'
-import { system } from 'gluegun'
+import { runCommand } from '../utils'
 
-const runCommand = async (cmd?: string): Promise<string> =>
-  system.run(`node ${join(__dirname, '../../bin/zce.js')} ${cmd} --no-color`)
-
-// beforeEach(() => jest.setTimeout(10000))
+beforeEach(() => jest.setTimeout(10000))
 
 test('integration:list:default', async (): Promise<void> => {
   const output = await runCommand('list')

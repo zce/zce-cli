@@ -1,8 +1,9 @@
-import { http, GluegunToolbox } from 'gluegun'
+import { http, GluegunCommand, GluegunToolbox } from 'gluegun'
+import { HelpMessage } from '../types'
 
 const description = 'List available official templates'
 
-const helpMessage = {
+const helpMessage: HelpMessage = {
   description,
   usage: 'zce list [username]',
   options: {
@@ -22,7 +23,7 @@ const api = http.create({
 
 type RepoList = [{ name: string; full_name: string; description: string }]
 
-export default {
+const command: GluegunCommand = {
   name: 'list',
   alias: 'ls',
   description,
@@ -97,3 +98,5 @@ export default {
     return repos
   }
 }
+
+export default command

@@ -33,7 +33,7 @@ export const help: GluegunCommand = {
   dashed: true,
   run: async (toolbox: GluegunToolbox): Promise<void> => {
     toolbox.help({
-      usage: `zce <command> [options]`,
+      usage: 'zce <command> [options]',
       commands: toolbox.meta.commandInfo(),
       suggestions: `Run \`${
         toolbox.pluginName

@@ -1,8 +1,9 @@
-import { GluegunToolbox } from 'gluegun'
+import { GluegunCommand, GluegunToolbox } from 'gluegun'
+import { HelpMessage } from '../types'
 
 const description = 'Generate a new project from a template'
 
-const helpMessage = {
+const helpMessage: HelpMessage = {
   description,
   usage: 'zce init <template> [project]',
   options: {
@@ -16,7 +17,7 @@ const helpMessage = {
   ]
 }
 
-export default {
+const command: GluegunCommand = {
   name: 'init',
   description,
   run: async (toolbox: GluegunToolbox): Promise<void> => {
@@ -36,3 +37,5 @@ export default {
     toolbox.print.success('Generate a new project from a template')
   }
 }
+
+export default command

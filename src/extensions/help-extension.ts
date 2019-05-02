@@ -1,13 +1,5 @@
 import { print, GluegunToolbox } from 'gluegun'
-
-interface HelpMessage {
-  description?: string
-  usage: string
-  commands?: {} | string[][]
-  options?: {} | string[][]
-  examples?: string[] | string
-  suggestions?: string[] | string
-}
+import { HelpMessage } from '../types'
 
 const outputHelp = (message: HelpMessage | string): void => {
   if (typeof message === 'string') {

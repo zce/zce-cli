@@ -1,8 +1,4 @@
-import { join } from 'path'
-import { system } from 'gluegun'
-
-const runCommand = async (cmd?: string): Promise<string> =>
-  system.run(`node ${join(__dirname, '../../bin/zce.js')} ${cmd} --no-color`)
+import { runCommand } from '../utils'
 
 test('integration:common:default', async (): Promise<void> => {
   const output = await runCommand('')
@@ -17,12 +13,12 @@ test('integration:common:unknown', async (): Promise<void> => {
 })
 
 test('integration:common:version', async (): Promise<void> => {
-  const output = await runCommand('--version')
+  const output = await runCommand('version')
   expect(output.trim()).toBe(`zce v${require('../../package.json').version}`)
 })
 
 test('integration:common:help', async (): Promise<void> => {
-  const output = await runCommand('--help')
+  const output = await runCommand('help')
   expect(output.trim()).toContain('zce')
   expect(output.trim()).toContain('Usage:')
 })

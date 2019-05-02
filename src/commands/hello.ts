@@ -1,8 +1,9 @@
-import { GluegunToolbox } from 'gluegun'
+import { GluegunCommand, GluegunToolbox } from 'gluegun'
+import { HelpMessage } from '../types'
 
 const description = 'Hello command'
 
-const helpMessage = {
+const helpMessage: HelpMessage = {
   description,
   usage: 'zce hello [options]',
   options: {
@@ -12,7 +13,7 @@ const helpMessage = {
   examples: ['$ zce hello --name zce', 'Hey zce~']
 }
 
-export default {
+const command: GluegunCommand = {
   name: 'hello',
   alias: 'hi',
   description,
@@ -26,3 +27,5 @@ export default {
     toolbox.hello(toolbox.parameters.options.name || 'world')
   }
 }
+
+export default command
