@@ -18,7 +18,7 @@ const api = http.create({
     client_id: '0cb723972877555ffb54', // eslint-disable-line @typescript-eslint/camelcase
     client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38' // eslint-disable-line @typescript-eslint/camelcase
   },
-  timeout: 20000
+  timeout: 10000
 })
 
 type RepoList = [{ name: string; full_name: string; description: string }]
@@ -27,7 +27,7 @@ const command: GluegunCommand = {
   name: 'list',
   alias: 'ls',
   description,
-  run: async (toolbox: GluegunToolbox): Promise<void | RepoList> => {
+  run: async (toolbox: GluegunToolbox): Promise<void> => {
     if (toolbox.parameters.options.help || toolbox.parameters.options.h) {
       return toolbox.help(helpMessage)
     }
@@ -93,9 +93,6 @@ const command: GluegunCommand = {
         )} ${colors.gray('-')} ${item.description}`
     )
     info(result.join('\n'))
-
-    // send it back (for testing, mostly)
-    return repos
   }
 }
 

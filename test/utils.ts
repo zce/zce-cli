@@ -26,15 +26,21 @@ export const createFakeToolbox = (): Toolbox => {
   // toolbox.http = null
   toolbox.parameters = { first: undefined, options: {} }
   toolbox.print = {
-    colors: {
-      green: stub().returns('green string'),
-      gray: stub().returns('gray string'),
-      rainbow: stub().returns('rainbow string')
-    },
     info: stub(),
+    warning: stub(),
+    success: stub(),
     error: stub(),
     table: stub(),
-    newline: stub()
+    newline: stub(),
+    spin: stub().returns({ stop: stub() }),
+    colors: {
+      red: stub().returns('red string'),
+      green: stub().returns('green string'),
+      blue: stub().returns('blue string'),
+      yellow: stub().returns('yellow string'),
+      gray: stub().returns('gray string'),
+      rainbow: stub().returns('rainbow string')
+    }
   }
   toolbox.prompt = {
     ask: async () => ({ answer: undefined }),

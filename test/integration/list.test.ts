@@ -12,15 +12,15 @@ test('integration:list:username', async (): Promise<void> => {
   expect(output.trim()).toContain("Available fake-users's templates:")
 })
 
-// test('integration:list:short', async (): Promise<void> => {
-//   const output = await runCommand('list fake-users -s')
-//   expect(output.trim()).toBe('→ fake-users/demo')
-// })
+test('integration:list:short', async (): Promise<void> => {
+  const output = await runCommand('list fake-users -s')
+  expect(output.trim()).toBe('→ fake-users/demo')
+})
 
-// test('integration:list:json', async (): Promise<void> => {
-//   const output = await runCommand('list fake-users -j')
-//   expect(output.trim()).toBe('[{"name":"fake-users/demo","description":null}]')
-// })
+test('integration:list:json', async (): Promise<void> => {
+  const output = await runCommand('list fake-users -j')
+  expect(output.trim()).toBe('[{"name":"fake-users/demo","description":null}]')
+})
 
 test('integration:list:empty', async (): Promise<void> => {
   const output = await runCommand('list ghost')
