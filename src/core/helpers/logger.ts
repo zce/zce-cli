@@ -67,7 +67,10 @@ export const pad = (input: string, width: number): string => {
  * @param input indent text
  * @param size indent size
  */
-export const table = (obj: { [key: string]: string }, minCels: number = 20): string => {
+export const table = (
+  obj: { [key: string]: string },
+  minCels: number = 20
+): string => {
   const keys = Object.keys(obj)
   minCels = Math.max(minCels, ...keys.map(k => k.length))
   return keys.map(k => `${pad(k, minCels)} ${obj[k]}`).join('\n')
@@ -106,9 +109,17 @@ export const divider = (): void => {
  * @param message The message to show.
  */
 export const debug = (message: any, title: string = 'DEBUG'): void => {
-  log(chalk.magenta(`↓↓↓ --------------------[ ${title} ]-------------------- ↓↓↓`))
+  log(
+    chalk.magenta(
+      `↓↓↓ --------------------[ ${title} ]-------------------- ↓↓↓`
+    )
+  )
   log(message)
-  log(chalk.magenta(`↑↑↑ --------------------[ ${title} ]-------------------- ↑↑↑`))
+  log(
+    chalk.magenta(
+      `↑↑↑ --------------------[ ${title} ]-------------------- ↑↑↑`
+    )
+  )
 }
 
 /**

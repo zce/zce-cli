@@ -5,7 +5,10 @@ import { logger } from './helpers'
  * @param name command name
  * @param fallback fallback command tip
  */
-export const unknownCommand = (name: string, fallback: string = '[bin] --help') => {
+export const unknownCommand = (
+  name: string,
+  fallback: string = '[bin] --help'
+) => {
   logger.error('Unknown command: `%s`.', name)
   logger.error('Type `%s` to view all commands.', fallback)
   process.exit(1)

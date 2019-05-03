@@ -10,27 +10,53 @@ import { Context } from './types'
  * @param argv cli argv
  * @param opts command options
  */
-export const parse = async (argv: string[], opts?: Options): Promise<Context> => {
+export const parse = async (
+  argv: string[],
+  opts?: Options
+): Promise<Context> => {
+  opts = opts || {}
+
   // cli brand name
   const brand = basename(process.argv[1], '.js')
 
   // parse argv by minimist
-  const result = minimist(argv, buildOptions(opts))
+  const options = minimist(argv, buildOptions(opts))
 
   // row input args
-  const input = result._
+  const input = options._
 
   // extract arguments
   const [primary, secondary, thirdly, fourthly, ...extras] = input
 
-  // options (excluding aliases)
-  const options = opts
-    ? Object.keys(opts).reduce((o, i) => ({ [i]: result[i], ...o }), {})
-    : {}
+  // excluding aliases
+  Object.values(opts).forEach(item => {
+    if (typeof item !== 'string' && item.alias) {
+      if (!item.alias) return
+      if (typeof item.alias === 'string') {
+        delete options[item.alias]
+      } else {
+        item.alias.forEach(a => delete options[a])
+      }
+    }
+  })
+
+  // excluding arguments
+  delete options._
 
   // mount package.json
-  const pkg = require('../../package.json') // eslint-disable-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const pkg = require('../../package.json')
 
   // return context
-  return { brand, primary, secondary, thirdly, fourthly, extras, input, options, pkg }
+  return {
+    brand,
+    primary,
+    secondary,
+    thirdly,
+    fourthly,
+    extras,
+    input,
+    options,
+    pkg
+  }
 }

@@ -13,7 +13,7 @@
 
 ## Todos
 
-- [ ] invoke help
+- [x] invoke help
 - [ ] unit test
 - [ ] list command
 - [ ] init command

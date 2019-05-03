@@ -51,27 +51,23 @@ export const coreCommands: CommandsDict = loadCommands('./commands')
 export const userCommands: CommandsDict = loadCommands('../commands')
 
 /**
- * Load command by argv
- * @param argv cli arguments
+ * Load command by name
+ * @param name command name
  */
-export const load = (argv: string[]): Command => {
+export const load = async (name: string): Promise<Command> => {
   // help command
-  if (['help', '--help', '-h'].includes(argv[0])) {
+  if (['help', '--help', '-h'].includes(name)) {
     return coreCommands.help
   }
 
   // version command
-  if (['version', '--version', '-V'].includes(argv[0])) {
+  if (['version', '--version', '-V'].includes(name)) {
     return coreCommands.version
   }
 
   // try to load user command
-  if (userCommands[argv[0]]) {
-    // return help command if has help option
-    if (argv.includes('-h') || argv.includes('--help')) {
-      return coreCommands.help
-    }
-    return userCommands[argv[0]]
+  if (userCommands[name]) {
+    return userCommands[name]
   }
 
   // try to load user default command

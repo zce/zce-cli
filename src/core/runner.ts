@@ -8,11 +8,11 @@ export const run = async (argv?: string[]): Promise<any> => {
   // default argv
   argv = argv || process.argv.slice(2)
 
-  // load command by name
-  const cmd = await load(argv)
-
   // extract command name and extra args
   const [name, ...extras] = argv
+
+  // load command by name
+  const cmd = await load(name)
 
   // default command args
   if (defaultCommands.includes(cmd.name)) {
