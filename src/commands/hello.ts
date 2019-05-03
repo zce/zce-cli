@@ -5,6 +5,7 @@ const command: Command = {
   usage: 'hello <name> [options]',
   description: 'Hello command',
   alias: 'hi',
+  // hidden: true,
   options: {
     lang: {
       type: 'string',

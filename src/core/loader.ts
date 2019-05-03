@@ -43,12 +43,12 @@ const loadCommands = (dir: string): CommandsDict => {
 /**
  * All core commands
  */
-const coreCommands: CommandsDict = loadCommands('./commands')
+export const coreCommands: CommandsDict = loadCommands('./commands')
 
 /**
  * All commands
  */
-export const commands: CommandsDict = loadCommands('../commands')
+export const userCommands: CommandsDict = loadCommands('../commands')
 
 /**
  * Load command by argv
@@ -66,17 +66,17 @@ export const load = (argv: string[]): Command => {
   }
 
   // try to load user command
-  if (commands[argv[0]]) {
+  if (userCommands[argv[0]]) {
     // return help command if has help option
     if (argv.includes('-h') || argv.includes('--help')) {
       return coreCommands.help
     }
-    return commands[argv[0]]
+    return userCommands[argv[0]]
   }
 
   // try to load user default command
-  if (commands.default) {
-    return commands.default
+  if (userCommands.default) {
+    return userCommands.default
   }
 
   // fallback default command

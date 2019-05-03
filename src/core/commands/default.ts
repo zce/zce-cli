@@ -4,12 +4,13 @@ import { Command, Context } from '../types'
 
 const command: Command = {
   name: 'default',
+  usage: '<command> [options]',
+  description: require('../../../package.json').description,
+  hidden: true,
   action: async (ctx: Context): Promise<any> => {
-    if (ctx.primary) {
-      return unknownCommand(ctx.primary, `${ctx.brand} --help`)
-    }
-
-    process.env.NODE_ENV === 'test' || require('zce')()
+    if (!ctx.primary) return
+    // unknown command
+    unknownCommand(ctx.primary, `${ctx.brand} --help`)
   }
 }
 

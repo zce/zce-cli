@@ -1,6 +1,6 @@
-import { logger } from '../helpers'
-import { commands } from '../loader'
+import { userCommands, coreCommands } from '../loader'
 import { unknownCommand } from '../error'
+import { logger } from '../helpers'
 
 import { Command, Context } from '../types'
 
@@ -19,18 +19,40 @@ const outputHelp = (brand: string, cmd: Command): void => {
   const usage = cmd.usage || `${cmd.name} [options]`
   logger.info(logger.indent(`$ ${brand} ${usage}`))
 
+  // output commands if default command
+  if (cmd.name === 'default') {
+    const userCmds = [...new Set(Object.values(userCommands))]
+    const coreCmds = [...new Set(Object.values(coreCommands))]
+    if (userCmds.length + coreCmds.length) {
+      logger.newline()
+      logger.info('Commands:')
+      const commandsObj = userCmds
+        .concat(coreCmds)
+        .filter(i => !i.hidden && i.name !== 'default')
+        .reduce((obj, item) => {
+          const key = `${item.name}${item.alias ? `(${item.alias})` : ''}`
+          const value = item.description || '-'
+          return { ...obj, [key]: value }
+        }, {})
+      logger.info(logger.indent(logger.table(commandsObj)))
+    }
+  }
+
   if (cmd.options) {
     logger.newline()
     logger.info('Options:')
-    for (const key in cmd.options) {
-      const value = cmd.options[key]
-      if (typeof value === 'string') {
-        logger.info(logger.indent(`--${key}\t\t-`))
-      } else {
-        const alias = value.alias ? `, -${value.alias}` : ''
-        logger.info(logger.indent(`--${key}${alias}\t\t${value['description'] || '-'}`))
+    const options = cmd.options
+    const optionsObj = Object.keys(options).reduce((o, i) => {
+      const opt = options[i]
+      let key = `--${i}`
+      let value = '-'
+      if (typeof opt !== 'string') {
+        key = `--${i}${opt.alias ? `, -${opt.alias}` : ''}`
+        value = opt['description'] || '-'
       }
-    }
+      return { ...o, [key]: value }
+    }, {})
+    logger.info(logger.indent(logger.table(optionsObj)))
   }
 
   if (cmd.examples) {
@@ -60,7 +82,7 @@ const outputHelp = (brand: string, cmd: Command): void => {
  * @param ctx cli context
  */
 const subCommandHelp = (name: string, ctx: Context): void => {
-  const cmd = commands[name]
+  const cmd = userCommands[name]
   if (!cmd) return unknownCommand(name, `${ctx.brand} --help`)
 
   // custom help
@@ -75,47 +97,18 @@ const subCommandHelp = (name: string, ctx: Context): void => {
   outputHelp(ctx.brand, cmd)
 }
 
-/**
- * Show default command help.
- * @param ctx cli context
- */
-const rootCommandHelp = (ctx: Context): void => {
-  // const helpMessage = `${ctx.pkg.description}`
-  if (ctx.pkg.description) {
-    logger.info(ctx.pkg.description)
-    logger.newline()
-  }
-
-  logger.info('Usage:')
-  logger.info(`  $ ${ctx.brand} <command> [options]`)
-
-  const cmds = [...new Set(Object.values(commands))]
-  if (cmds.length) {
-    logger.newline()
-    logger.info('Commands:')
-    logger.info(
-      logger.indent(
-        cmds
-          .filter(c => !c.hidden)
-          .map(
-            c => `${c.name}${c.alias ? `(${c.alias})` : ''}\t\t${c.description || '-'}`
-          )
-          .join('\n')
-      )
-    )
-  }
-}
-
 const command: Command = {
   name: 'help',
+  usage: 'help <command>',
+  description: 'output usage information',
+  hidden: false,
   action: async (ctx: Context): Promise<any> => {
-    // TODO: zce --foo=1 foo???
     if (ctx.primary && ctx.primary !== 'help') {
       subCommandHelp(ctx.primary, ctx)
     } else if (ctx.primary === 'help' && ctx.secondary) {
       subCommandHelp(ctx.secondary, ctx)
     } else {
-      rootCommandHelp(ctx)
+      outputHelp(ctx.brand, userCommands.default || coreCommands.default)
     }
     process.exit(2)
   }

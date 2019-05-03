@@ -11,6 +11,13 @@
 
 > A CLI tool for my personal productivity, inspired by gluegun & vue-cli & yeoman & etc.
 
+## Todos
+
+- [ ] invoke help
+- [ ] unit test
+- [ ] list command
+- [ ] init command
+
 ## Installation
 
 ```shell

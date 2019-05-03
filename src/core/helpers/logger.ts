@@ -53,10 +53,33 @@ export const error = (message?: any, ...optionalParams: any[]): void => {
 }
 
 /**
- * Indent message.
+ * Pad `input` to `width`.
+ * @param input input text
+ * @param width width
  */
-export const indent = (input: string, count: number = 2): string => {
-  return redent(input, count)
+export const pad = (input: string, width: number): string => {
+  const len = Math.max(0, width - input.length)
+  return input + Array(len + 1).join(' ')
+}
+
+/**
+ * Indent message.
+ * @param input indent text
+ * @param size indent size
+ */
+export const table = (obj: { [key: string]: string }, minCels: number = 20): string => {
+  const keys = Object.keys(obj)
+  minCels = Math.max(minCels, ...keys.map(k => k.length))
+  return keys.map(k => `${pad(k, minCels)} ${obj[k]}`).join('\n')
+}
+
+/**
+ * Indent message.
+ * @param input indent text
+ * @param size indent size
+ */
+export const indent = (input: string, size: number = 2): string => {
+  return redent(input, size)
 }
 
 /**
