@@ -70,7 +70,7 @@ export const newline = (): void => {
  * Prints a divider line
  */
 export const divider = (): void => {
-  console.log(
+  log(
     chalk.gray(
       '--------------------------------------------------------------------------------'
     )

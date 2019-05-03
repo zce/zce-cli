@@ -1,5 +1,5 @@
 import { logger } from '../helpers'
-import { loadUserCommand, loadAllUserCommand } from '../loader'
+import { commands } from '../loader'
 import { unknownCommand } from '../error'
 
 import { Command, Context } from '../types'
@@ -60,29 +60,26 @@ const outputHelp = (brand: string, cmd: Command): void => {
  * @param ctx cli context
  */
 const subCommandHelp = (name: string, ctx: Context): void => {
-  try {
-    // user subcommand help
-    const cmd = loadUserCommand(name)
+  const cmd = commands[name]
+  if (!cmd) return unknownCommand(name, `${ctx.brand} --help`)
 
-    if (cmd.help) {
-      if (typeof cmd.help === 'string') {
-        return logger.info(cmd.help)
-      }
-      return cmd.help(ctx)
+  // custom help
+  if (cmd.help) {
+    if (typeof cmd.help === 'string') {
+      return logger.info(cmd.help)
     }
-
-    outputHelp(ctx.brand, cmd)
-  } catch (e) {
-    if (e.code !== 'MODULE_NOT_FOUND') throw e
-    return unknownCommand(name, `${ctx.brand} --help`)
+    return cmd.help(ctx)
   }
+
+  // default help
+  outputHelp(ctx.brand, cmd)
 }
 
 /**
  * Show default command help.
  * @param ctx cli context
  */
-const defaultHelp = (ctx: Context): void => {
+const rootCommandHelp = (ctx: Context): void => {
   // const helpMessage = `${ctx.pkg.description}`
   if (ctx.pkg.description) {
     logger.info(ctx.pkg.description)
@@ -92,13 +89,13 @@ const defaultHelp = (ctx: Context): void => {
   logger.info('Usage:')
   logger.info(`  $ ${ctx.brand} <command> [options]`)
 
-  const commands = loadAllUserCommand()
-  if (commands.length) {
+  const cmds = [...new Set(Object.values(commands))]
+  if (cmds.length) {
     logger.newline()
     logger.info('Commands:')
     logger.info(
       logger.indent(
-        commands
+        cmds
           .filter(c => !c.hidden)
           .map(
             c => `${c.name}${c.alias ? `(${c.alias})` : ''}\t\t${c.description || '-'}`
@@ -112,13 +109,13 @@ const defaultHelp = (ctx: Context): void => {
 const command: Command = {
   name: 'help',
   action: async (ctx: Context): Promise<any> => {
-    // TODO: zce --help foo foo
+    // TODO: zce --foo=1 foo???
     if (ctx.primary && ctx.primary !== 'help') {
       subCommandHelp(ctx.primary, ctx)
     } else if (ctx.primary === 'help' && ctx.secondary) {
       subCommandHelp(ctx.secondary, ctx)
     } else {
-      defaultHelp(ctx)
+      rootCommandHelp(ctx)
     }
     process.exit(2)
   }
