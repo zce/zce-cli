@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"name": "core",
+			"path": "src/core"
+		},
+		{
+			"name": "src",
+			"path": "src"
+		},
+		{
+			"name": "test",
+			"path": "test"
+		},
+		{
+			"name": "zce-cli",
+			"path": "."
+		}
+	],
+	"settings": {
+    "explorer.openEditors.visible": 0
+  }
+}

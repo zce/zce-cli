@@ -1,0 +1,122 @@
+{
+  "name": "zce-cli",
+  "version": "0.3.0-nightly.20190503",
+  "description": "A CLI tool for my personal productivity.",
+  "keywords": [
+    "cli",
+    "zce"
+  ],
+  "homepage": "https://github.com/zce/zce-cli#readme",
+  "bugs": {
+    "url": "https://github.com/zce/zce-cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zce/zce-cli.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "zce",
+    "email": "w@zce.me",
+    "url": "https://zce.me"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "bin": {
+    "zce": "bin/zce.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "bin": "bin",
+    "doc": "doc",
+    "test": "test"
+  },
+  "scripts": {
+    "format": "prettier --write \"**/*.ts\"",
+    "lint": "eslint \"**/*.ts\"",
+    "compile": "tsc -p .",
+    "build": "yarn format && yarn lint && yarn compile",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "commit": "git-cz",
+    "release": "standard-version"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.md": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "prettier": {
+    "endOfLine": "lf",
+    "printWidth": 90,
+    "semi": false,
+    "singleQuote": true
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "minimist": "^1.2.0",
+    "minimist-options": "^4.0.1",
+    "ora": "^3.4.0",
+    "redent": "^3.0.0",
+    "zce": "^0.1.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@types/jest": "^24.0.12",
+    "@types/lodash": "^4.14.123",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^11.13.8",
+    "@types/sinon": "^7.0.11",
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.16.0",
+    "husky": "^2.1.0",
+    "jest": "^24.7.1",
+    "lint-staged": "^8.1.5",
+    "prettier": "^1.17.0",
+    "sinon": "^7.3.2",
+    "standard-version": "^5.0.2",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  },
+  "engines": {
+    "node": ">=7.6"
+  }
+}
