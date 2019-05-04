@@ -3,14 +3,13 @@ sudo: false
 os:
   # https://travis-ci.community/t/node-js-build-fails-with-no-obvious-error/961
   # - windows
-  - linux
-  - osx
+  # - linux
+  # - osx
 
 language: node_js
 
 node_js:
   - lts/*
-  - node
 
 cache:
   yarn: true
@@ -20,7 +19,7 @@ notifications:
     on_success: never
     on_failure: change
 
-before_script:
+before_install:
   - yarn global add nyc codecov
 
 script:
