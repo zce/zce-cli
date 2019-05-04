@@ -49,7 +49,10 @@ export const createFakeContext = (options?: {
       options: {},
       extras: [],
       input: [],
-      pkg: {}
+      pkg: {
+        name: 'zce-cli',
+        version: '0.1.0'
+      }
     },
     options
   )
