@@ -1,17 +1,16 @@
-import * as logger from '../../../../src/core/helpers/logger'
-import { sinon } from '../../../utils'
+import * as logger from './logger'
 
-let spy: sinon.SinonSpy
+let log: jest.SpyInstance
 
 beforeEach(async () => {
-  spy = sinon.spy(console, 'log')
+  log = jest.spyOn(console, 'log')
 })
 
 afterEach(async () => {
-  spy.restore()
+  log && log.mockRestore()
 })
 
-test('unit:core:helpers:logger', async (): Promise<void> => {
+test('unit:core:helpers:logger', async () => {
   expect(logger.chalk).toBeTruthy()
   expect(logger.log).toBeTruthy()
   expect(logger.info).toBeTruthy()
@@ -28,63 +27,63 @@ test('unit:core:helpers:logger', async (): Promise<void> => {
   expect(logger.spin).toBeTruthy()
 })
 
-test('unit:core:helpers:logger:chalk', async (): Promise<void> => {
+test('unit:core:helpers:logger:chalk', async () => {
   expect(logger.chalk.enabled).toBe(false)
 })
 
-test('unit:core:helpers:logger:log', async (): Promise<void> => {
+test('unit:core:helpers:logger:log', async () => {
   logger.log('foo')
 
-  expect(spy.args[0][0]).toBe('foo')
+  expect(log.mock.calls[0][0]).toBe('foo')
 })
 
-test('unit:core:helpers:logger:info', async (): Promise<void> => {
+test('unit:core:helpers:logger:info', async () => {
   logger.info('foo %s', 'bar')
 
-  expect(spy.args[0][0]).toBe('foo %s')
-  expect(spy.args[0][1]).toBe('bar')
+  expect(log.mock.calls[0][0]).toBe('foo %s')
+  expect(log.mock.calls[0][1]).toBe('bar')
 })
 
-test('unit:core:helpers:logger:success', async (): Promise<void> => {
+test('unit:core:helpers:logger:success', async () => {
   logger.success('foo %s', 'bar')
 
-  expect(spy.args[0][0]).toBe('foo %s')
-  expect(spy.args[0][1]).toBe('bar')
+  expect(log.mock.calls[0][0]).toBe('foo %s')
+  expect(log.mock.calls[0][1]).toBe('bar')
 })
 
-test('unit:core:helpers:logger:warn', async (): Promise<void> => {
+test('unit:core:helpers:logger:warn', async () => {
   logger.warn('foo %s', 'bar')
 
-  expect(spy.args[0][0]).toBe('foo %s')
-  expect(spy.args[0][1]).toBe('bar')
+  expect(log.mock.calls[0][0]).toBe('foo %s')
+  expect(log.mock.calls[0][1]).toBe('bar')
 })
 
-test('unit:core:helpers:logger:error', async (): Promise<void> => {
+test('unit:core:helpers:logger:error', async () => {
   logger.error('foo %s', 'bar')
 
-  expect(spy.args[0][0]).toBe('foo %s')
-  expect(spy.args[0][1]).toBe('bar')
+  expect(log.mock.calls[0][0]).toBe('foo %s')
+  expect(log.mock.calls[0][1]).toBe('bar')
 })
 
-test('unit:core:helpers:logger:debug', async (): Promise<void> => {
+test('unit:core:helpers:logger:debug', async () => {
   logger.debug('foo', 'test')
 
-  expect(spy.args[0][0]).toBe(
+  expect(log.mock.calls[0][0]).toBe(
     '↓↓↓ --------------------[ test ]-------------------- ↓↓↓'
   )
-  expect(spy.args[1][0]).toBe('foo')
-  expect(spy.args[2][0]).toBe(
+  expect(log.mock.calls[1][0]).toBe('foo')
+  expect(log.mock.calls[2][0]).toBe(
     '↑↑↑ --------------------[ test ]-------------------- ↑↑↑'
   )
 })
 
-test('unit:core:helpers:logger:pad', async (): Promise<void> => {
+test('unit:core:helpers:logger:pad', async () => {
   const output = logger.pad('foo', 5)
 
   expect(output).toBe('foo  ')
 })
 
-test('unit:core:helpers:logger:table', async (): Promise<void> => {
+test('unit:core:helpers:logger:table', async () => {
   const table1 = logger.table(
     {
       foo: '-',
@@ -101,7 +100,7 @@ test('unit:core:helpers:logger:table', async (): Promise<void> => {
   expect(table2).toBe('foo                  -\nbar                  -')
 })
 
-test('unit:core:helpers:logger:indent', async (): Promise<void> => {
+test('unit:core:helpers:logger:indent', async () => {
   const indent1 = logger.indent('foo')
   const indent2 = logger.indent('foo\nbar')
   const indent3 = logger.indent('foo', 4)
@@ -111,25 +110,26 @@ test('unit:core:helpers:logger:indent', async (): Promise<void> => {
   expect(indent3).toBe('    foo')
 })
 
-test('unit:core:helpers:logger:newline', async (): Promise<void> => {
+test('unit:core:helpers:logger:newline', async () => {
   logger.newline()
 
-  expect(spy.args[0][0]).toBe('')
+  expect(log.mock.calls[0][0]).toBe('')
 })
 
-test('unit:core:helpers:logger:divider', async (): Promise<void> => {
+test('unit:core:helpers:logger:divider', async () => {
   logger.divider()
 
-  expect(spy.args[0][0]).toBe(
+  expect(log.mock.calls[0][0]).toBe(
     '--------------------------------------------------------------------------------'
   )
 })
 
-test('unit:core:helpers:logger:clear', async (): Promise<void> => {
+test('unit:core:helpers:logger:clear', async () => {
   logger.clear()
+  logger.clear('test')
 })
 
-test('unit:core:helpers:logger:spin', async (): Promise<void> => {
+test('unit:core:helpers:logger:spin', async () => {
   expect(typeof logger.spin).toBe('function')
 
   const spinner = logger.spin()

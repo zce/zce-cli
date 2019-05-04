@@ -1,12 +1,12 @@
-import { runCommand } from '../utils'
+import { runCommand } from './utils'
 
-test('integration:default', async (): Promise<void> => {
+test('integration:default', async () => {
   const { stdout } = await runCommand()
 
   expect(stdout).toBe('')
 })
 
-test('integration:default:unknown', async (): Promise<void> => {
+test('integration:default:unknown', async () => {
   try {
     await runCommand('foo')
   } catch (err) {

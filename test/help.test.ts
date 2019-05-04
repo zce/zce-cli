@@ -1,9 +1,9 @@
-import { runCommand } from '../utils'
+import { runCommand } from './utils'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { description } = require('../../package.json')
+const { description } = require('../package.json')
 
-test('integration:help', async (): Promise<void> => {
+test('integration:help', async () => {
   const { stdout } = await runCommand('help')
 
   expect(stdout).toContain(description)
@@ -15,7 +15,7 @@ test('integration:help', async (): Promise<void> => {
   expect(stdout).toContain('version')
 })
 
-test('integration:help:sub-command', async (): Promise<void> => {
+test('integration:help:sub-command', async () => {
   const { stdout } = await runCommand(['help', 'hello'])
 
   expect(stdout).toContain('Hello command')

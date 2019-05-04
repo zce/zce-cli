@@ -5,6 +5,8 @@ import chalk from 'chalk'
 import * as redent from 'redent'
 import ora, { Ora } from 'ora'
 
+import { DynamicObject } from '../types'
+
 // Disable colors output for testing
 chalk.enabled = process.env.NODE_ENV !== 'test'
 
@@ -86,10 +88,7 @@ export const pad = (input: string, width: number): string => {
  * @param input indent text
  * @param size indent size
  */
-export const table = (
-  obj: { [key: string]: string },
-  minCels: number = 20
-): string => {
+export const table = (obj: DynamicObject, minCels: number = 20): string => {
   const keys = Object.keys(obj)
   minCels = Math.max(minCels, ...keys.map(k => k.length))
   return keys.map(k => `${pad(k, minCels)} ${obj[k]}`).join('\n')

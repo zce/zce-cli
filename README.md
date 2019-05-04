@@ -16,8 +16,15 @@
 - [x] invoke help
 - [x] integration tests
 - [x] unit tests
+- [x] test files location
+  - https://medium.com/@JeffLombardJr/organizing-tests-in-jest-17fc431ff850
+- [x] sinon of jest mock?
+  - https://medium.com/@rickhanlonii/understanding-jest-mocks-f0046c68e53c
+  - https://medium.com/codeclan/mocking-es-and-commonjs-modules-with-jest-mock-37bbb552da43
+- [ ] cli cwd
 - [ ] list command
 - [ ] init command
+- [ ] commands docs
 
 ## Contributing
 

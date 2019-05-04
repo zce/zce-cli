@@ -6,6 +6,7 @@ import { Command } from './types'
 interface CommandsDict {
   [name: string]: Command
 }
+
 interface Cache {
   [path: string]: CommandsDict
 }

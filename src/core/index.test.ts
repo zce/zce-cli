@@ -1,6 +1,6 @@
-import * as core from '../../../src/core'
+import * as core from '.'
 
-test('unit:core:index', async (): Promise<void> => {
+test('unit:core:index', async () => {
   expect(core.missingArgument).toBeTruthy()
   expect(core.unknownCommand).toBeTruthy()
   expect(core.template).toBeTruthy()

@@ -3,6 +3,10 @@ import { Options } from 'minimist-options'
 
 // export declare namespace zce { }
 
+export interface DynamicObject {
+  [key: string]: any
+}
+
 export interface Context {
   readonly brand: string
   readonly primary?: string
@@ -45,16 +49,7 @@ export interface Command {
   // readonly arguments?: Arguments
   readonly options?: Options
   readonly action: (ctx: Context) => Promise<unknown>
-  readonly help?: string | ((ctx: Context) => void)
+  readonly help?: string | ((ctx: Context) => Promise<unknown>)
   readonly examples?: string | string[]
   readonly suggestions?: string | string[]
-}
-
-export interface HelpMessage {
-  description?: string
-  usage: string
-  commands?: {} | string[][]
-  options?: {} | string[][]
-  examples?: string[] | string
-  suggestions?: string[] | string
 }

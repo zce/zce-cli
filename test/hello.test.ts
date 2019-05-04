@@ -1,6 +1,6 @@
-import { runCommand } from '../utils'
+import { runCommand } from './utils'
 
-test('integration:hello:default', async (): Promise<void> => {
+test('integration:hello:default', async () => {
   try {
     await runCommand('hello')
   } catch (err) {
@@ -8,7 +8,7 @@ test('integration:hello:default', async (): Promise<void> => {
   }
 })
 
-test('integration:hello:name', async (): Promise<void> => {
+test('integration:hello:name', async () => {
   const { stdout } = await runCommand(['hello', 'zce'])
 
   expect(stdout).toBe('Hey! zce~')

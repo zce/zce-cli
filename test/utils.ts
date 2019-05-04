@@ -1,7 +1,7 @@
 import { join } from 'path'
 import * as execa from 'execa'
-import * as sinon from 'sinon'
-import { Command, Context } from '../src/core/types'
+
+import { DynamicObject, Command, Context } from '../src/core/types'
 
 /**
  * Executes a commandline via execa.
@@ -15,22 +15,20 @@ export const runCommand = async (
     args = [args]
   }
   // args && args.push('--compiled-build')
-  return execa(join(__dirname, '../bin/zce.js'), args)
+  return await execa(join(__dirname, '../bin/zce.js'), args)
 }
 
 /**
  * Create a fake command
  * @param options override default
  */
-export const createFakeCommand = (options?: {
-  [key: string]: any
-}): Command => {
+export const createFakeCommand = (options?: DynamicObject): Command => {
   return Object.assign(
     {
       name: 'fake',
       description: 'fake command',
       usage: 'fake [options]',
-      action: sinon.stub()
+      action: jest.fn()
     },
     options
   )
@@ -40,9 +38,7 @@ export const createFakeCommand = (options?: {
  * Create a fake context
  * @param options override default
  */
-export const createFakeContext = (options?: {
-  [key: string]: any
-}): Context => {
+export const createFakeContext = (options?: DynamicObject): Context => {
   return Object.assign(
     {
       brand: 'zce',
@@ -58,4 +54,4 @@ export const createFakeContext = (options?: {
   )
 }
 
-export { execa, sinon }
+export { execa }

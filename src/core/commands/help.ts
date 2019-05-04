@@ -9,7 +9,7 @@ import { Command, Context } from '../types'
  * @param brand brand name
  * @param cmd command
  */
-const outputHelp = (brand: string, cmd: Command) => {
+const outputHelp = async (brand: string, cmd: Command) => {
   if (cmd.description) {
     logger.info(cmd.description)
     logger.newline()
@@ -81,7 +81,7 @@ const outputHelp = (brand: string, cmd: Command) => {
  * @param name command name
  * @param ctx cli context
  */
-const subCommandHelp = (name: string, ctx: Context) => {
+const subCommandHelp = async (name: string, ctx: Context) => {
   const cmd = userCommands[name]
   if (!cmd) return unknownCommand(name, `${ctx.brand} --help`)
 
@@ -90,11 +90,11 @@ const subCommandHelp = (name: string, ctx: Context) => {
     if (typeof cmd.help === 'string') {
       return logger.info(cmd.help)
     }
-    return cmd.help(ctx)
+    return await cmd.help(ctx)
   }
 
   // default help
-  outputHelp(ctx.brand, cmd)
+  await outputHelp(ctx.brand, cmd)
 }
 
 const command: Command = {
@@ -104,11 +104,11 @@ const command: Command = {
   hidden: false,
   action: async (ctx: Context) => {
     if (ctx.primary && ctx.primary !== 'help') {
-      subCommandHelp(ctx.primary, ctx)
+      await subCommandHelp(ctx.primary, ctx)
     } else if (ctx.primary === 'help' && ctx.secondary) {
-      subCommandHelp(ctx.secondary, ctx)
+      await subCommandHelp(ctx.secondary, ctx)
     } else {
-      outputHelp(ctx.brand, userCommands.default || coreCommands.default)
+      await outputHelp(ctx.brand, userCommands.default || coreCommands.default)
     }
     process.exit()
   }
