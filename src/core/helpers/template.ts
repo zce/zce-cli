@@ -6,7 +6,7 @@ const imports = {}
  * Register helpers
  * @param helpers helper
  */
-export const registerHelpers = (helpers: {}): void => {
+export const registerHelpers = (helpers: {}) => {
   Object.assign(imports, helpers)
 }
 

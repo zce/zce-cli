@@ -7,7 +7,7 @@ import { Context, Command } from './types'
  * @param cmd command
  * @param ctx context
  */
-export const invoke = async (cmd: Command, ctx: Context): Promise<any> => {
+export const invoke = async (cmd: Command, ctx: Context) => {
   if (ctx.options.help || ctx.options.h) {
     // invoke help command
     return await coreCommands.help.action(ctx)

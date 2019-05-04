@@ -7,7 +7,7 @@ const command: Command = {
   usage: 'version',
   description: 'output the version number',
   hidden: false,
-  action: async (ctx: Context): Promise<any> => {
+  action: async (ctx: Context) => {
     const { name, version } = ctx.pkg
     logger.info(`${name} v${version}`)
   }

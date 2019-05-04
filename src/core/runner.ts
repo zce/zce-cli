@@ -4,7 +4,7 @@ import { invoke } from './invoker'
 
 const defaultCommands = ['default', 'help', 'version']
 
-export const run = async (argv?: string[]): Promise<any> => {
+export const run = async (argv?: string[]) => {
   // default argv
   argv = argv || process.argv.slice(2)
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Options } from 'minimist-options'
 
 // export declare namespace zce { }
@@ -43,7 +44,7 @@ export interface Command {
   // // TODO: arguments
   // readonly arguments?: Arguments
   readonly options?: Options
-  readonly action: (ctx: Context) => Promise<any>
+  readonly action: (ctx: Context) => Promise<unknown>
   readonly help?: string | ((ctx: Context) => void)
   readonly examples?: string | string[]
   readonly suggestions?: string | string[]

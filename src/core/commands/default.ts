@@ -7,7 +7,7 @@ const command: Command = {
   usage: '<command> [options]',
   description: require('../../../package.json').description,
   hidden: true,
-  action: async (ctx: Context): Promise<any> => {
+  action: async (ctx: Context) => {
     if (!ctx.primary) return
     // unknown command
     unknownCommand(ctx.primary, `${ctx.brand} --help`)

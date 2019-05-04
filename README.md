@@ -15,7 +15,7 @@
 
 - [x] invoke help
 - [x] integration tests
-- [ ] unit tests
+- [x] unit tests
 - [ ] list command
 - [ ] init command
 

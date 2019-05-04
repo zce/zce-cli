@@ -9,7 +9,7 @@ import { Command, Context } from '../types'
  * @param brand brand name
  * @param cmd command
  */
-const outputHelp = (brand: string, cmd: Command): void => {
+const outputHelp = (brand: string, cmd: Command) => {
   if (cmd.description) {
     logger.info(cmd.description)
     logger.newline()
@@ -81,7 +81,7 @@ const outputHelp = (brand: string, cmd: Command): void => {
  * @param name command name
  * @param ctx cli context
  */
-const subCommandHelp = (name: string, ctx: Context): void => {
+const subCommandHelp = (name: string, ctx: Context) => {
   const cmd = userCommands[name]
   if (!cmd) return unknownCommand(name, `${ctx.brand} --help`)
 
@@ -102,7 +102,7 @@ const command: Command = {
   usage: 'help <command>',
   description: 'output usage information',
   hidden: false,
-  action: async (ctx: Context): Promise<any> => {
+  action: async (ctx: Context) => {
     if (ctx.primary && ctx.primary !== 'help') {
       subCommandHelp(ctx.primary, ctx)
     } else if (ctx.primary === 'help' && ctx.secondary) {

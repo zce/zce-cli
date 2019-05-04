@@ -12,7 +12,7 @@ chalk.enabled = process.env.NODE_ENV !== 'test'
  * Writes a normal message.
  * @param message The message to show.
  */
-export const log = (message?: any, ...optionalParams: any[]): void => {
+export const log = (message?: any, ...optionalParams: any[]) => {
   console.log(message, ...optionalParams)
 }
 
@@ -21,7 +21,7 @@ export const log = (message?: any, ...optionalParams: any[]): void => {
  * This is the default type you should use.
  * @param message The message to show.
  */
-export const info = (message?: any, ...optionalParams: any[]): void => {
+export const info = (message?: any, ...optionalParams: any[]) => {
   log(chalk.reset(message), ...optionalParams)
 }
 
@@ -30,7 +30,7 @@ export const info = (message?: any, ...optionalParams: any[]): void => {
  * When something is successful.  Use sparingly.
  * @param message The message to show.
  */
-export const success = (message?: any, ...optionalParams: any[]): void => {
+export const success = (message?: any, ...optionalParams: any[]) => {
   log(chalk.green(message), ...optionalParams)
 }
 
@@ -39,7 +39,7 @@ export const success = (message?: any, ...optionalParams: any[]): void => {
  * This is when the user might not be getting what they're expecting.
  * @param message The message to show.
  */
-export const warn = (message?: any, ...optionalParams: any[]): void => {
+export const warn = (message?: any, ...optionalParams: any[]) => {
   log(chalk.yellow(message), ...optionalParams)
 }
 
@@ -48,7 +48,7 @@ export const warn = (message?: any, ...optionalParams: any[]): void => {
  * This is when something horribly goes wrong.
  * @param message The message to show.
  */
-export const error = (message?: any, ...optionalParams: any[]): void => {
+export const error = (message?: any, ...optionalParams: any[]) => {
   log(chalk.red(message), ...optionalParams)
 }
 
@@ -57,7 +57,7 @@ export const error = (message?: any, ...optionalParams: any[]): void => {
  * This is for devs only.
  * @param message The message to show.
  */
-export const debug = (message: any, title: string = 'DEBUG'): void => {
+export const debug = (message: any, title: string = 'DEBUG') => {
   log(
     chalk.magenta(
       `↓↓↓ --------------------[ ${title} ]-------------------- ↓↓↓`
@@ -107,14 +107,14 @@ export const indent = (input: string, size: number = 2): string => {
 /**
  * Print a blank line.
  */
-export const newline = (): void => {
+export const newline = () => {
   log('')
 }
 
 /**
  * Prints a divider line
  */
-export const divider = (): void => {
+export const divider = () => {
   log(
     chalk.gray(
       '--------------------------------------------------------------------------------'
@@ -126,7 +126,7 @@ export const divider = (): void => {
  * Clear console.
  * @param title Default title
  */
-export const clear = (title?: string): void => {
+export const clear = (title?: string) => {
   if (!process.stdout.isTTY) return
   const blank = '\n'.repeat(process.stdout.rows || 30)
   log(blank)
