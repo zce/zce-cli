@@ -2,8 +2,10 @@ import { load } from './loader'
 import { parse } from './context'
 import { invoke } from './invoker'
 
-const defaultCommands = ['default', 'help', 'version']
-
+/**
+ * Run the CLI
+ * @param argv command arguments
+ */
 export const run = async (argv?: string[]) => {
   // default argv
   argv = argv || process.argv.slice(2)
@@ -14,8 +16,8 @@ export const run = async (argv?: string[]) => {
   // load command by name
   const cmd = await load(name)
 
-  // default command args
-  if (defaultCommands.includes(cmd.name)) {
+  // top level command args
+  if (['default', 'help', 'version'].includes(cmd.name)) {
     extras.unshift(name)
   }
 

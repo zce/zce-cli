@@ -21,6 +21,8 @@ test('unit:core:runner', async () => {
 })
 
 test('unit:core:runner:run', async () => {
+  process.argv.length = 0
+
   await runner.run()
 
   expect(log).not.toHaveBeenCalled()
