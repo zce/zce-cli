@@ -1,6 +1,6 @@
 {
   "name": "zce-cli",
-  "version": "0.3.0-nightly.20190503",
+  "version": "0.3.0-nightly.20190505",
   "description": "A CLI tool for my personal productivity.",
   "keywords": [
     "cli",
