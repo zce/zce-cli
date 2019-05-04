@@ -85,16 +85,16 @@ Suggestions:
 
 [MIT](LICENSE) &copy; [汪磊](https://zce.me/)
 
-[travis-image]: https://img.shields.io/travis/zce/zce-cli/next.svg
+[travis-image]: https://img.shields.io/travis/zce/zce-cli/gluegun.svg
 [travis-url]: https://travis-ci.org/zce/zce-cli
-[codecov-image]: https://img.shields.io/codecov/c/github/zce/zce-cli/next.svg
+[codecov-image]: https://img.shields.io/codecov/c/github/zce/zce-cli/gluegun.svg
 [codecov-url]: https://codecov.io/gh/zce/zce-cli
 [downloads-image]: https://img.shields.io/npm/dm/zce-cli.svg
 [downloads-url]: https://npmjs.org/package/zce-cli
 [version-image]: https://img.shields.io/npm/v/zce-cli.svg
 [version-url]: https://npmjs.org/package/zce-cli
 [license-image]: https://img.shields.io/github/license/zce/pages-boilerplate.svg
-[license-url]: https://github.com/zce/zce-cli/blob/next/LICENSE
+[license-url]: https://github.com/zce/zce-cli/blob/gluegun/LICENSE
 [dependency-image]: https://img.shields.io/david/zce/zce-cli.svg
 [dependency-url]: https://david-dm.org/zce/zce-cli
 [devdependency-image]: https://img.shields.io/david/dev/zce/zce-cli.svg
