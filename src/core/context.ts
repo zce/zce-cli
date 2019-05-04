@@ -15,9 +15,15 @@ export const parse = async (
   opts?: Options
 ): Promise<Context> => {
   opts = opts || {}
+  // mount package.json
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const pkg = require('../../package.json')
 
   // cli brand name
-  const brand = basename(process.argv[1], '.js')
+  const brand =
+    typeof pkg.bin === 'string'
+      ? basename(pkg.bin, '.js')
+      : Object.keys(pkg.bin)[0]
 
   // parse argv by minimist
   const options = minimist(argv, buildOptions(opts))
@@ -31,7 +37,6 @@ export const parse = async (
   // excluding aliases
   Object.values(opts).forEach(item => {
     if (typeof item !== 'string' && item.alias) {
-      if (!item.alias) return
       if (typeof item.alias === 'string') {
         delete options[item.alias]
       } else {
@@ -42,10 +47,6 @@ export const parse = async (
 
   // excluding arguments
   delete options._
-
-  // mount package.json
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const pkg = require('../../package.json')
 
   // return context
   return {

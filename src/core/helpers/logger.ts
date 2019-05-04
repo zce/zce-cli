@@ -53,6 +53,25 @@ export const error = (message?: any, ...optionalParams: any[]): void => {
 }
 
 /**
+ * Writes a debug message.
+ * This is for devs only.
+ * @param message The message to show.
+ */
+export const debug = (message: any, title: string = 'DEBUG'): void => {
+  log(
+    chalk.magenta(
+      `↓↓↓ --------------------[ ${title} ]-------------------- ↓↓↓`
+    )
+  )
+  log(message)
+  log(
+    chalk.magenta(
+      `↑↑↑ --------------------[ ${title} ]-------------------- ↑↑↑`
+    )
+  )
+}
+
+/**
  * Pad `input` to `width`.
  * @param input input text
  * @param width width
@@ -104,34 +123,6 @@ export const divider = (): void => {
 }
 
 /**
- * Writes a debug message.
- * This is for devs only.
- * @param message The message to show.
- */
-export const debug = (message: any, title: string = 'DEBUG'): void => {
-  log(
-    chalk.magenta(
-      `↓↓↓ --------------------[ ${title} ]-------------------- ↓↓↓`
-    )
-  )
-  log(message)
-  log(
-    chalk.magenta(
-      `↑↑↑ --------------------[ ${title} ]-------------------- ↑↑↑`
-    )
-  )
-}
-
-/**
- * Creates a spinner and starts it up.
- * @param options The text for the spinner or an ora options.
- * @returns The Ora spinner.
- */
-export const spin = (options: string | object = ''): Ora => {
-  return ora(options).start()
-}
-
-/**
  * Clear console.
  * @param title Default title
  */
@@ -142,6 +133,15 @@ export const clear = (title?: string): void => {
   readline.cursorTo(process.stdout, 0, 0)
   readline.clearScreenDown(process.stdout)
   title && log(title)
+}
+
+/**
+ * Creates a spinner and starts it up.
+ * @param options The text for the spinner or an ora options.
+ * @returns The Ora spinner.
+ */
+export const spin = (options: string | object = ''): Ora => {
+  return ora(options).start()
 }
 
 export { chalk }

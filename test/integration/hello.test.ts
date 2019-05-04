@@ -10,5 +10,6 @@ test('integration:hello:default', async (): Promise<void> => {
 
 test('integration:hello:name', async (): Promise<void> => {
   const { stdout } = await runCommand(['hello', 'zce'])
+
   expect(stdout).toBe('Hey! zce~')
 })

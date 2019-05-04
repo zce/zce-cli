@@ -5,6 +5,7 @@ const { description } = require('../../package.json')
 
 test('integration:help', async (): Promise<void> => {
   const { stdout } = await runCommand('help')
+
   expect(stdout).toContain(description)
   expect(stdout).toContain('Usage:')
   expect(stdout).toContain('zce <command> [options]')
@@ -16,6 +17,7 @@ test('integration:help', async (): Promise<void> => {
 
 test('integration:help:sub-command', async (): Promise<void> => {
   const { stdout } = await runCommand(['help', 'hello'])
+
   expect(stdout).toContain('Hello command')
   expect(stdout).toContain('Usage:')
   expect(stdout).toContain('zce hello <name> [options]')

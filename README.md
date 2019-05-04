@@ -14,68 +14,10 @@
 ## Todos
 
 - [x] invoke help
-- [ ] unit test
+- [x] integration tests
+- [ ] unit tests
 - [ ] list command
 - [ ] init command
-
-## Installation
-
-```shell
-$ yarn global add zce-cli
-
-# or npm
-$ npm install zce-cli -g
-```
-
-## Usage
-
-<!-- TODO: Introduction of CLI -->
-
-```shell
-$ yarn global add zce-cli
-
-# or npm
-$ npm install zce-cli -g
-```
-
-```shell
-$ zce --help
-
-  Usage: zce-cli <input>
-
-  Options:
-
-    -V, --version  output the version number
-    -H, --host     Email host
-    -h, --help     output usage information
-
-Usage: zce <command> [options]
-
-Options:
-  -V, --version                        output the version number
-  --debug                              run command in debug mode
-  -h, --help                           output usage information
-
-Commands:
-  init [options] <template> [project]  generate a new project from a template
-  list|ls [options] [username]         list available official templates
-
-Suggestions:
-  Run zce <command> --help for detailed usage of given command.
-```
-
-```js
-// .exclude(['config', 'filesystem', 'semver', 'http', 'parameters', 'print', 'prompt', 'strings', 'system', 'template', 'patching'])
-// .plugins('node_modules', { matching: 'zce-cli-*', hidden: true })
-// {
-//   name: 'help',
-//   dashed: true,
-//   description: 'Output all commands',
-//   run: async (toolbox: GluegunToolbox): Promise<void> => {
-//     toolbox.print.printHelp(toolbox)
-//   }
-// }
-```
 
 ## Contributing
 

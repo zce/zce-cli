@@ -2,6 +2,7 @@ import { runCommand } from '../utils'
 
 test('integration:default', async (): Promise<void> => {
   const { stdout } = await runCommand()
+
   expect(stdout).toBe('')
 })
 
