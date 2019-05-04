@@ -110,7 +110,7 @@ const command: Command = {
     } else {
       outputHelp(ctx.brand, userCommands.default || coreCommands.default)
     }
-    process.exit(2)
+    process.exit()
   }
 }
 

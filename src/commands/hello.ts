@@ -1,4 +1,4 @@
-import { logger, Command, Context } from '../core'
+import { logger, missingArgument, Command, Context } from '../core'
 
 const command: Command = {
   name: 'hello',
@@ -21,7 +21,7 @@ const command: Command = {
   },
   action: async (ctx: Context) => {
     if (!ctx.primary) {
-      return logger.error('Missing required argument: `%s`.', 'name')
+      return missingArgument('name')
     }
 
     if (ctx.options.lang === 'en') {

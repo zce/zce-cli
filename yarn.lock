@@ -499,6 +499,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/execa@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.npm.taobao.org/@types/execa/download/@types/execa-0.9.0.tgz#9b025d2755f17e80beaf9368c3f4f319d8b0fb93"
+  integrity sha1-mwJdJ1XxfoC+r5Now/TzGdiw+5M=
+  dependencies:
+    "@types/node" "*"
+
 "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/@types/istanbul-lib-coverage/download/@types/istanbul-lib-coverage-2.0.1.tgz#42995b446db9a48a11a07ec083499a860e9138ff"
@@ -525,6 +532,11 @@
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/@types/minimist/download/@types/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
   integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
+
+"@types/node@*":
+  version "12.0.0"
+  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.0.0.tgz#d11813b9c0ff8aaca29f04cbc12817f4c7d656e5"
+  integrity sha1-0RgTucD/iqyinwTLwSgX9MfWVuU=
 
 "@types/node@^11.13.8":
   version "11.13.9"
