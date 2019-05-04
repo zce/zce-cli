@@ -59,7 +59,7 @@
     "ora": "^3.1.0",
     "rc": "^1.2.8",
     "rimraf": "^2.6.3",
-    "semver": "^5.6.0",
+    "semver": "^6.0.0",
     "username": "^5.0.0",
     "validate-npm-package-name": "^3.0.0"
   },
