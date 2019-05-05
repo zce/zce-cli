@@ -1,4 +1,7 @@
-// import { dirname } from 'path'
+import { sniff } from './sniffer'
+
+// check the node version
+sniff()
 
 // // Prevent caching of this module so module.parent is always accurate
 // delete require.cache[__filename]

@@ -1,4 +1,4 @@
-import * as context from './context'
+import * as context from './parser'
 import { Options } from 'minimist-options'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

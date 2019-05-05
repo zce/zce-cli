@@ -10,9 +10,7 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "outDir": "lib",
-    "paths": {
-      "@/*": ["*"]
-    },
+    "paths": {},
     "strict": true,
     "target": "es2015"
   },

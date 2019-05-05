@@ -1,5 +1,5 @@
 import { load } from './loader'
-import { parse } from './context'
+import { parse } from './parser'
 import { invoke } from './invoker'
 
 /**
