@@ -1,6 +1,8 @@
-// import { createWriteStream } from 'fs'
+import { tmpdir } from 'os'
+import { join, basename } from 'path'
+import { createWriteStream } from 'fs'
 
-import { extend } from 'got'
+import { extend, GotUrl, GotOptions } from 'got'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { name, version, homepage } = require('../../../package.json')
@@ -21,7 +23,10 @@ export const request = extend({
 /**
  * Download remote resource
  * @param url url
- * @param dest destination
  * @param options options
  */
-export const download = request.stream
+export const download = async (url: GotUrl, options?: GotOptions<string>) => {
+  const filename = join(tmpdir(), name, basename(url as string))
+  await request.stream(url, options).pipe(createWriteStream(filename))
+  return filename
+}
