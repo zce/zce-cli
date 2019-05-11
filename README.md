@@ -26,6 +26,42 @@
 - [ ] init command
 - [ ] commands docs
 
+## dependencies
+
+- chalk
+- got
+- minimist
+- minimist-options
+- ora
+- redent
+- zce
+
+## devDependencies
+
+- @commitlint/cli
+- @commitlint/config-conventional
+- @types/execa
+- @types/got
+- @types/jest
+- @types/lodash
+- @types/minimist
+- @types/node
+- @types/semver
+- @typescript-eslint/eslint-plugin
+- @typescript-eslint/parser
+- commitizen
+- cz-conventional-changelog
+- eslint
+- execa
+- husky
+- jest
+- lint-staged
+- prettier
+- standard-version
+- ts-jest
+- ts-node
+- typescript
+
 ## Contributing
 
 1. **Fork** it on GitHub!

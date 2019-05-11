@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as readline from 'readline'
+import { cursorTo, clearScreenDown } from 'readline'
 
 import chalk from 'chalk'
-import * as redent from 'redent'
+import redent from 'redent'
 import ora, { Ora } from 'ora'
 
 import { DynamicObject } from '../types'
@@ -129,8 +129,8 @@ export const clear = (title?: string) => {
   if (!process.stdout.isTTY) return
   const blank = '\n'.repeat(process.stdout.rows || 30)
   log(blank)
-  readline.cursorTo(process.stdout, 0, 0)
-  readline.clearScreenDown(process.stdout)
+  cursorTo(process.stdout, 0, 0)
+  clearScreenDown(process.stdout)
   title && log(title)
 }
 

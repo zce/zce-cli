@@ -1,55 +1,44 @@
 import { join } from 'path'
 import { readdirSync } from 'fs'
 
-import { Command } from './types'
-
-interface CommandsDict {
-  [name: string]: Command
-}
-
-interface Cache {
-  [path: string]: CommandsDict
-}
-
-const cache: Cache = {}
+import { Command, Commands } from './types'
 
 /**
  * Load dir commands
  * @param dir dir to load
  */
-const loadCommands = (dir: string): CommandsDict => {
+const loadCommands = (dir: string): Commands => {
   const commandDir = join(__dirname, dir)
-  // return if cached
-  if (cache[dir]) return cache[commandDir]
 
   // scanning commands
-  cache[commandDir] = readdirSync(commandDir).reduce((commands, item) => {
-    try {
-      const command: Command = require(join(commandDir, item)).default
-      commands[command.name] = command
-      if (typeof command.alias === 'string') {
-        commands[command.alias] = command
-      } else if (command.alias) {
-        command.alias.forEach(a => {
-          commands[a] = command
-        })
-      }
-    } catch (e) {}
-    return commands
-  }, {})
-
-  return cache[commandDir]
+  return readdirSync(commandDir).reduce(
+    (cmds, item) => {
+      try {
+        const command: Command = require(join(commandDir, item)).default
+        cmds[command.name] = command
+        if (typeof command.alias === 'string') {
+          cmds[command.alias] = command
+        } else if (command.alias) {
+          command.alias.forEach(a => {
+            cmds[a] = command
+          })
+        }
+      } catch (e) {}
+      return cmds
+    },
+    {} as any
+  )
 }
 
 /**
  * All core commands
  */
-export const coreCommands: CommandsDict = loadCommands('./commands')
+export const coreCommands: Commands = loadCommands('./commands')
 
 /**
  * All commands
  */
-export const userCommands: CommandsDict = loadCommands('../commands')
+export const userCommands: Commands = loadCommands('../commands')
 
 /**
  * Load command by name

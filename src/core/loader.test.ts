@@ -29,3 +29,13 @@ test('unit:core:loader:load:unknown', async () => {
 
   expect(cmd.name).toBe('default')
 })
+
+test('unit:core:loader:load:core-default', async () => {
+  const userDefaultCommand = loader.userCommands.default
+  delete loader.userCommands.default
+
+  const cmd = await loader.load('foo')
+
+  expect(cmd.name).toBe('default')
+  loader.userCommands.default = userDefaultCommand
+})

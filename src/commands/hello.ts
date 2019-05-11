@@ -3,7 +3,7 @@ import { logger, missingArgument, Command, Context } from '../core'
 const command: Command = {
   name: 'hello',
   usage: 'hello <name> [options]',
-  description: 'Hello command',
+  description: 'hello command',
   alias: 'hi',
   // hidden: true,
   options: {

@@ -1,7 +1,10 @@
 import { basename } from 'path'
 
-import * as minimist from 'minimist'
+import minimist from 'minimist'
 import buildOptions, { Options } from 'minimist-options'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pkg = require('../../package.json')
 
 import { Context } from './types'
 
@@ -15,10 +18,6 @@ export const parse = async (
   opts?: Options
 ): Promise<Context> => {
   opts = opts || {}
-  // mount package.json
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const pkg = require('../../package.json')
-
   // cli brand name
   const brand =
     typeof pkg.bin === 'string'

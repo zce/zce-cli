@@ -53,3 +53,7 @@ export interface Command {
   readonly examples?: string | string[]
   readonly suggestions?: string | string[]
 }
+
+export interface Commands {
+  [name: string]: Command
+}

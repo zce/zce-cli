@@ -12,12 +12,14 @@
 			"name": "test",
 			"path": "test"
 		},
-		{
-			"name": "zce-cli",
-			"path": "."
-		}
+		// {
+		// 	"name": "zce-cli",
+		// 	"path": "."
+		// }
 	],
 	"settings": {
-    "explorer.openEditors.visible": 0
+    "explorer.openEditors.visible": 0,
+    "terminal.integrated.cwd": "",
+    "typescript.tsdk": "zce-cli/node_modules/typescript/lib"
   }
 }

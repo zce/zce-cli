@@ -1,5 +1,7 @@
 import { runCommand } from './utils'
 
+jest.setTimeout(8000)
+
 test('integration:hello:default', async () => {
   try {
     await runCommand('hello')

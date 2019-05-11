@@ -10,7 +10,8 @@ import { Context, Command } from './types'
 export const invoke = async (cmd: Command, ctx: Context) => {
   if (ctx.options.help || ctx.options.h) {
     // invoke help command
-    return await coreCommands.help.action(ctx)
+    cmd = coreCommands.help
   }
+  process.title = `${cmd.name} · ${ctx.brand}`
   return await cmd.action(ctx)
 }

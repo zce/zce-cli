@@ -48,7 +48,7 @@ const outputHelp = async (brand: string, cmd: Command) => {
       let value = '-'
       if (typeof opt !== 'string') {
         key = `--${i}${opt.alias ? `, -${opt.alias}` : ''}`
-        value = opt['description'] || '-'
+        value = (opt as any)['description'] || '-'
       }
       return { ...o, [key]: value }
     }, {})
@@ -101,6 +101,8 @@ const command: Command = {
   name: 'help',
   usage: 'help <command>',
   description: 'output usage information',
+  // for testing
+  alias: process.env.NODE_ENV === 'test' ? ['h'] : undefined,
   hidden: false,
   action: async (ctx: Context) => {
     if (ctx.primary && ctx.primary !== 'help') {

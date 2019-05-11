@@ -8,8 +8,7 @@ const command: Command = {
   description: 'output the version number',
   hidden: false,
   action: async (ctx: Context) => {
-    const { name, version } = ctx.pkg
-    logger.info(`${name} v${version}`)
+    logger.info(`${ctx.pkg.name} v${ctx.pkg.version}`)
   }
 }
 
