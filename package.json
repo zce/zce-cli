@@ -45,7 +45,7 @@
     "coverage:report": "nyc report --reporter=html"
   },
   "dependencies": {
-    "boxen": "^3.0.0",
+    "boxen": "^4.0.0",
     "chalk": "^2.4.2",
     "commander": "^2.19.0",
     "download": "^7.1.0",
