@@ -67,7 +67,7 @@
     "ava": "1.4.1",
     "mock-prompt": "0.1.4",
     "nyc": "14.1.1",
-    "standard": "12.0.1"
+    "standard": "13.0.0"
   },
   "engines": {
     "node": ">=8"
