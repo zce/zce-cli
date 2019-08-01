@@ -38,29 +38,33 @@
   },
   "scripts": {
     "lint": "standard --fix",
-    "test": "yarn test:unit && yarn test:e2e",
-    "test:e2e": "ava test/e2e/** --verbose",
-    "test:unit": "ava test/unit/** --verbose",
+    "test": "ava --verbose",
     "coverage": "nyc yarn test",
     "coverage:report": "nyc report --reporter=html"
   },
+  "ava": {
+    "files": [
+      "test/unit/**/*.js",
+      "test/e2e/**/*.js"
+    ]
+  },
   "dependencies": {
-    "boxen": "^4.0.0",
+    "boxen": "^4.1.0",
     "chalk": "^2.4.2",
-    "commander": "^2.19.0",
+    "commander": "^2.20.0",
     "download": "^7.1.0",
-    "fullname": "^4.0.0",
-    "inquirer": "^6.2.2",
-    "lodash": "^4.17.11",
+    "fullname": "^4.0.1",
+    "inquirer": "^6.5.0",
+    "lodash": "^4.17.15",
     "log-symbols": "^3.0.0",
     "metalsmith": "^2.3.0",
     "minimatch": "^3.0.4",
     "mkdirp": "^0.5.1",
-    "ora": "^3.1.0",
+    "ora": "^3.4.0",
     "rc": "^1.2.8",
     "rimraf": "^2.6.3",
-    "semver": "^6.0.0",
-    "username": "^5.0.0",
+    "semver": "^6.3.0",
+    "username": "^5.1.0",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
