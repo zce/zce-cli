@@ -54,7 +54,7 @@
     "commander": "^3.0.0",
     "download": "^7.1.0",
     "fullname": "^4.0.1",
-    "inquirer": "^6.5.0",
+    "inquirer": "^7.0.0",
     "lodash": "^4.17.15",
     "log-symbols": "^3.0.0",
     "metalsmith": "^2.3.0",
