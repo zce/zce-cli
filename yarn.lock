@@ -3149,6 +3149,11 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mkdirp@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.1.tgz#57828231711628a8a303f455bb7d79b32d9c9d4f"
+  integrity sha512-epSaAwmT1sXxKNHFtzxrNEepE0qneey1uVReE15tN3Zvba3ifzx01eStvvvyb8dQeI50CVuGZ5qnSk2wMtsysg==
+
 mock-prompt@0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/mock-prompt/-/mock-prompt-0.1.4.tgz#4404452864fec3cd6bdab1dfd053c0b81032eeeb"
