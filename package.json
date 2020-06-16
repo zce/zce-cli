@@ -68,10 +68,10 @@
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
-    "ava": "^3.9.0",
-    "mock-prompt": "^0.1.4",
-    "nyc": "^15.1.0",
-    "standard": "^14.3.4"
+    "ava": "3.9.0",
+    "mock-prompt": "0.1.4",
+    "nyc": "15.1.0",
+    "standard": "14.3.4"
   },
   "engines": {
     "node": ">=8"
