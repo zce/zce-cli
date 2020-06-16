@@ -130,5 +130,5 @@ test('generator:generate:error', async t => {
   const dest = path.join(t.context.tmpdir, 'error')
   const answers = { name: 'error' }
 
-  await t.throwsAsync(generate(src, dest, answers), 'fake is not defined')
+  await t.throwsAsync(generate(src, dest, answers), { message: 'fake is not defined' })
 })

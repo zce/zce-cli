@@ -39,7 +39,7 @@
   "scripts": {
     "lint": "standard --fix",
     "test": "ava --verbose",
-    "coverage": "nyc yarn test",
+    "coverage": "nyc npm run test",
     "coverage:report": "nyc report --reporter=html"
   },
   "ava": {
@@ -50,28 +50,28 @@
   },
   "dependencies": {
     "boxen": "^4.2.0",
-    "chalk": "^3.0.0",
-    "commander": "^4.0.1",
-    "download": "^7.1.0",
+    "chalk": "^4.1.0",
+    "commander": "^5.1.0",
+    "download": "^8.0.0",
     "fullname": "^4.0.1",
-    "inquirer": "^7.0.1",
+    "inquirer": "^7.2.0",
     "lodash": "^4.17.15",
-    "log-symbols": "^3.0.0",
+    "log-symbols": "^4.0.0",
     "metalsmith": "^2.3.0",
     "minimatch": "^3.0.4",
-    "mkdirp": "^0.5.1",
-    "ora": "^4.0.3",
+    "mkdirp": "^1.0.4",
+    "ora": "^4.0.4",
     "rc": "^1.2.8",
-    "rimraf": "^3.0.0",
-    "semver": "^7.1.1",
+    "rimraf": "^3.0.2",
+    "semver": "^7.3.2",
     "username": "^5.1.0",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
-    "ava": "2.4.0",
-    "mock-prompt": "0.1.4",
-    "nyc": "15.0.0",
-    "standard": "14.3.1"
+    "ava": "^3.9.0",
+    "mock-prompt": "^0.1.4",
+    "nyc": "^15.1.0",
+    "standard": "^14.3.4"
   },
   "engines": {
     "node": ">=8"

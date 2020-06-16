@@ -28,7 +28,7 @@ test('generator:defaults:all', async t => {
 })
 
 test('generator:defaults:error', async t => {
-  await t.throwsAsync(Defaults.init(), TypeError)
+  await t.throwsAsync(Defaults.init(), { instanceOf: TypeError })
 })
 
 test('generator:defaults:save', async t => {

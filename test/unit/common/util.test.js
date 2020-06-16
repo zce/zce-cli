@@ -28,7 +28,7 @@ test('common:util:isDirectory', async t => {
   t.false(await util.isDirectory(__filename))
   await t.throwsAsync(
     util.isDirectory(path.join(__dirname, 'fake-dir')),
-    /no such file or directory/
+    { instanceOf: Error, message: /no such file or directory/ }
   )
 })
 
@@ -37,7 +37,7 @@ test('common:util:isFile', async t => {
   t.false(await util.isFile(__dirname))
   await t.throwsAsync(
     util.isFile(path.join(__dirname, 'fake-file.txt')),
-    /no such file or directory/
+    { instanceOf: Error, message: /no such file or directory/ }
   )
 })
 
@@ -45,7 +45,7 @@ test('common:util:isEmpty', async t => {
   t.false(await util.isEmpty(__dirname))
   await t.throwsAsync(
     util.isEmpty(path.join(__dirname, 'fake-dir')),
-    /no such file or directory/
+    { instanceOf: Error, message: /no such file or directory/ }
   )
 })
 

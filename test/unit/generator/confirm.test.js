@@ -48,7 +48,7 @@ test.after(async t => {
  */
 test.serial('generator:confirm:default_parameters', async t => {
   mockPrompt({ sure: false })
-  await t.throwsAsync(confirm(), 'You have to cancel the init task.')
+  await t.throwsAsync(confirm(), { message: 'You have to cancel the init task.' })
 })
 
 /**

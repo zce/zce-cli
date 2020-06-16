@@ -22,9 +22,9 @@ test('generator:load:empty', async t => {
 })
 
 test('generator:load:error1', async t => {
-  await t.throwsAsync(load(path.join(__dirname, '../../mock/templates/error')), TypeError)
+  await t.throwsAsync(load(path.join(__dirname, '../../mock/templates/error')), { instanceOf: TypeError })
 })
 
 test('generator:load:error2', async t => {
-  await t.throwsAsync(load(path.join(__dirname, '../../mock/templates/minima/README.md')), SyntaxError)
+  await t.throwsAsync(load(path.join(__dirname, '../../mock/templates/minima/README.md')), { instanceOf: SyntaxError })
 })
