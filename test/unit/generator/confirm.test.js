@@ -84,7 +84,7 @@ test('generator:confirm:exists_dir_force', async t => {
 test('generator:confirm:exists_file', async t => {
   const filename = path.join(t.context.tmpdir, 'project4')
   await writeFile(filename, '')
-  await t.throwsAsync(confirm('project4'), 'Cannot init project4: File exists.')
+  await t.throwsAsync(confirm('project4'), { message: 'Cannot init project4: File exists.' })
 })
 
 /**
@@ -135,7 +135,7 @@ test.serial('generator:confirm:exists_dir_not_empty_cancel1', async t => {
   const dir = path.join(t.context.tmpdir, 'project8')
   await util.mkdirp(path.join(dir, 'foo'))
   mockPrompt({ sure: false })
-  await t.throwsAsync(confirm('project8'), 'You have to cancel the init task.')
+  await t.throwsAsync(confirm('project8'), { message: 'You have to cancel the init task.' })
 })
 
 /**
@@ -145,5 +145,5 @@ test.serial('generator:confirm:exists_dir_not_empty_cancel2', async t => {
   const dir = path.join(t.context.tmpdir, 'project9')
   await util.mkdirp(path.join(dir, 'foo'))
   mockPrompt({ sure: true, choose: 'cancel' })
-  await t.throwsAsync(confirm('project9'), 'You have to cancel the init task.')
+  await t.throwsAsync(confirm('project9'), { message: 'You have to cancel the init task.' })
 })

@@ -68,13 +68,13 @@ test.serial('generator:prompt:validate_fail', async t => {
   const questions1 = {
     name: { type: 'input', message: 'name' }
   }
-  await t.throwsAsync(prompt(questions1, __dirname), 'Sorry, name can no longer contain capital letters.')
+  await t.throwsAsync(prompt(questions1, __dirname), { message: 'Sorry, name can no longer contain capital letters.' })
 
   mockPrompt({ version: 'bad' })
   const questions2 = {
     version: { type: 'input', message: 'version' }
   }
-  await t.throwsAsync(prompt(questions2, __dirname), 'Sorry, The \'bad\' is not a semantic version.')
+  await t.throwsAsync(prompt(questions2, __dirname), { message: 'Sorry, The \'bad\' is not a semantic version.' })
 })
 
 test.serial('generator:prompt:custom_validate', async t => {
