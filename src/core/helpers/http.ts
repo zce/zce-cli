@@ -1,17 +1,21 @@
+import { pipeline } from 'stream'
 import { tmpdir } from 'os'
+import { promisify } from 'util'
 import { join, basename } from 'path'
 import { createWriteStream } from 'fs'
-import { extend, GotUrl, GotOptions } from 'got'
+import got, { StreamOptions } from 'got'
 import { name, version, homepage } from '../../../package.json'
+
+const pipe = promisify(pipeline)
 
 /**
  * Send a http request.
  * @param url url
  * @param options options
  */
-export const request = extend({
+export const request = got.extend({
   timeout: 5000,
-  json: true,
+  responseType: 'json',
   headers: {
     'user-agent': `${name}/${version} (${homepage})`
   }
@@ -22,8 +26,10 @@ export const request = extend({
  * @param url url
  * @param options options
  */
-export const download = async (url: GotUrl, options?: GotOptions<string>): Promise<string> => {
+export const download = async (url: string | URL, options?: StreamOptions): Promise<string> => {
   const filename = join(tmpdir(), name, basename(url as string))
-  await request.stream(url, options).pipe(createWriteStream(filename))
+
+  await pipe(request.stream(url, options), createWriteStream(filename))
+
   return filename
 }

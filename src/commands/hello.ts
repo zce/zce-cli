@@ -1,6 +1,6 @@
 import { logger, missingArgument, Command, Context } from '../core'
 
-const command: Command = {
+export default {
   name: 'hello',
   usage: 'hello <name> [options]',
   description: 'hello command',
@@ -34,6 +34,4 @@ const command: Command = {
       logger.debug(ctx)
     }
   }
-}
-
-export default command
+} as Command

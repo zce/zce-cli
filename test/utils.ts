@@ -1,5 +1,5 @@
 import { join } from 'path'
-import execa from 'execa'
+import execa, { ExecaChildProcess } from 'execa'
 
 import { Command, Context } from '../src/core/types'
 
@@ -8,7 +8,7 @@ import { Command, Context } from '../src/core/types'
  * @param args The command line arguments
  * @returns Promise with result
  */
-export const runCommand = async (args: string | string[] = []): Promise<execa.ExecaReturns> => {
+export const runCommand = async (args: string | string[] = []): Promise<ExecaChildProcess> => {
   if (typeof args === 'string') {
     args = [args]
   }
@@ -35,7 +35,7 @@ export const createFakeCommand = (overrides?: Command): Command => {
  * Create a fake context
  * @param overrides override default
  */
-export const createFakeContext = (overrides?: Context): Context => {
+export const createFakeContext = (overrides?: Record<string, unknown>): Context => {
   const defaultContext = {
     brand: 'zce',
     options: {},

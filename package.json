@@ -36,7 +36,7 @@
     "format": "prettier --write \"**/*.ts\"",
     "clean": "rimraf lib",
     "lint": "eslint \"**/*.ts\"",
-    "compile": "tsc -p .",
+    "compile": "tsc --project .",
     "build": "run-s clean format lint compile",
     "test": "jest",
     "coverage": "jest --coverage",
@@ -117,8 +117,6 @@
     "untildify": "^4.0.0"
   },
   "devDependencies": {
-    "@types/execa": "^2.0.0",
-    "@types/got": "^9.6.11",
     "@types/jest": "^26.0.0",
     "@types/lodash": "^4.14.156",
     "@types/minimist": "^1.2.0",
@@ -139,6 +137,7 @@
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.1",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },
   "engines": {

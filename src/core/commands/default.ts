@@ -2,7 +2,7 @@ import { unknownCommand } from '../error'
 import { Command, Context } from '../types'
 import { description } from '../../../package.json'
 
-const command: Command = {
+export default {
   name: 'default',
   usage: '<command> [options]',
   description: description,
@@ -12,6 +12,4 @@ const command: Command = {
     // unknown command
     unknownCommand(ctx.primary, `${ctx.brand} --help`)
   }
-}
-
-export default command
+} as Command

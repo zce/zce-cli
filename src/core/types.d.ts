@@ -1,4 +1,4 @@
-import { Options as MinimistOptions } from 'minimist-options'
+import { Options } from 'minimist-options'
 
 // export declare namespace zce { }
 
@@ -14,9 +14,8 @@ export interface Context {
   readonly pkg: Record<string, unknown>
 }
 
-export interface Options extends MinimistOptions {
-  readonly description?: string
-}
+export { Options }
+// export interface Options extends MinimistOptions {}
 
 export interface Command {
   readonly name: string

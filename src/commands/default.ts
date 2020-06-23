@@ -1,7 +1,7 @@
 import { unknownCommand, Command, Context } from '../core'
 import { description } from '../../package.json'
 
-const command: Command = {
+export default {
   name: 'default',
   usage: '<command> [options]',
   description: description,
@@ -12,6 +12,4 @@ const command: Command = {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     process.env.NODE_ENV === 'test' || require('zce')()
   }
-}
-
-export default command
+} as Command

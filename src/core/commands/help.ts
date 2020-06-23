@@ -50,7 +50,7 @@ const outputHelp = async (brand: string, cmd: Command) => {
       let value = '-'
       if (typeof opt === 'object') {
         key = `--${current}${opt.alias ? `, -${opt.alias}` : ''}`
-        value = opt.description || '-'
+        value = (opt as Record<string, string>).description || '-'
       }
       return { ...prev, [key]: value }
     }, {} as Record<string, string>)
@@ -100,7 +100,7 @@ const subCommandHelp = async (name: string, ctx: Context) => {
   await outputHelp(ctx.brand, cmd)
 }
 
-const command: Command = {
+export default {
   name: 'help',
   usage: 'help <command>',
   description: 'output usage information',
@@ -117,6 +117,4 @@ const command: Command = {
     }
     process.exit()
   }
-}
-
-export default command
+} as Command

@@ -1,11 +1,13 @@
 import { cursorTo, clearScreenDown } from 'readline'
-
-import chalk from 'chalk'
+import { Instance } from 'chalk'
 import redent from 'redent'
 import ora, { Ora } from 'ora'
 
 // Disable colors output for testing
-chalk.enabled = process.env.NODE_ENV !== 'test'
+// chalk.level = process.env.NODE_ENV !== 'test'
+export const chalk = new Instance({
+  // level: process.env.NODE_ENV === 'test' ? 0 : 3
+})
 
 /**
  * Writes a normal message.
@@ -129,5 +131,3 @@ export const clear = (title?: string): void => {
 export const spin = (options: string | Record<string, unknown> = ''): Ora => {
   return ora(options).start()
 }
-
-export { chalk }
