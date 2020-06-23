@@ -1,5 +1,4 @@
 import { logger } from '../helpers'
-
 import { Command, Context } from '../types'
 
 const command: Command = {

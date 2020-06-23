@@ -1,7 +1,5 @@
 import * as runner from './runner'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { name, version } = require('../../package.json')
+import { name, version } from '../../package.json'
 
 let log: jest.SpyInstance
 let exit: jest.SpyInstance

@@ -1,16 +1,14 @@
 import { join } from 'path'
 import execa from 'execa'
 
-import { DynamicObject, Command, Context } from '../src/core/types'
+import { Command, Context } from '../src/core/types'
 
 /**
  * Executes a commandline via execa.
  * @param args The command line arguments
  * @returns Promise with result
  */
-export const runCommand = async (
-  args: string | string[] = []
-): Promise<execa.ExecaReturns> => {
+export const runCommand = async (args: string | string[] = []): Promise<execa.ExecaReturns> => {
   if (typeof args === 'string') {
     args = [args]
   }
@@ -23,7 +21,7 @@ export const runCommand = async (
  * Create a fake command
  * @param overrides override default
  */
-export const createFakeCommand = (overrides?: DynamicObject): Command => {
+export const createFakeCommand = (overrides?: Command): Command => {
   const defaultCommand = {
     name: 'fake',
     description: 'fake command',
@@ -37,7 +35,7 @@ export const createFakeCommand = (overrides?: DynamicObject): Command => {
  * Create a fake context
  * @param overrides override default
  */
-export const createFakeContext = (overrides?: DynamicObject): Context => {
+export const createFakeContext = (overrides?: Context): Context => {
   const defaultContext = {
     brand: 'zce',
     options: {},

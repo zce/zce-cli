@@ -1,28 +1,18 @@
 import { basename } from 'path'
-
 import minimist from 'minimist'
-import buildOptions, { Options } from 'minimist-options'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pkg = require('../../package.json')
-
-import { Context } from './types'
+import buildOptions from 'minimist-options'
+import { Context, Options } from './types'
+import pkg from '../../package.json'
 
 /**
  * parse context from cli argv
  * @param argv cli argv
  * @param opts command options
  */
-export const parse = async (
-  argv: string[],
-  opts?: Options
-): Promise<Context> => {
+export const parse = async (argv: string[], opts?: Options): Promise<Context> => {
   opts = opts || {}
   // cli brand name
-  const brand =
-    typeof pkg.bin === 'string'
-      ? basename(pkg.bin, '.js')
-      : Object.keys(pkg.bin)[0]
+  const brand = typeof pkg.bin === 'string' ? basename(pkg.bin, '.js') : Object.keys(pkg.bin)[0]
 
   // parse argv by minimist
   const options = minimist(argv, buildOptions(opts))
@@ -35,7 +25,7 @@ export const parse = async (
 
   // excluding aliases
   Object.values(opts).forEach(item => {
-    if (typeof item !== 'string' && item.alias) {
+    if (typeof item === 'object' && item.alias) {
       if (typeof item.alias === 'string') {
         delete options[item.alias]
       } else {

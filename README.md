@@ -93,3 +93,30 @@
 [devdependency-url]: https://david-dm.org/zce/zce-cli?type=dev
 [style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [style-url]: http://standardjs.com
+
+
+ chalk got minimist minimist-options mkdirp ora redent rimraf tildify untildify zce
+
+ @commitlint/cli @commitlint/config-conventional @types/execa @types/got @types/jest @types/lodash @types/minimist @types/mkdirp @types/node @types/rimraf @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commitizen cz-conventional-changelog eslint execa husky jest lint-staged prettier standard-version ts-jest ts-node typescript
+
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "paths": {
+      "@*": ["src/*"]
+    },
+    "strict": true,
+    "target": "es2017"
+  },
+  "exclude": ["src/**/*.test.ts"],
+  "include": ["src/**/*.ts"]
+}

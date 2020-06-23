@@ -1,8 +1,6 @@
 import * as context from './parser'
-import { Options } from 'minimist-options'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pkg = require('../../package.json')
+import { Options } from './types'
+import pkg from '../../package.json'
 
 test('unit:core:context', async () => {
   expect(context.parse).toBeTruthy()

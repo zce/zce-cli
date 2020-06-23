@@ -1,43 +1,42 @@
 import fs from 'fs'
 
-import rimraf from 'rimraf'
-import mkdirp from 'mkdirp'
-import tildify from 'tildify'
-import untildify from 'untildify'
+export { default as rimraf } from 'rimraf'
+export { default as mkdirp } from 'mkdirp'
+export { default as tildify } from 'tildify'
+export { default as untildify } from 'untildify'
 
 /**
  * Get filename stat.
  * @param input input path
  */
-export const stat = (input: string) =>
-  new Promise((resolve, reject) => {
+export const stat = (input: string): Promise<fs.Stats> => {
+  return new Promise((resolve, reject) => {
     fs.stat(input, (err, stat) => {
       if (err) return reject(err)
       resolve(stat)
     })
   })
+}
 
 /**
  * Check path exists.
  * @param input input path
  */
-export const exists = (input: string) =>
-  new Promise(resolve => {
-    stat(input)
-      .then(stat => resolve(true))
-      .catch(err => resolve(false))
-  })
+export const exists = (input: string): Promise<boolean> => {
+  return stat(input)
+    .then(() => true)
+    .catch(() => false)
+}
 
 /**
  * Check input is empty.
  * @param input input path
  */
-export const isEmpty = (input: string) =>
-  new Promise((resolve, reject) => {
+export const isEmpty = (input: string): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
     fs.readdir(input, (err, files) => {
       if (err) return reject(err)
       resolve(!files.length)
     })
   })
-
-export { rimraf, mkdirp, tildify, untildify }
+}

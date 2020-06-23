@@ -10,4 +10,4 @@ sniff()
 export { run } from './runner'
 export { logger, template } from './helpers'
 export { unknownCommand, missingArgument } from './error'
-export { Command, Context } from './types'
+export { Context, Options, Command } from './types'

@@ -23,9 +23,7 @@ test('unit:core:helpers:http:request:error', async () => {
 })
 
 test('unit:core:helpers:http:download', async () => {
-  const filename = await http.download(
-    `${registry}/zce-cli/download/zce-cli-0.0.0.tgz`
-  )
+  const filename = await http.download(`${registry}/zce-cli/download/zce-cli-0.0.0.tgz`)
 
   expect(filename).toBe(join(tmpdir(), 'zce-cli/zce-cli-0.0.0.tgz'))
 })

@@ -6,7 +6,7 @@ const imports = {}
  * Register helpers
  * @param helpers helper
  */
-export const registerHelpers = (helpers: {}) => {
+export const registerHelpers = (helpers: Record<string, unknown>): void => {
   Object.assign(imports, helpers)
 }
 
@@ -17,7 +17,11 @@ export const registerHelpers = (helpers: {}) => {
  * @param options Template options
  * @return Render result
  */
-export const render = (input: string, data: {}, options?: {}): string => {
+export const render = (
+  input: string,
+  data: Record<string, unknown>,
+  options?: Record<string, unknown>
+): string => {
   options = Object.assign({ imports }, options)
   const compiled = template(input, options)
   return compiled(data)

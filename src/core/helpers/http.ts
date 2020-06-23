@@ -1,11 +1,8 @@
 import { tmpdir } from 'os'
 import { join, basename } from 'path'
 import { createWriteStream } from 'fs'
-
 import { extend, GotUrl, GotOptions } from 'got'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { name, version, homepage } = require('../../../package.json')
+import { name, version, homepage } from '../../../package.json'
 
 /**
  * Send a http request.
@@ -25,7 +22,7 @@ export const request = extend({
  * @param url url
  * @param options options
  */
-export const download = async (url: GotUrl, options?: GotOptions<string>) => {
+export const download = async (url: GotUrl, options?: GotOptions<string>): Promise<string> => {
   const filename = join(tmpdir(), name, basename(url as string))
   await request.stream(url, options).pipe(createWriteStream(filename))
   return filename

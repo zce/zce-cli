@@ -1,7 +1,6 @@
 import { userCommands, coreCommands } from '../loader'
 import { unknownCommand } from '../error'
 import { logger } from '../helpers'
-
 import { Command, Context } from '../types'
 
 /**
@@ -26,6 +25,7 @@ const outputHelp = async (brand: string, cmd: Command) => {
     if (userCmds.length + coreCmds.length) {
       logger.newline()
       logger.info('Commands:')
+
       const commandsObj = userCmds
         .concat(coreCmds)
         .filter(i => !i.hidden && i.name !== 'default')
@@ -33,7 +33,8 @@ const outputHelp = async (brand: string, cmd: Command) => {
           const key = `${item.name}${item.alias ? `(${item.alias})` : ''}`
           const value = item.description || '-'
           return { ...obj, [key]: value }
-        }, {})
+        }, {} as Record<string, string>)
+
       logger.info(logger.indent(logger.table(commandsObj)))
     }
   }
@@ -41,17 +42,19 @@ const outputHelp = async (brand: string, cmd: Command) => {
   if (cmd.options) {
     logger.newline()
     logger.info('Options:')
+
     const options = cmd.options
-    const optionsObj = Object.keys(options).reduce((o, i) => {
-      const opt = options[i]
-      let key = `--${i}`
+    const optionsObj = Object.keys(options).reduce((prev, current) => {
+      const opt = options[current]
+      let key = `--${current}`
       let value = '-'
-      if (typeof opt !== 'string') {
-        key = `--${i}${opt.alias ? `, -${opt.alias}` : ''}`
-        value = (opt as any)['description'] || '-'
+      if (typeof opt === 'object') {
+        key = `--${current}${opt.alias ? `, -${opt.alias}` : ''}`
+        value = opt.description || '-'
       }
-      return { ...o, [key]: value }
-    }, {})
+      return { ...prev, [key]: value }
+    }, {} as Record<string, string>)
+
     logger.info(logger.indent(logger.table(optionsObj)))
   }
 

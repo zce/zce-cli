@@ -1,11 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Options } from 'minimist-options'
+import { Options as MinimistOptions } from 'minimist-options'
 
 // export declare namespace zce { }
-
-export interface DynamicObject {
-  [key: string]: any
-}
 
 export interface Context {
   readonly brand: string
@@ -15,29 +10,13 @@ export interface Context {
   readonly fourthly?: string
   readonly extras: string[]
   readonly input: string[]
-  readonly options: { [k: string]: any }
-  readonly pkg: { [k: string]: any }
+  readonly options: Record<string, unknown>
+  readonly pkg: Record<string, unknown>
 }
 
-// interface Arguments {
-//   [key: string]:
-//     | string
-//     | {
-//         readonly type: 'string'
-//         readonly default?: string
-//         readonly required?: boolean
-//       }
-//     | {
-//         readonly type: 'number'
-//         readonly default?: number
-//         readonly required?: boolean
-//       }
-//     | {
-//         readonly type: 'boolean'
-//         readonly default?: boolean
-//         readonly required?: boolean
-//       }
-// }
+export interface Options extends MinimistOptions {
+  readonly description?: string
+}
 
 export interface Command {
   readonly name: string
@@ -52,8 +31,4 @@ export interface Command {
   readonly help?: string | ((ctx: Context) => Promise<unknown>)
   readonly examples?: string | string[]
   readonly suggestions?: string | string[]
-}
-
-export interface Commands {
-  [name: string]: Command
 }

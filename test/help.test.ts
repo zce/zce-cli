@@ -1,7 +1,5 @@
 import { runCommand } from './utils'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { description } = require('../package.json')
+import { description } from '../package.json'
 
 jest.setTimeout(8000)
 

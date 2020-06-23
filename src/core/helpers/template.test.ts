@@ -7,6 +7,7 @@ test('unit:core:helpers:template', async () => {
 
 test('unit:core:helpers:template:render', async () => {
   const result1 = template.render('foo <%= bar %>', { bar: 'baz' })
+  // eslint-disable-next-line no-template-curly-in-string
   const result2 = template.render('foo ${bar}', { bar: 'baz' })
 
   expect(result1).toBe('foo baz')

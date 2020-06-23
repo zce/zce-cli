@@ -1,13 +1,11 @@
 import { satisfies } from 'semver'
 import { logger } from './helpers'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { name, engines } = require('../../package.json')
+import { name, engines } from '../../package.json'
 
 /**
  * Sniff test to ensure our dependencies are met
  */
-export const sniff = async () => {
+export const sniff = (): void => {
   // check the node version
   if (satisfies(process.version, engines.node)) return
   logger.error(

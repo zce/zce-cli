@@ -1,8 +1,6 @@
 import command from './help'
 import { createFakeContext } from '../../../test/utils'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { description } = require('../../../package.json')
+import { description } from '../../../package.json'
 
 let log: jest.SpyInstance
 let exit: jest.SpyInstance
@@ -27,9 +25,7 @@ test('unit:core:commands:help', async () => {
 
 test('unit:core:commands:help:action', async () => {
   const ctx = createFakeContext()
-
   await command.action(ctx)
-
   expect(log.mock.calls[0][0]).toBe(description)
   expect(exit.mock.calls[0][0]).toBe(undefined)
 })

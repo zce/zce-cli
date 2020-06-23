@@ -1,8 +1,6 @@
 import command from './default'
 import { createFakeContext } from '../../../test/utils'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { description } = require('../../../package.json')
+import { description } from '../../../package.json'
 
 let log: jest.SpyInstance
 let exit: jest.SpyInstance

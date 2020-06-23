@@ -1,5 +1,4 @@
 import { coreCommands } from './loader'
-
 import { Context, Command } from './types'
 
 /**
@@ -7,11 +6,11 @@ import { Context, Command } from './types'
  * @param cmd command
  * @param ctx context
  */
-export const invoke = async (cmd: Command, ctx: Context) => {
+export const invoke = async (cmd: Command, ctx: Context): Promise<void> => {
   if (ctx.options.help || ctx.options.h) {
     // invoke help command
     cmd = coreCommands.help
   }
   process.title = `${cmd.name} · ${ctx.brand}`
-  return await cmd.action(ctx)
+  await cmd.action(ctx)
 }

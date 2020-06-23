@@ -6,7 +6,7 @@ import { invoke } from './invoker'
  * Run the CLI
  * @param argv command arguments
  */
-export const run = async (argv?: string[]) => {
+export const run = async (argv?: string[]): Promise<void> => {
   // default argv
   argv = argv || process.argv.slice(2)
 
@@ -25,5 +25,5 @@ export const run = async (argv?: string[]) => {
   const ctx = await parse(extras, cmd.options)
 
   // invoke command
-  return await invoke(cmd, ctx)
+  await invoke(cmd, ctx)
 }

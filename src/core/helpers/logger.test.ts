@@ -68,13 +68,9 @@ test('unit:core:helpers:logger:error', async () => {
 test('unit:core:helpers:logger:debug', async () => {
   logger.debug('foo', 'test')
 
-  expect(log.mock.calls[0][0]).toBe(
-    '↓↓↓ --------------------[ test ]-------------------- ↓↓↓'
-  )
+  expect(log.mock.calls[0][0]).toBe('↓↓↓ --------------------[ test ]-------------------- ↓↓↓')
   expect(log.mock.calls[1][0]).toBe('foo')
-  expect(log.mock.calls[2][0]).toBe(
-    '↑↑↑ --------------------[ test ]-------------------- ↑↑↑'
-  )
+  expect(log.mock.calls[2][0]).toBe('↑↑↑ --------------------[ test ]-------------------- ↑↑↑')
 })
 
 test('unit:core:helpers:logger:pad', async () => {
