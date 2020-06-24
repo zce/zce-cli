@@ -13,7 +13,6 @@ test('unit:core:helpers:file', async () => {
   expect(file.isEmpty).toBeTruthy()
   expect(file.isFile).toBeTruthy()
   expect(file.isDirectory).toBeTruthy()
-  expect(file.tmpdir).toBeTruthy()
 })
 
 test('unit:core:helpers:file:remove', async () => {
@@ -59,7 +58,8 @@ test('unit:core:helpers:file:exists', async () => {
 test('unit:core:helpers:file:isEmpty', async () => {
   const empty1 = await file.isEmpty(__dirname)
   expect(empty1).toBe(false)
-  const temp = await file.tmpdir('test-file-isempty')
+  const temp = path.join(os.tmpdir(), 'zce-cli-test-file-isempty')
+  await file.mkdir(temp)
   const empty2 = await file.isEmpty(temp)
   expect(empty2).toBe(true)
   await file.remove(temp)
@@ -77,13 +77,4 @@ test('unit:core:helpers:file:isDirectory', async () => {
   expect(result1).toBe(false)
   const result2 = await file.isDirectory(__dirname)
   expect(result2).toBe(true)
-})
-
-test('unit:core:helpers:file:tmpdir', async () => {
-  const temp1 = await file.tmpdir()
-  expect(temp1).toBeTruthy()
-  const temp2 = await file.tmpdir('test-file-tmpdir')
-  expect(temp2).toBeTruthy()
-  await file.remove(temp1)
-  await file.remove(temp2)
 })

@@ -6,8 +6,6 @@ import rimraf from 'rimraf'
 import mkdirp from 'mkdirp'
 import tildify from 'tildify'
 import untildify from 'untildify'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pkg = require('../../../package.json')
 
 // Re-exports
 // https://github.com/microsoft/TypeScript/issues/2726
@@ -86,14 +84,4 @@ export const isFile = async (input: string): Promise<boolean> => {
 export const isDirectory = async (input: string): Promise<boolean> => {
   const s = await stat(input)
   return s.isDirectory()
-}
-
-/**
- * Get temp dirname.
- * @param parent parent dir name
- */
-export const tmpdir = async (parent: string = ''): Promise<string> => {
-  const target = path.join(os.tmpdir(), pkg.name, parent)
-  await mkdirp(target)
-  return target
 }
