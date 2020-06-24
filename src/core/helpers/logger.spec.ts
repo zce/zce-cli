@@ -28,46 +28,40 @@ test('unit:core:helpers:logger', async () => {
 })
 
 test('unit:core:helpers:logger:chalk', async () => {
-  expect(logger.chalk.enabled).toBe(false)
+  expect(logger.chalk.level).toBe(0)
 })
 
 test('unit:core:helpers:logger:log', async () => {
   logger.log('foo')
-
   expect(log.mock.calls[0][0]).toBe('foo')
 })
 
 test('unit:core:helpers:logger:info', async () => {
   logger.info('foo %s', 'bar')
-
   expect(log.mock.calls[0][0]).toBe('foo %s')
   expect(log.mock.calls[0][1]).toBe('bar')
 })
 
 test('unit:core:helpers:logger:success', async () => {
   logger.success('foo %s', 'bar')
-
   expect(log.mock.calls[0][0]).toBe('foo %s')
   expect(log.mock.calls[0][1]).toBe('bar')
 })
 
 test('unit:core:helpers:logger:warn', async () => {
   logger.warn('foo %s', 'bar')
-
   expect(log.mock.calls[0][0]).toBe('foo %s')
   expect(log.mock.calls[0][1]).toBe('bar')
 })
 
 test('unit:core:helpers:logger:error', async () => {
   logger.error('foo %s', 'bar')
-
   expect(log.mock.calls[0][0]).toBe('foo %s')
   expect(log.mock.calls[0][1]).toBe('bar')
 })
 
 test('unit:core:helpers:logger:debug', async () => {
   logger.debug('foo', 'test')
-
   expect(log.mock.calls[0][0]).toBe('↓↓↓ --------------------[ test ]-------------------- ↓↓↓')
   expect(log.mock.calls[1][0]).toBe('foo')
   expect(log.mock.calls[2][0]).toBe('↑↑↑ --------------------[ test ]-------------------- ↑↑↑')
@@ -75,7 +69,6 @@ test('unit:core:helpers:logger:debug', async () => {
 
 test('unit:core:helpers:logger:pad', async () => {
   const output = logger.pad('foo', 5)
-
   expect(output).toBe('foo  ')
 })
 

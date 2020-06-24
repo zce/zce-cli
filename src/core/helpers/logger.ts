@@ -5,8 +5,12 @@ import ora, { Ora } from 'ora'
 
 // Disable colors output for testing
 // chalk.level = process.env.NODE_ENV !== 'test'
+
+/**
+ * Chalk instance
+ */
 export const chalk = new Instance({
-  // level: process.env.NODE_ENV === 'test' ? 0 : 3
+  level: process.env.NODE_ENV === 'test' ? 0 : 3
 })
 
 /**
