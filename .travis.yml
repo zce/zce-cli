@@ -11,8 +11,8 @@ notifications:
     on_failure: change
 
 script:
-  - yarn build
-  - yarn coverage
+  - npm run build
+  - npm run coverage
 
 after_script:
   - npx codecov

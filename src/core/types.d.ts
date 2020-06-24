@@ -1,6 +1,7 @@
 import { Options } from 'minimist-options'
 
 // export declare namespace zce { }
+declare module '*.json'
 
 export interface Context {
   readonly brand: string

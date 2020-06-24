@@ -4,14 +4,14 @@ import { invoke } from './invoker'
 
 /**
  * Run the CLI
- * @param argv command arguments
+ * @param args command arguments
  */
-export const run = async (argv?: string[]): Promise<void> => {
-  // default argv
-  argv = argv || process.argv.slice(2)
+export const run = async (args?: string[]): Promise<void> => {
+  // default args
+  args = args || process.argv.slice(2)
 
   // extract command name and extra args
-  const [name, ...extras] = argv
+  const [name, ...extras] = args
 
   // load command by name
   const cmd = await load(name)
