@@ -1,9 +1,13 @@
+import os from 'os'
 import fs from 'fs'
+import path from 'path'
 import util from 'util'
 import rimraf from 'rimraf'
 import mkdirp from 'mkdirp'
 import tildify from 'tildify'
 import untildify from 'untildify'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pkg = require('../../../package.json')
 
 // Re-exports
 // https://github.com/microsoft/TypeScript/issues/2726
@@ -12,7 +16,14 @@ import untildify from 'untildify'
 // export { default as tildify } from 'tildify'
 // export { default as untildify } from 'untildify'
 
-export { rimraf, mkdirp, tildify, untildify }
+export { tildify, untildify }
+
+/**
+ * Remove input path.
+ * @param input input path
+ * @todo https://github.com/sindresorhus/trash
+ */
+export const remove = util.promisify(rimraf)
 
 /**
  * Get filename stat.
@@ -25,6 +36,17 @@ export const stat = util.promisify(fs.stat)
  * @param input input path
  */
 export const readdir = util.promisify(fs.readdir)
+
+/**
+ * Read dir.
+ * @param input input path
+ * @param options
+ */
+export const mkdir = async (input: string, options?: mkdirp.Mode | mkdirp.Options): Promise<string> => {
+  const target = path.resolve(input)
+  await mkdirp(input, options)
+  return target
+}
 
 /**
  * Check path exists.
@@ -64,4 +86,14 @@ export const isFile = async (input: string): Promise<boolean> => {
 export const isDirectory = async (input: string): Promise<boolean> => {
   const s = await stat(input)
   return s.isDirectory()
+}
+
+/**
+ * Get temp dirname.
+ * @param parent parent dir name
+ */
+export const tmpdir = async (parent: string = ''): Promise<string> => {
+  const target = path.join(os.tmpdir(), pkg.name, parent)
+  await mkdirp(target)
+  return target
 }

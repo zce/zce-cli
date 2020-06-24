@@ -1,20 +1,26 @@
-// import { tmpdir } from 'os'
-import { basename, join } from 'path'
+import os from 'os'
+import path from 'path'
 import * as file from './file'
 
 test('unit:core:helpers:file', async () => {
-  expect(file.rimraf).toBeTruthy()
-  expect(file.mkdirp).toBeTruthy()
   expect(file.tildify).toBeTruthy()
   expect(file.untildify).toBeTruthy()
-  // console.log(file)
-  // console.log(file.untildify('~/deve'))
+  expect(file.remove).toBeTruthy()
   expect(file.stat).toBeTruthy()
+  expect(file.mkdir).toBeTruthy()
   expect(file.readdir).toBeTruthy()
   expect(file.exists).toBeTruthy()
   expect(file.isEmpty).toBeTruthy()
   expect(file.isFile).toBeTruthy()
   expect(file.isDirectory).toBeTruthy()
+  expect(file.tmpdir).toBeTruthy()
+})
+
+test('unit:core:helpers:file:remove', async () => {
+  const temp = await file.mkdir('test-file-remove')
+  await file.remove(temp)
+  const exists = await file.exists(temp)
+  expect(exists).toBe(false)
 })
 
 test('unit:core:helpers:file:stat', async () => {
@@ -24,7 +30,21 @@ test('unit:core:helpers:file:stat', async () => {
 
 test('unit:core:helpers:file:readdir', async () => {
   const files = await file.readdir(__dirname)
-  expect(files).toContain(basename(__filename))
+  expect(files).toContain(path.basename(__filename))
+})
+
+test('unit:core:helpers:file:mkdir', async () => {
+  const dir = await file.mkdir('test/.temp')
+  expect(dir).toContain(path.join(process.cwd(), 'test/.temp'))
+  const exists = await file.exists(dir)
+  expect(exists).toBe(true)
+  await file.remove(dir)
+  const target2 = path.join(os.tmpdir(), 'zce-cli-test-file-mkdir')
+  const dir2 = await file.mkdir(target2)
+  expect(dir2).toContain(target2)
+  const exists2 = await file.exists(dir2)
+  expect(exists2).toBe(true)
+  await file.remove(dir2)
 })
 
 test('unit:core:helpers:file:exists', async () => {
@@ -32,13 +52,17 @@ test('unit:core:helpers:file:exists', async () => {
   expect(exists1).toBe(true)
   const exists2 = await file.exists(__filename)
   expect(exists2).toBe(true)
-  const exists3 = await file.exists(join(__dirname, 'fake-dir'))
+  const exists3 = await file.exists(path.join(__dirname, 'fake-dir'))
   expect(exists3).toBe(false)
 })
 
 test('unit:core:helpers:file:isEmpty', async () => {
-  const empty = await file.isEmpty(__dirname)
-  expect(empty).toBe(false)
+  const empty1 = await file.isEmpty(__dirname)
+  expect(empty1).toBe(false)
+  const temp = await file.tmpdir('test-file-isempty')
+  const empty2 = await file.isEmpty(temp)
+  expect(empty2).toBe(true)
+  await file.remove(temp)
 })
 
 test('unit:core:helpers:file:isFile', async () => {
@@ -53,4 +77,13 @@ test('unit:core:helpers:file:isDirectory', async () => {
   expect(result1).toBe(false)
   const result2 = await file.isDirectory(__dirname)
   expect(result2).toBe(true)
+})
+
+test('unit:core:helpers:file:tmpdir', async () => {
+  const temp1 = await file.tmpdir()
+  expect(temp1).toBeTruthy()
+  const temp2 = await file.tmpdir('test-file-tmpdir')
+  expect(temp2).toBeTruthy()
+  await file.remove(temp1)
+  await file.remove(temp2)
 })

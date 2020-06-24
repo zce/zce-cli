@@ -5,6 +5,8 @@ node_modules
 
 /lib
 
+/test/.temp
+
 .DS_Store
 
 npm-debug.log*
