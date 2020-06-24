@@ -4,7 +4,10 @@ import { promisify } from 'util'
 import { join, basename } from 'path'
 import { createWriteStream } from 'fs'
 import got, { StreamOptions } from 'got'
-import { name, version, homepage } from '../../../package.json'
+// // https://stackoverflow.com/questions/55753163/package-json-is-not-under-rootdir#61467483
+// import { name, version, homepage } from '../../../package.json'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { name, version, homepage } = require('../../../package.json')
 
 const pipe = promisify(pipeline)
 

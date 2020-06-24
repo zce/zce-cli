@@ -2,7 +2,8 @@ import { basename } from 'path'
 import minimist from 'minimist'
 import buildOptions from 'minimist-options'
 import { Context, Options } from './types'
-import pkg from '../../package.json'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pkg = require('../../package.json')
 
 /**
  * parse context from cli argv

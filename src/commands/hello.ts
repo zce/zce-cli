@@ -1,23 +1,23 @@
 import { logger, missingArgument, Command, Context } from '../core'
 
-export default {
+const command: Command = {
   name: 'hello',
   usage: 'hello <name> [options]',
   description: 'hello command',
   alias: 'hi',
   // hidden: true,
   options: {
-    lang: {
-      type: 'string',
-      alias: 'l',
-      default: 'en',
-      description: 'message language'
-    },
-    debug: {
-      type: 'boolean',
-      alias: 'd',
-      description: 'debug mode'
-    }
+    // lang: {
+    //   type: 'string',
+    //   alias: 'l',
+    //   default: 'en',
+    //   description: 'message language'
+    // },
+    // debug: {
+    //   type: 'boolean',
+    //   alias: 'd',
+    //   description: 'debug mode'
+    // }
   },
   action: async (ctx: Context) => {
     if (!ctx.primary) {
@@ -34,4 +34,6 @@ export default {
       logger.debug(ctx)
     }
   }
-} as Command
+}
+
+export default command

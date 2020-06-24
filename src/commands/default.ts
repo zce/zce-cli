@@ -1,7 +1,8 @@
 import { unknownCommand, Command, Context } from '../core'
-import { description } from '../../package.json'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { description } = require('../../package.json')
 
-export default {
+const command: Command = {
   name: 'default',
   usage: '<command> [options]',
   description: description,
@@ -9,7 +10,10 @@ export default {
     if (ctx.primary) {
       return unknownCommand(ctx.primary, `${ctx.brand} --help`)
     }
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    process.env.NODE_ENV === 'test' || require('zce')()
+    // // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // process.env.NODE_ENV === 'test' || require('zce')()
+    console.log('zce-cli')
   }
-} as Command
+}
+
+export default command

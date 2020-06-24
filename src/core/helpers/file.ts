@@ -1,11 +1,18 @@
 import fs from 'fs'
 import util from 'util'
+import rimraf from 'rimraf'
+import mkdirp from 'mkdirp'
+import tildify from 'tildify'
+import untildify from 'untildify'
 
 // Re-exports
-export { default as rimraf } from 'rimraf'
-export { default as mkdirp } from 'mkdirp'
-export { default as tildify } from 'tildify'
-export { default as untildify } from 'untildify'
+// https://github.com/microsoft/TypeScript/issues/2726
+// export { default as rimraf } from 'rimraf'
+// export { default as mkdirp } from 'mkdirp'
+// export { default as tildify } from 'tildify'
+// export { default as untildify } from 'untildify'
+
+export { rimraf, mkdirp, tildify, untildify }
 
 /**
  * Get filename stat.
@@ -27,8 +34,7 @@ export const exists = async (input: string): Promise<boolean> => {
   try {
     await stat(input)
     return true
-  }
-  catch (e) {
+  } catch (e) {
     return false
   }
 }

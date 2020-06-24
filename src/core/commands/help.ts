@@ -100,7 +100,7 @@ const subCommandHelp = async (name: string, ctx: Context) => {
   await outputHelp(ctx.brand, cmd)
 }
 
-export default {
+const command: Command = {
   name: 'help',
   usage: 'help <command>',
   description: 'output usage information',
@@ -117,4 +117,6 @@ export default {
     }
     process.exit()
   }
-} as Command
+}
+
+export default command

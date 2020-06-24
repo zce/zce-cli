@@ -1,8 +1,9 @@
 import { unknownCommand } from '../error'
 import { Command, Context } from '../types'
-import { description } from '../../../package.json'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { description } = require('../../../package.json')
 
-export default {
+const command: Command = {
   name: 'default',
   usage: '<command> [options]',
   description: description,
@@ -12,4 +13,6 @@ export default {
     // unknown command
     unknownCommand(ctx.primary, `${ctx.brand} --help`)
   }
-} as Command
+}
+
+export default command

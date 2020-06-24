@@ -1,7 +1,8 @@
 import { homedir, tmpdir } from 'os'
 import { join } from 'path'
 import execa from 'execa'
-import { name } from '../../../package.json'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { name } = require('../../../package.json')
 
 const identify = process.env.NODE_ENV === 'test' ? name : `${name}-test`
 
