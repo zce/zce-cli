@@ -11,14 +11,13 @@ afterEach(async () => {
 })
 
 test('unit:core:helpers:logger', async () => {
-  expect(logger.chalk).toBeTruthy()
+  expect(logger.color).toBeTruthy()
   expect(logger.log).toBeTruthy()
   expect(logger.info).toBeTruthy()
   expect(logger.success).toBeTruthy()
   expect(logger.warn).toBeTruthy()
   expect(logger.error).toBeTruthy()
   expect(logger.debug).toBeTruthy()
-  expect(logger.pad).toBeTruthy()
   expect(logger.table).toBeTruthy()
   expect(logger.indent).toBeTruthy()
   expect(logger.newline).toBeTruthy()
@@ -28,7 +27,7 @@ test('unit:core:helpers:logger', async () => {
 })
 
 test('unit:core:helpers:logger:chalk', async () => {
-  expect(logger.chalk.level).toBe(0)
+  expect(logger.color.level).toBe(0)
 })
 
 test('unit:core:helpers:logger:log', async () => {
@@ -67,35 +66,22 @@ test('unit:core:helpers:logger:debug', async () => {
   expect(log.mock.calls[2][0]).toBe('↑↑↑ --------------------[ test ]-------------------- ↑↑↑')
 })
 
-test('unit:core:helpers:logger:pad', async () => {
-  const output = logger.pad('foo', 5)
-  expect(output).toBe('foo  ')
-})
-
 test('unit:core:helpers:logger:table', async () => {
-  const table1 = logger.table(
-    {
-      foo: '-',
-      barbaz: '-'
-    },
-    1
-  )
-  const table2 = logger.table({
-    foo: '-',
-    bar: '-'
-  })
-
+  const table1 = logger.table({ foo: '-', barbaz: '-' }, 1)
   expect(table1).toBe('foo    -\nbarbaz -')
+
+  const table2 = logger.table({ foo: '-', bar: '-' })
   expect(table2).toBe('foo                  -\nbar                  -')
 })
 
 test('unit:core:helpers:logger:indent', async () => {
   const indent1 = logger.indent('foo')
-  const indent2 = logger.indent('foo\nbar')
-  const indent3 = logger.indent('foo', 4)
-
   expect(indent1).toBe('  foo')
+
+  const indent2 = logger.indent('foo\nbar')
   expect(indent2).toBe('  foo\n  bar')
+
+  const indent3 = logger.indent('foo', 4)
   expect(indent3).toBe('    foo')
 })
 

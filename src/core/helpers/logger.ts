@@ -3,13 +3,21 @@ import { Instance } from 'chalk'
 import redent from 'redent'
 import ora, { Ora } from 'ora'
 
-// Disable colors output for testing
-// chalk.level = process.env.NODE_ENV !== 'test'
+/**
+ * Pad `input` to `width`.
+ * @param input input text
+ * @param width width
+ */
+const pad = (input: string, width: number): string => {
+  const padding = Math.max(0, width - input.length)
+  return input + Array(padding + 1).join(' ')
+}
 
 /**
  * Chalk instance
  */
-export const chalk = new Instance({
+export const color = new Instance({
+  // Disable colors output for testing
   level: process.env.NODE_ENV === 'test' ? 0 : 3
 })
 
@@ -27,7 +35,7 @@ export const log = (message?: unknown, ...optionalParams: unknown[]): void => {
  * @param message The message to show.
  */
 export const info = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(chalk.reset(message), ...optionalParams)
+  log(color.reset(message), ...optionalParams)
 }
 
 /**
@@ -36,7 +44,7 @@ export const info = (message?: unknown, ...optionalParams: unknown[]): void => {
  * @param message The message to show.
  */
 export const success = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(chalk.green(message), ...optionalParams)
+  log(color.green(message), ...optionalParams)
 }
 
 /**
@@ -45,7 +53,7 @@ export const success = (message?: unknown, ...optionalParams: unknown[]): void =
  * @param message The message to show.
  */
 export const warn = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(chalk.yellow(message), ...optionalParams)
+  log(color.yellow(message), ...optionalParams)
 }
 
 /**
@@ -54,7 +62,7 @@ export const warn = (message?: unknown, ...optionalParams: unknown[]): void => {
  * @param message The message to show.
  */
 export const error = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(chalk.red(message), ...optionalParams)
+  log(color.red(message), ...optionalParams)
 }
 
 /**
@@ -63,19 +71,9 @@ export const error = (message?: unknown, ...optionalParams: unknown[]): void => 
  * @param message The message to show.
  */
 export const debug = (message: unknown, title = 'DEBUG'): void => {
-  log(chalk.magenta(`↓↓↓ --------------------[ ${title} ]-------------------- ↓↓↓`))
+  log(color.magenta(`↓↓↓ --------------------[ ${title} ]-------------------- ↓↓↓`))
   log(message)
-  log(chalk.magenta(`↑↑↑ --------------------[ ${title} ]-------------------- ↑↑↑`))
-}
-
-/**
- * Pad `input` to `width`.
- * @param input input text
- * @param width width
- */
-export const pad = (input: string, width: number): string => {
-  const len = Math.max(0, width - input.length)
-  return input + Array(len + 1).join(' ')
+  log(color.magenta(`↑↑↑ --------------------[ ${title} ]-------------------- ↑↑↑`))
 }
 
 /**
@@ -110,7 +108,7 @@ export const newline = (): void => {
  */
 export const divider = (): void => {
   log(
-    chalk.gray('--------------------------------------------------------------------------------')
+    color.gray('--------------------------------------------------------------------------------')
   )
 }
 
@@ -120,8 +118,7 @@ export const divider = (): void => {
  */
 export const clear = (title?: string): void => {
   if (!process.stdout.isTTY) return
-  const blank = '\n'.repeat(process.stdout.rows || 30)
-  log(blank)
+  log('\n'.repeat(process.stdout.rows || 30))
   cursorTo(process.stdout, 0, 0)
   clearScreenDown(process.stdout)
   title && log(title)
