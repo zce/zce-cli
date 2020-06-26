@@ -4,7 +4,7 @@ let log: jest.SpyInstance
 let exit: jest.SpyInstance
 
 beforeEach(async () => {
-  log = jest.spyOn(console, 'log')
+  log = jest.spyOn(console, 'log').mockImplementation()
   exit = jest.spyOn(process, 'exit').mockImplementation()
 })
 

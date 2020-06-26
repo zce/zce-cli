@@ -26,15 +26,33 @@
 - [ ] init command
 - [ ] commands docs
 
+## Issues
+
+- https://stackoverflow.com/questions/55753163/package-json-is-not-under-rootdir#61467483
+
+```javascript
+// Re-exports
+// https://github.com/microsoft/TypeScript/issues/2726
+// export { default as rimraf } from 'rimraf'
+// export { default as mkdirp } from 'mkdirp'
+// export { default as tildify } from 'tildify'
+// export { default as untildify } from 'untildify'
+```
+
+lazy-import
+
 ## dependencies
 
-- chalk
-- got
-- minimist
-- minimist-options
-- ora
-- redent
-- zce
+⭐️ ejs for templating
+⭐️ semver for version investigations
+⭐️ fs-jetpack for the filesystem
+⭐️ yargs-parser, enquirer, colors, ora and cli-table3 for the command line
+⭐️ axios & apisauce for web & apis
+⭐️ cosmiconfig for flexible configuration
+⭐️ cross-spawn for running sub-commands
+⭐️ execa for running more sub-commands
+⭐️ node-which for finding executables
+⭐️ pluralize for manipulating strings
 
 ## devDependencies
 
@@ -120,3 +138,18 @@
   "exclude": ["src/**/*.test.ts"],
   "include": ["src/**/*.ts"]
 }
+
+const loadCommands = (dir: string) => new Proxy<Record<string, Command>>({}, {
+  get (target, name) {
+    if (Reflect.has(target, name)) return Reflect.get(target, name)
+    try {
+      const cmd = require(dir + '/' + name.toString()) as Command
+      Reflect.set(target, name, cmd)
+      return cmd
+    } catch (e) {
+      if (e.code !== 'MODULE_NOT_FOUND') {
+        throw e
+      }
+    }
+  }
+})

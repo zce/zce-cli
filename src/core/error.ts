@@ -26,11 +26,6 @@ export const missingArgument = (name: string): void => {
 //   process.exit(1)
 // }
 
-// export const missingArgument = (name: string): void => {
-//   console.error('Missing required argument: `%s`.', chalk.yellow(`<${name}>`))
-//   process.exit(1)
-// }
-
 // export const optionMissingArgument = (option, flag): void => {
 //   if (flag) {
 //     console.error('Missing required argument for option: `%s`, got `%s`', chalk.yellow(option.flags), chalk.yellow(flag))

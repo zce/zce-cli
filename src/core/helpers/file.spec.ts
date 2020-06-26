@@ -1,73 +1,77 @@
 import os from 'os'
+import fs from 'fs'
 import path from 'path'
 import * as file from './file'
 
-test('unit:core:helpers:file', async () => {
-  expect(file.tildify).toBeTruthy()
-  expect(file.untildify).toBeTruthy()
-  expect(file.remove).toBeTruthy()
-  expect(file.stat).toBeTruthy()
-  expect(file.mkdir).toBeTruthy()
-  expect(file.readdir).toBeTruthy()
-  expect(file.exists).toBeTruthy()
-  expect(file.isEmpty).toBeTruthy()
-  expect(file.isFile).toBeTruthy()
-  expect(file.isDirectory).toBeTruthy()
-})
+const pkg = require('../../../package.json')
+
+const tempPrefix = path.join(os.tmpdir(), 'zce-cli-test-')
 
 test('unit:core:helpers:file:remove', async () => {
-  const temp = await file.mkdir('test-file-remove')
-  await file.remove(temp)
-  const exists = await file.exists(temp)
-  expect(exists).toBe(false)
-})
+  const temp = await fs.promises.mkdtemp(tempPrefix)
 
-test('unit:core:helpers:file:stat', async () => {
-  const stat = await file.stat(__filename)
-  expect(stat.size).toBeGreaterThan(100)
-})
+  const filename1 = path.join(temp, 'zce-cli-remove-1.txt')
+  await fs.promises.writeFile(filename1, '')
+  await file.remove(filename1)
+  const exists1 = fs.existsSync(filename1)
+  expect(exists1).toBe(false)
 
-test('unit:core:helpers:file:readdir', async () => {
-  const files = await file.readdir(__dirname)
-  expect(files).toContain(path.basename(__filename))
+  const filename2 = path.join(temp, 'zce-cli-remove-2.txt')
+  await file.remove(filename2)
+  const exists2 = fs.existsSync(filename2)
+  expect(exists2).toBe(false)
+
+  await fs.promises.rmdir(temp)
 })
 
 test('unit:core:helpers:file:mkdir', async () => {
-  const dir = await file.mkdir('test/.temp')
-  expect(dir).toContain(path.join(process.cwd(), 'test/.temp'))
-  const exists = await file.exists(dir)
-  expect(exists).toBe(true)
-  await file.remove(dir)
-  const target2 = path.join(os.tmpdir(), 'zce-cli-test-file-mkdir')
-  const dir2 = await file.mkdir(target2)
-  expect(dir2).toContain(target2)
-  const exists2 = await file.exists(dir2)
+  // relative path recursive
+  const target1 = `test/.temp/${Date.now()}/zce/cli/mkdir/1`
+  await file.mkdir(target1)
+  const exists1 = fs.existsSync(target1)
+  expect(exists1).toBe(true)
+  await fs.promises.rmdir('test/.temp', { recursive: true })
+
+  // absolute path recursive
+  const root2 = tempPrefix + Date.now()
+  const target2 = `${root2}/zce/cli/mkdir/2`
+  await file.mkdir(target2)
+  const exists2 = fs.existsSync(target2)
   expect(exists2).toBe(true)
-  await file.remove(dir2)
+  await fs.promises.rmdir(root2, { recursive: true })
+
+  // mode options
+  const target3 = tempPrefix + Date.now()
+  await file.mkdir(target3, { mode: 0o755, recursive: false })
+  const stat3 = await fs.promises.stat(target3)
+  expect(stat3.mode).toBe(process.platform === 'win32' ? 16822 : 0o755)
+  await fs.promises.rmdir(target3)
 })
 
 test('unit:core:helpers:file:exists', async () => {
-  const exists1 = await file.exists(__dirname)
-  expect(exists1).toBe(true)
-  const exists2 = await file.exists(__filename)
-  expect(exists2).toBe(true)
-  const exists3 = await file.exists(path.join(__dirname, 'fake-dir'))
-  expect(exists3).toBe(false)
-})
+  const result1 = await file.exists(__dirname)
+  expect(result1).toBe('dir')
 
-test('unit:core:helpers:file:isEmpty', async () => {
-  const empty1 = await file.isEmpty(__dirname)
-  expect(empty1).toBe(false)
-  const temp = path.join(os.tmpdir(), 'zce-cli-test-file-isempty')
-  await file.mkdir(temp)
-  const empty2 = await file.isEmpty(temp)
-  expect(empty2).toBe(true)
-  await file.remove(temp)
+  const result2 = await file.exists(__filename)
+  expect(result2).toBe('file')
+
+  const result3 = await file.exists(tempPrefix + Date.now())
+  expect(result3).toBe(false)
+
+  // // https://github.com/nodejs/node/issues/18518
+  // const target4 = `./test/.temp`
+  // await fs.promises.mkdir(target4)
+  // const symlink4 = path.join(target4, 'symlink')
+  // await fs.promises.symlink(__dirname, symlink4, 'junction')
+  // const result4 = await file.exists(symlink4)
+  // expect(result4).toBe('dir')
+  // await fs.promises.rmdir(target4, { recursive: true })
 })
 
 test('unit:core:helpers:file:isFile', async () => {
   const result1 = await file.isFile(__filename)
   expect(result1).toBe(true)
+
   const result2 = await file.isFile(__dirname)
   expect(result2).toBe(false)
 })
@@ -75,6 +79,95 @@ test('unit:core:helpers:file:isFile', async () => {
 test('unit:core:helpers:file:isDirectory', async () => {
   const result1 = await file.isDirectory(__filename)
   expect(result1).toBe(false)
+
   const result2 = await file.isDirectory(__dirname)
   expect(result2).toBe(true)
+})
+
+test('unit:core:helpers:file:isEmpty', async () => {
+  const empty1 = await file.isEmpty(__dirname)
+  expect(empty1).toBe(false)
+
+  const temp2 = await fs.promises.mkdtemp(tempPrefix)
+  const empty2 = await file.isEmpty(temp2)
+  expect(empty2).toBe(true)
+  await fs.promises.rmdir(temp2)
+})
+
+test('unit:core:helpers:file:getDataPath', async () => {
+  const result1 = file.getDataPath()
+  expect(result1).toBe(path.join(os.homedir(), `.config/${pkg.name}-test`))
+
+  const result2 = file.getDataPath('foo')
+  expect(result2).toBe(path.join(os.homedir(), `.config/${pkg.name}-test/foo`))
+
+  const result3 = file.getDataPath('foo', 'bar')
+  expect(result3).toBe(path.join(os.homedir(), `.config/${pkg.name}-test/foo/bar`))
+})
+
+test('unit:core:helpers:file:getTempPath', async () => {
+  const result1 = file.getTempPath()
+  expect(result1).toBe(path.join(os.tmpdir(), `${pkg.name}-test`))
+
+  const result2 = file.getTempPath('foo')
+  expect(result2).toBe(path.join(os.tmpdir(), `${pkg.name}-test/foo`))
+
+  const result3 = file.getTempPath('foo', 'bar')
+  expect(result3).toBe(path.join(os.tmpdir(), `${pkg.name}-test/foo/bar`))
+})
+
+test('unit:core:helpers:file:tildify', async () => {
+  const home = os.homedir()
+
+  // home dir
+  const result1 = file.tildify(home)
+  expect(result1).toBe('~')
+
+  // home sub dir
+  const result2 = file.tildify(path.join(home, 'tildify'))
+  expect(result2).toBe(path.join('~', 'tildify'))
+
+  // ensure only a fully matching path is replaced
+  const result3 = file.tildify(`${home}foo/tildify`)
+  expect(result3).toBe(`${home}foo${path.sep}tildify`)
+
+  // only tildify when home is at the start of a path
+  const result4 = file.tildify(path.join('tildify', home))
+  expect(result4).toBe(path.join('tildify', home))
+
+  // ignore relative paths
+  const result5 = file.tildify('tildify')
+  expect(result5).toBe('tildify')
+
+  // ignore not home sub dir
+  const result6 = file.tildify('/tildify')
+  expect(result6).toBe(path.sep + 'tildify')
+})
+
+test('unit:core:helpers:file:untildify', async () => {
+  const home = os.homedir()
+
+  // home dir
+  const result1 = file.untildify('~')
+  expect(result1).toBe(home)
+
+  // home sub dir
+  const result2 = file.untildify(path.join('~', 'untildify'))
+  expect(result2).toBe(path.join(home, 'untildify'))
+
+  // ensure only a fully matching path is replaced
+  const result3 = file.untildify(`${home}foo${path.sep}untildify`)
+  expect(result3).toBe(`${home}foo${path.sep}untildify`)
+
+  // only untildify when home is at the start of a path
+  const result4 = file.untildify(path.join('untildify', home))
+  expect(result4).toBe(path.join('untildify', home))
+
+  // ignore relative paths
+  const result5 = file.untildify('untildify')
+  expect(result5).toBe('untildify')
+
+  // ignore not home sub dir
+  const result6 = file.untildify('/untildify')
+  expect(result6).toBe('/untildify')
 })

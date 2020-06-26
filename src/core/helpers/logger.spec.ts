@@ -3,7 +3,7 @@ import * as logger from './logger'
 let log: jest.SpyInstance
 
 beforeEach(async () => {
-  log = jest.spyOn(console, 'log')
+  log = jest.spyOn(console, 'log').mockImplementation()
 })
 
 afterEach(async () => {
@@ -11,19 +11,19 @@ afterEach(async () => {
 })
 
 test('unit:core:helpers:logger', async () => {
-  expect(logger.color).toBeTruthy()
-  expect(logger.log).toBeTruthy()
-  expect(logger.info).toBeTruthy()
-  expect(logger.success).toBeTruthy()
-  expect(logger.warn).toBeTruthy()
-  expect(logger.error).toBeTruthy()
-  expect(logger.debug).toBeTruthy()
-  expect(logger.table).toBeTruthy()
-  expect(logger.indent).toBeTruthy()
-  expect(logger.newline).toBeTruthy()
-  expect(logger.divider).toBeTruthy()
-  expect(logger.clear).toBeTruthy()
-  expect(logger.spin).toBeTruthy()
+  expect(typeof logger.color).toBe('function')
+  expect(typeof logger.log).toBe('function')
+  expect(typeof logger.info).toBe('function')
+  expect(typeof logger.success).toBe('function')
+  expect(typeof logger.warn).toBe('function')
+  expect(typeof logger.error).toBe('function')
+  expect(typeof logger.debug).toBe('function')
+  expect(typeof logger.table).toBe('function')
+  expect(typeof logger.indent).toBe('function')
+  expect(typeof logger.newline).toBe('function')
+  expect(typeof logger.divider).toBe('function')
+  expect(typeof logger.clear).toBe('function')
+  expect(typeof logger.spin).toBe('function')
 })
 
 test('unit:core:helpers:logger:chalk', async () => {
@@ -94,9 +94,7 @@ test('unit:core:helpers:logger:newline', async () => {
 test('unit:core:helpers:logger:divider', async () => {
   logger.divider()
 
-  expect(log.mock.calls[0][0]).toBe(
-    '--------------------------------------------------------------------------------'
-  )
+  expect(log.mock.calls[0][0]).toBe('--------------------------------------------------------------------------------')
 })
 
 test('unit:core:helpers:logger:clear', async () => {
@@ -105,11 +103,7 @@ test('unit:core:helpers:logger:clear', async () => {
 })
 
 test('unit:core:helpers:logger:spin', async () => {
-  expect(typeof logger.spin).toBe('function')
-
   const spinner = logger.spin()
-
   expect(typeof spinner.stop).toBe('function')
-
   spinner.stop()
 })

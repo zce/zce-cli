@@ -1,5 +1,4 @@
 import { unknownCommand, Command, Context } from '../core'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { description } = require('../../package.json')
 
 const command: Command = {

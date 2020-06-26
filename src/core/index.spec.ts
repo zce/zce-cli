@@ -1,12 +1,14 @@
 import * as core from '.'
 
-test('unit:core:index', async () => {
-  expect(core.run).toBeTruthy()
-  expect(core.file).toBeTruthy()
-  expect(core.http).toBeTruthy()
-  expect(core.system).toBeTruthy()
-  expect(core.logger).toBeTruthy()
-  expect(core.template).toBeTruthy()
-  expect(core.unknownCommand).toBeTruthy()
-  expect(core.missingArgument).toBeTruthy()
+test('unit:core', async () => {
+  expect(typeof core.run).toBe('function')
+  expect(typeof core.sniff).toBe('function')
+  expect(typeof core.unknownCommand).toBe('function')
+  expect(typeof core.missingArgument).toBe('function')
+  expect(typeof core.file).toBe('object')
+  expect(typeof core.http).toBe('object')
+  expect(typeof core.prompt).toBe('object')
+  expect(typeof core.system).toBe('object')
+  expect(typeof core.logger).toBe('object')
+  expect(typeof core.template).toBe('object')
 })

@@ -1,71 +1,54 @@
 import os from 'os'
-import fs from 'fs'
+import { promises as fs, MakeDirectoryOptions } from 'fs'
 import path from 'path'
-import util from 'util'
 import rimraf from 'rimraf'
-import mkdirp from 'mkdirp'
-import tildify from 'tildify'
-import untildify from 'untildify'
 
-// Re-exports
-// https://github.com/microsoft/TypeScript/issues/2726
-// export { default as rimraf } from 'rimraf'
-// export { default as mkdirp } from 'mkdirp'
-// export { default as tildify } from 'tildify'
-// export { default as untildify } from 'untildify'
+const { name } = require('../../../package.json')
 
-export { tildify, untildify }
+const identify = process.env.NODE_ENV !== 'test' ? name : `${name}-test`
 
 /**
  * Remove input path.
  * @param input input path
- * @todo https://github.com/sindresorhus/trash
+ * @todo
+ * - https://github.com/sindresorhus/trash
+ * - native api instead
  */
-export const remove = util.promisify(rimraf)
+export const remove = async (input: string, options?: rimraf.Options): Promise<void> => new Promise(resolve => {
+  rimraf(input, { glob: false, ...options }, err => {
+    if (err) throw err
+    resolve()
+  })
+})
 
 /**
- * Get filename stat.
+ * Make directory recursive.
  * @param input input path
+ * @param options recursive by default
  */
-export const stat = util.promisify(fs.stat)
-
-/**
- * Read dir.
- * @param input input path
- */
-export const readdir = util.promisify(fs.readdir)
-
-/**
- * Read dir.
- * @param input input path
- * @param options
- */
-export const mkdir = async (input: string, options?: mkdirp.Mode | mkdirp.Options): Promise<string> => {
-  const target = path.resolve(input)
-  await mkdirp(input, options)
-  return target
+export const mkdir = async (input: string, options?: MakeDirectoryOptions): Promise<void> => {
+  await fs.mkdir(input, { recursive: true, ...options })
 }
 
 /**
- * Check path exists.
+ * Checks whether something exists on given path.
  * @param input input path
  */
-export const exists = async (input: string): Promise<boolean> => {
+export const exists = async (input: string): Promise<false | 'file' | 'dir' | 'other'> => {
   try {
-    await stat(input)
-    return true
-  } catch (e) {
-    return false
+    const stat = await fs.stat(input)
+    if (stat.isDirectory()) {
+      return 'dir'
+    } else if (stat.isFile()) {
+      return 'file'
+    }
+    return 'other'
+  } catch (err) {
+    if (err.code !== 'ENOENT') {
+      throw err
+    }
   }
-}
-
-/**
- * Check input is empty.
- * @param input input path
- */
-export const isEmpty = async (input: string): Promise<boolean> => {
-  const files = await readdir(input)
-  return !files.length
+  return false
 }
 
 /**
@@ -73,8 +56,8 @@ export const isEmpty = async (input: string): Promise<boolean> => {
  * @param input input path
  */
 export const isFile = async (input: string): Promise<boolean> => {
-  const s = await stat(input)
-  return s.isFile()
+  const result = await exists(input)
+  return result === 'file'
 }
 
 /**
@@ -82,6 +65,60 @@ export const isFile = async (input: string): Promise<boolean> => {
  * @param input input path
  */
 export const isDirectory = async (input: string): Promise<boolean> => {
-  const s = await stat(input)
-  return s.isDirectory()
+  const result = await exists(input)
+  return result === 'dir'
+}
+
+/**
+ * Check input is empty.
+ * @param input input path
+ */
+export const isEmpty = async (input: string): Promise<boolean> => {
+  const files = await fs.readdir(input)
+  return !files.length
+}
+
+/**
+ * Get temp path.
+ * @param paths additional paths
+ */
+export const getTempPath = (...paths: string[]): string => {
+  return path.join(os.tmpdir(), identify, ...paths)
+}
+
+/**
+ * Get data path.
+ * @param paths additional paths
+ */
+export const getDataPath = (...paths: string[]): string => {
+  return path.join(os.homedir(), '.config', identify, ...paths)
+}
+
+/**
+ * Tildify absolute path.
+ * @param input absolute path
+ * @see https://github.com/sindresorhus/tildify
+ */
+export const tildify = (input: string): string => {
+  const home = os.homedir()
+
+  // https://github.com/sindresorhus/tildify/issues/3
+  input = path.normalize(input) + path.sep
+
+  if (input.indexOf(home) === 0) {
+    input = input.replace(home + path.sep, `~${path.sep}`)
+  }
+
+  return input.slice(0, -1)
+}
+
+/**
+ * Untildify absolute path.
+ * @param input absolute path
+ * @see https://github.com/sindresorhus/untildify
+ */
+export const untildify = (input: string): string => {
+  const home = os.homedir()
+
+  return input.replace(/^~(?=$|\/|\\)/, home)
 }

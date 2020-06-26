@@ -4,7 +4,7 @@ import redent from 'redent'
 import ora, { Ora } from 'ora'
 
 /**
- * Pad `input` to `width`.
+ * Pad strings.
  * @param input input text
  * @param width width
  */
@@ -107,9 +107,7 @@ export const newline = (): void => {
  * Prints a divider line
  */
 export const divider = (): void => {
-  log(
-    color.gray('--------------------------------------------------------------------------------')
-  )
+  log(color.gray('--------------------------------------------------------------------------------'))
 }
 
 /**

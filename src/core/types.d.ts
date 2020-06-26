@@ -1,7 +1,9 @@
 import { Options } from 'minimist-options'
 
 // export declare namespace zce { }
-declare module '*.json'
+
+export { Options }
+// export interface Options extends MinimistOptions {}
 
 export interface Context {
   readonly brand: string
@@ -14,9 +16,6 @@ export interface Context {
   readonly options: Record<string, unknown>
   readonly pkg: Record<string, unknown>
 }
-
-export { Options }
-// export interface Options extends MinimistOptions {}
 
 export interface Command {
   readonly name: string

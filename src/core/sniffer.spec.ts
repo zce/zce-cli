@@ -30,9 +30,7 @@ test('unit:core:sniffer:sniff:version', async () => {
 
   sniffer.sniff()
 
-  expect(log.mock.calls[0][0]).toBe(
-    'You are using Node.js %s, but this version of %s requires Node.js %s.'
-  )
+  expect(log.mock.calls[0][0]).toBe('You are using Node.js %s, but this version of %s requires Node.js %s.')
   expect(log.mock.calls[1][0]).toBe('Please upgrade your Node.js version before this operation.')
   expect(exit.mock.calls[0][0]).toBe(1)
 

@@ -1,16 +1,17 @@
+/* eslint-disable no-template-curly-in-string */
+
 import * as template from './template'
 
 test('unit:core:helpers:template', async () => {
-  expect(template.render).toBeTruthy()
-  expect(template.registerHelpers).toBeTruthy()
+  expect(typeof template.render).toBe('function')
+  expect(typeof template.registerHelpers).toBe('function')
 })
 
 test('unit:core:helpers:template:render', async () => {
   const result1 = template.render('foo <%= bar %>', { bar: 'baz' })
-  // eslint-disable-next-line no-template-curly-in-string
-  const result2 = template.render('foo ${bar}', { bar: 'baz' })
-
   expect(result1).toBe('foo baz')
+
+  const result2 = template.render('foo ${bar}', { bar: 'baz' })
   expect(result2).toBe('foo baz')
 })
 

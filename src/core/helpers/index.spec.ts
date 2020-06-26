@@ -1,9 +1,10 @@
 import * as helpers from '.'
 
 test('unit:core:helpers', async () => {
-  expect(helpers.file).toBeTruthy()
-  expect(helpers.http).toBeTruthy()
-  expect(helpers.system).toBeTruthy()
-  expect(helpers.logger).toBeTruthy()
-  expect(helpers.template).toBeTruthy()
+  expect(typeof helpers.file).toBe('object')
+  expect(typeof helpers.http).toBe('object')
+  expect(typeof helpers.prompt).toBe('object')
+  expect(typeof helpers.system).toBe('object')
+  expect(typeof helpers.logger).toBe('object')
+  expect(typeof helpers.template).toBe('object')
 })
