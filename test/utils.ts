@@ -36,17 +36,19 @@ export const createFakeCommand = (overrides?: Command): Command => {
  * @param overrides override default
  */
 export const createFakeContext = (overrides?: Record<string, unknown>): Context => {
-  const defaultContext = {
-    brand: 'zce',
-    options: {},
-    extras: [],
-    input: [],
-    pkg: {
-      name: 'zce-cli',
-      version: '0.1.0'
-    }
-  }
-  return Object.assign(defaultContext, overrides)
+  return Object.assign(
+    {
+      bin: 'zce',
+      options: {},
+      extras: [],
+      inputs: [],
+      pkg: {
+        name: 'zce-cli',
+        version: '0.1.0'
+      }
+    },
+    overrides
+  )
 }
 
 export { execa }

@@ -1,37 +1,33 @@
-import { basename } from 'path'
 import minimist from 'minimist'
 import buildOptions from 'minimist-options'
 import { Context, Options } from './types'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('../../package.json')
 
 /**
  * parse context from cli argv
- * @param argv cli argv
+ * @param args cli argv
  * @param opts command options
  */
-export const parse = async (argv: string[], opts?: Options): Promise<Context> => {
-  opts = opts || {}
-  // cli brand name
-  const brand = typeof pkg.bin === 'string' ? basename(pkg.bin, '.js') : Object.keys(pkg.bin)[0]
+export const parse = async (args: string[], opts: Options = {}): Promise<Context> => {
+  // cli bin name
+  const bin = typeof pkg.bin === 'string' ? pkg.name : Object.keys(pkg.bin)[0]
 
   // parse argv by minimist
-  const options = minimist(argv, buildOptions(opts))
+  const options = minimist(args, buildOptions(opts))
 
   // row input args
-  const input = options._
+  const { _: inputs } = options
 
   // extract arguments
-  const [primary, secondary, thirdly, fourthly, ...extras] = input
+  const [primary, secondary, thirdly, fourthly, ...extras] = inputs
 
   // excluding aliases
   Object.values(opts).forEach(item => {
-    if (typeof item === 'object' && item.alias) {
-      if (typeof item.alias === 'string') {
-        delete options[item.alias]
-      } else {
-        item.alias.forEach(a => delete options[a])
-      }
+    if (typeof item !== 'object' || !item.alias) return
+    if (typeof item.alias === 'string') {
+      delete options[item.alias]
+    } else {
+      item.alias.forEach(a => delete options[a])
     }
   })
 
@@ -39,15 +35,5 @@ export const parse = async (argv: string[], opts?: Options): Promise<Context> =>
   delete options._
 
   // return context
-  return {
-    brand,
-    primary,
-    secondary,
-    thirdly,
-    fourthly,
-    extras,
-    input,
-    options,
-    pkg
-  }
+  return { bin, primary, secondary, thirdly, fourthly, extras, inputs, options, pkg }
 }

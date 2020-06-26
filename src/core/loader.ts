@@ -12,8 +12,7 @@ const loadCommands = (dir: string): Record<string, Command> => {
   // scanning commands
   return readdirSync(commandDir).reduce((cmds, item) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const command: Command = require(join(commandDir, item)).default
+      const command = require(join(commandDir, item)).default as Command
       cmds[command.name] = command
       if (typeof command.alias === 'string') {
         cmds[command.alias] = command
@@ -28,40 +27,23 @@ const loadCommands = (dir: string): Record<string, Command> => {
 }
 
 /**
- * All core commands
- */
-export const coreCommands: Record<string, Command> = loadCommands('./commands')
-
-/**
  * All commands
  */
-export const userCommands: Record<string, Command> = loadCommands('../commands')
+export const commands: Record<string, Command> = {
+  ...loadCommands('./commands'),
+  ...loadCommands('../commands')
+}
 
 /**
  * Load command by name
  * @param name command name
  */
-export const load = async (name: string): Promise<Command> => {
-  // help command
-  if (['help', '--help', '-h'].includes(name)) {
-    return coreCommands.help
+export const load = async (name?: string): Promise<Command> => {
+  // try to load command
+  if (name && commands[name]) {
+    return commands[name]
   }
 
-  // version command
-  if (['version', '--version', '-V'].includes(name)) {
-    return coreCommands.version
-  }
-
-  // try to load user command
-  if (userCommands[name]) {
-    return userCommands[name]
-  }
-
-  // try to load user default command
-  if (userCommands.default) {
-    return userCommands.default
-  }
-
-  // fallback default command
-  return coreCommands.default
+  // fallback unknown command
+  return commands.unknown
 }

@@ -3,27 +3,63 @@ import { parse } from './parser'
 import { invoke } from './invoker'
 
 /**
- * Run the CLI
+ * Extract command name and extra args.
+ * @param args command arguments
+ * @example
+ *  $ zce
+ *  $ zce --help
+ *  $ zce --version
+ *  $ zce <command>
+ *  $ zce <command> --help
+ */
+export const extract = (args: string[]): [string, string[]] => {
+  // // help command
+  // // e.g. '$ zce --help' | '$ zce -h' | '$ zce foo --help' | '$ zce foo -h'
+  // if (args.includes('--help') || args.includes('-h')) return ['help', args]
+
+  const [first, ...rest] = args
+
+  // e.g. '$ zce'
+  if (!first) return ['default', rest]
+
+  // e.g. '$ zce foo'
+  if (!first.startsWith('-')) return [first, rest]
+
+  // help command
+  // e.g. '$ zce --help' | '$ zce -h'
+  if (['--help', '-h'].includes(first)) return ['help', args]
+
+  // version command
+  // e.g. '$ zce --version' | '$ zce -h'
+  if (['--version', '-v'].includes(first)) return ['version', args]
+
+  // default command
+  // e.g. '$ zce --foo'
+  return ['default', args]
+}
+
+/**
+ * Run this program.
  * @param args command arguments
  */
 export const run = async (args?: string[]): Promise<void> => {
   // default args
   args = args || process.argv.slice(2)
 
-  // extract command name and extra args
-  const [name, ...extras] = args
+  // extract command name
+  const [name, argv] = extract(args)
 
   // load command by name
   const cmd = await load(name)
 
-  // top level command args
-  if (['default', 'help', 'version'].includes(cmd.name)) {
-    extras.unshift(name)
+  // unknown command name
+  if (cmd.name === 'unknown') {
+    argv.unshift(name)
   }
 
   // parse cli context
-  const ctx = await parse(extras, cmd.options)
+  const ctx = await parse(argv, cmd.options)
 
-  // invoke command
+  // invoke command action
   await invoke(cmd, ctx)
 }

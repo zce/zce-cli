@@ -7,7 +7,7 @@ import { logger } from './helpers'
  */
 export const unknownCommand = (name: string, fallback = '[bin] --help'): void => {
   logger.error('Unknown command: `%s`.', name)
-  logger.error('Type `%s` to view all commands.', fallback)
+  logger.info('Type `%s` to view all commands.', logger.color.cyan(fallback))
   process.exit(1)
 }
 

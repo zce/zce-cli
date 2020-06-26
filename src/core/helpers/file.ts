@@ -14,12 +14,13 @@ const identify = process.env.NODE_ENV !== 'test' ? name : `${name}-test`
  * - https://github.com/sindresorhus/trash
  * - native api instead
  */
-export const remove = async (input: string, options?: rimraf.Options): Promise<void> => new Promise(resolve => {
-  rimraf(input, { glob: false, ...options }, err => {
-    if (err) throw err
-    resolve()
+export const remove = async (input: string, options?: rimraf.Options): Promise<void> =>
+  new Promise(resolve => {
+    rimraf(input, { glob: false, ...options }, err => {
+      if (err) throw err
+      resolve()
+    })
   })
-})
 
 /**
  * Make directory recursive.

@@ -1,41 +1,35 @@
-import { userCommands, coreCommands } from '../loader'
-import { unknownCommand } from '../error'
 import { logger } from '../helpers'
+import { load, commands } from '../loader'
 import { Command, Context } from '../types'
 
 /**
  * Print help info.
- * @param brand brand name
  * @param cmd command
+ * @param ctx context
  */
-const outputHelp = async (brand: string, cmd: Command) => {
+export const outputHelp = (cmd: Command, ctx: Context): void => {
   if (cmd.description) {
     logger.info(cmd.description)
     logger.newline()
   }
 
   logger.info('Usage:')
-  const usage = cmd.usage || `${cmd.name} [options]`
-  logger.info(logger.indent(`$ ${brand} ${usage}`))
+  logger.info(logger.indent(`$ ${ctx.bin} ${cmd.usage || `${cmd.name} [options]`}`))
 
-  // output commands if default command
-  if (cmd.name === 'default') {
-    const userCmds = [...new Set(Object.values(userCommands))]
-    const coreCmds = [...new Set(Object.values(coreCommands))]
-    if (userCmds.length + coreCmds.length) {
+  if (!ctx.primary) {
+    const cmds = Object.values(commands).filter(i => !i.hidden && i.name !== 'default')
+
+    if (cmds.length) {
       logger.newline()
       logger.info('Commands:')
 
-      const commandsObj = userCmds
-        .concat(coreCmds)
-        .filter(i => !i.hidden && i.name !== 'default')
-        .reduce((obj, item) => {
-          const key = `${item.name}${item.alias ? `(${item.alias})` : ''}`
-          const value = item.description || '-'
-          return { ...obj, [key]: value }
-        }, {} as Record<string, string>)
+      const cmdInfos = cmds.reduce((prev, current) => {
+        const key = `${current.name}${current.alias ? ` (${current.alias})` : ''}`
+        const value = current.description || '-'
+        return { ...prev, [key]: value }
+      }, {} as Record<string, string>)
 
-      logger.info(logger.indent(logger.table(commandsObj)))
+      logger.info(logger.indent(logger.table(cmdInfos)))
     }
   }
 
@@ -43,9 +37,9 @@ const outputHelp = async (brand: string, cmd: Command) => {
     logger.newline()
     logger.info('Options:')
 
-    const options = cmd.options
-    const optionsObj = Object.keys(options).reduce((prev, current) => {
-      const opt = options[current]
+    const opts = cmd.options
+    const optInfos = Object.keys(opts).reduce((prev, current) => {
+      const opt = opts[current]
       let key = `--${current}`
       let value = '-'
       if (typeof opt === 'object') {
@@ -55,67 +49,62 @@ const outputHelp = async (brand: string, cmd: Command) => {
       return { ...prev, [key]: value }
     }, {} as Record<string, string>)
 
-    logger.info(logger.indent(logger.table(optionsObj)))
+    logger.info(logger.indent(logger.table(optInfos)))
   }
 
   if (cmd.examples) {
     logger.newline()
     logger.info('Examples:')
-    if (typeof cmd.examples === 'string') {
-      logger.info(logger.indent(`${cmd.examples}`))
-    } else {
-      logger.info(logger.indent(cmd.examples.join('\n')))
+
+    let { examples } = cmd
+    if (typeof examples !== 'string') {
+      examples = examples.join('\n$ ${ctx.bin} ')
     }
+    logger.info(logger.indent(`$ ${ctx.bin} ${examples}`))
   }
 
   if (cmd.suggestions) {
     logger.newline()
     logger.info('Suggestions:')
-    if (typeof cmd.suggestions === 'string') {
-      logger.info(logger.indent(`${cmd.suggestions}`))
-    } else {
-      logger.info(logger.indent(cmd.suggestions.join('\n')))
+
+    let { suggestions } = cmd
+    if (typeof suggestions !== 'string') {
+      suggestions = suggestions.join('\n$ ${ctx.bin} ')
     }
+    logger.info(logger.indent(`$ ${ctx.bin} ${suggestions}`))
   }
 }
 
 /**
- * Show sub command help.
- * @param name command name
- * @param ctx cli context
+ * Invoke command help.
+ * @param cmd command
+ * @param ctx context
  */
-const subCommandHelp = async (name: string, ctx: Context) => {
-  const cmd = userCommands[name]
-  if (!cmd) return unknownCommand(name, `${ctx.brand} --help`)
-
-  // custom help
+export const invokeHelp = async (cmd: Command, ctx: Context): Promise<void> => {
   if (cmd.help) {
+    // custom help
     if (typeof cmd.help === 'string') {
       return logger.info(cmd.help)
     }
-    return await cmd.help(ctx)
+    await cmd.help(ctx)
+  } else {
+    // default help
+    outputHelp(cmd, ctx)
   }
 
-  // default help
-  await outputHelp(ctx.brand, cmd)
+  process.exit()
 }
 
 const command: Command = {
   name: 'help',
   usage: 'help <command>',
-  description: 'output usage information',
+  description: 'output usage information.',
   // for testing
-  alias: process.env.NODE_ENV === 'test' ? ['h'] : undefined,
-  hidden: false,
+  // alias: process.env.NODE_ENV === 'test' ? ['h'] : undefined,
+  // hidden: false,
   action: async (ctx: Context) => {
-    if (ctx.primary && ctx.primary !== 'help') {
-      await subCommandHelp(ctx.primary, ctx)
-    } else if (ctx.primary === 'help' && ctx.secondary) {
-      await subCommandHelp(ctx.secondary, ctx)
-    } else {
-      await outputHelp(ctx.brand, userCommands.default || coreCommands.default)
-    }
-    process.exit()
+    const cmd = await load(ctx.primary || 'default')
+    return await invokeHelp(cmd, ctx)
   }
 }
 

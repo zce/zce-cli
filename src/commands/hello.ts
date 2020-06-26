@@ -7,18 +7,21 @@ const command: Command = {
   alias: 'hi',
   // hidden: true,
   options: {
-    // lang: {
-    //   type: 'string',
-    //   alias: 'l',
-    //   default: 'en',
-    //   description: 'message language'
-    // },
-    // debug: {
-    //   type: 'boolean',
-    //   alias: 'd',
-    //   description: 'debug mode'
-    // }
+    lang: {
+      type: 'string',
+      alias: 'l',
+      default: 'en',
+      description: 'message language'
+    },
+    debug: {
+      type: 'boolean',
+      alias: 'd',
+      description: 'debug mode'
+    }
   },
+  examples: [
+    'hello zce'
+  ],
   action: async (ctx: Context) => {
     if (!ctx.primary) {
       return missingArgument('name')

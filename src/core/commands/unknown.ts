@@ -1,16 +1,12 @@
 import { unknownCommand } from '../error'
 import { Command, Context } from '../types'
-const { description } = require('../../../package.json')
 
 const command: Command = {
-  name: 'default',
-  usage: '<command> [options]',
-  description: description,
+  name: 'unknown',
   hidden: true,
   action: async (ctx: Context) => {
     if (!ctx.primary) return
-    // unknown command
-    unknownCommand(ctx.primary, `${ctx.brand} --help`)
+    unknownCommand(ctx.primary, `${ctx.bin} --help`)
   }
 }
 
