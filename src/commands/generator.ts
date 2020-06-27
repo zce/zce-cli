@@ -178,7 +178,9 @@ export const resolve = async (template: string, offline: boolean) => {
     // download template zip
     const temp = await http.download(url)
     // extract template
-    await file.extract(temp, { dir: cachePath })
+    await file.extract(temp, cachePath, 1)
+    // clean up
+    await file.remove(temp)
     spinner.succeed('Download template complete.')
     return cachePath
   } catch (e) {

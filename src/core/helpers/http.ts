@@ -32,7 +32,8 @@ export const request = client.extend({
  * @param options options
  */
 export const download = async (url: string | URL, options?: StreamOptions): Promise<string> => {
-  const filename = getTempPath(path.basename(url.toString()))
+  // const filename = getTempPath(path.basename(url.toString()))
+  const filename = getTempPath(Date.now().toString() + '.tmp')
   await mkdir(path.dirname(filename))
   await pipe(client.stream(url, options), fs.createWriteStream(filename))
   return filename

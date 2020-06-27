@@ -7,10 +7,6 @@ const pkg = require('../../../package.json')
 
 const tempPrefix = path.join(os.tmpdir(), 'zce-cli-test-')
 
-test('unit:core:helpers:file:extract', async () => {
-  expect(typeof file.extract).toBe('function')
-})
-
 test('unit:core:helpers:file:remove', async () => {
   const temp = await fs.promises.mkdtemp(tempPrefix)
 
@@ -174,4 +170,26 @@ test('unit:core:helpers:file:untildify', async () => {
   // ignore not home sub dir
   const result6 = file.untildify('/untildify')
   expect(result6).toBe('/untildify')
+})
+
+test('unit:core:helpers:file:extract:normal', async () => {
+  const temp = await fs.promises.mkdtemp(tempPrefix)
+  await file.extract(path.join(__dirname, '../../../test/fixtures/archive.zip'), temp)
+  const stat1 = fs.statSync(path.join(temp, 'archive'))
+  expect(stat1.isDirectory()).toBe(true)
+  const stat2 = fs.statSync(path.join(temp, 'archive/LICENSE'))
+  expect(stat2.isFile()).toBe(true)
+  const stat3 = fs.statSync(path.join(temp, 'archive/README.md'))
+  expect(stat3.isFile()).toBe(true)
+  await fs.promises.rmdir(temp, { recursive: true })
+})
+
+test('unit:core:helpers:file:extract:strip', async () => {
+  const temp = await fs.promises.mkdtemp(tempPrefix)
+  await file.extract(path.join(__dirname, '../../../test/fixtures/archive.zip'), temp, 1)
+  const stat1 = fs.statSync(path.join(temp, 'LICENSE'))
+  expect(stat1.isFile()).toBe(true)
+  const stat2 = fs.statSync(path.join(temp, 'README.md'))
+  expect(stat2.isFile()).toBe(true)
+  await fs.promises.rmdir(temp, { recursive: true })
 })

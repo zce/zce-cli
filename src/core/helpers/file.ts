@@ -1,5 +1,5 @@
 import os from 'os'
-import extract from 'extract-zip'
+import extractZip from 'extract-zip'
 import { promises as fs, MakeDirectoryOptions } from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
@@ -7,8 +7,6 @@ import rimraf from 'rimraf'
 const { name } = require('../../../package.json')
 
 const identify = process.env.NODE_ENV === 'test' ? `${name}-test` : /* istanbul ignore next */ name
-
-export { extract }
 
 /**
  * Remove input path.
@@ -91,7 +89,7 @@ export const isEmpty = async (input: string): Promise<boolean> => {
  * @param paths additional paths
  */
 export const getTempPath = (...paths: string[]): string => {
-  return path.join(os.tmpdir(), identify, Date.now().toString(), ...paths)
+  return path.join(os.tmpdir(), identify, ...paths)
 }
 
 /**
@@ -129,4 +127,24 @@ export const untildify = (input: string): string => {
   const home = os.homedir()
 
   return input.replace(/^~(?=$|\/|\\)/, home)
+}
+
+/**
+ * Unzip file.
+ * @param input input path or stream
+ * @param output output path
+ * @see https://github.com/shinnn/node-strip-dirs
+ */
+export const extract = async (input: string, output: string, strip: number = 0) => {
+  await extractZip(input, {
+    dir: output,
+    onEntry: entry => {
+      if (!strip) return
+      const items = entry.fileName.split(/\/|\\/)
+      const start = Math.min(items.length, strip)
+      // console.log('->', entry.fileName)
+      entry.fileName = items.slice(start).join('/')
+      // console.log('<-', entry.fileName)
+    }
+  })
 }
