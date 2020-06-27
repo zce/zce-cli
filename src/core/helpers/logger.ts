@@ -71,6 +71,9 @@ export const debug = (message: unknown, title = 'DEBUG'): void => {
  * @param infos infos
  * @param width column width
  * @param indent indent size
+ * @todo
+ * support color ansi
+ * - https://github.com/chalk/strip-ansi/blob/master/index.js
  */
 export const table = (infos: [string, unknown][] | Record<string, unknown>, min = 10, indent = 0): void => {
   if (!Array.isArray(infos)) {

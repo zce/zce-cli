@@ -13,26 +13,17 @@ export const parse = async (args: string[], opts: Options = {}): Promise<Context
   const bin = typeof pkg.bin === 'string' ? pkg.name : Object.keys(pkg.bin)[0]
 
   // parse argv by minimist
-  const options = minimist(args, buildOptions(opts))
+  const result = minimist(args, buildOptions(opts))
 
   // row input args
-  const { _: inputs } = options
+  const { _: inputs } = result
 
   // extract arguments
   const [primary, secondary, thirdly, fourthly, ...extras] = inputs
 
-  // excluding aliases
-  Object.values(opts).forEach(item => {
-    if (typeof item !== 'object' || !item.alias) return
-    if (typeof item.alias === 'string') {
-      delete options[item.alias]
-    } else {
-      item.alias.forEach(a => delete options[a])
-    }
-  })
-
-  // excluding arguments
-  delete options._
+  // pick options
+  const keys = Object.keys(opts)
+  const options = Object.keys(result).reduce((o, i) => keys.includes(i) ? { ...o, [i]: result[i] } : o, {})
 
   // return context
   return { bin, primary, secondary, thirdly, fourthly, extras, inputs, options, pkg }

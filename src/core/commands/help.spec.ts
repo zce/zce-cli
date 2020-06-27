@@ -37,6 +37,14 @@ test('unit:core:commands:help:action:2', async () => {
 })
 
 test('unit:core:commands:help:invokeHelp:1', async () => {
+  const cmd = createFakeCommand()
+  const ctx = createFakeContext()
+  await invokeHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe(cmd.description)
+  expect(exit.mock.calls[0][0]).toBe(undefined)
+})
+
+test('unit:core:commands:help:invokeHelp:2', async () => {
   const cmd = createFakeCommand({ help: 'custom help message' })
   const ctx = createFakeContext()
   await invokeHelp(cmd, ctx)
@@ -44,7 +52,7 @@ test('unit:core:commands:help:invokeHelp:1', async () => {
   expect(exit.mock.calls[0][0]).toBe(undefined)
 })
 
-test('unit:core:commands:help:invokeHelp:2', async () => {
+test('unit:core:commands:help:invokeHelp:3', async () => {
   const help = jest.fn()
   const cmd = createFakeCommand({ help })
   const ctx = createFakeContext()
@@ -54,19 +62,11 @@ test('unit:core:commands:help:invokeHelp:2', async () => {
   expect(exit.mock.calls[0][0]).toBe(undefined)
 })
 
-test('unit:core:commands:help:invokeHelp:3', async () => {
-  const cmd = createFakeCommand()
-  const ctx = createFakeContext()
-  await invokeHelp(cmd, ctx)
-  expect(log.mock.calls[0][0]).toBe(cmd.description)
-  expect(exit.mock.calls[0][0]).toBe(undefined)
-})
-
 test('unit:core:commands:help:outputHelp:1', async () => {
   const cmd = createFakeCommand({
     usage: undefined,
-    alias: ['foo'],
     description: undefined,
+    alias: ['foo'],
     options: {
       foo: 'string',
       bar: { type: 'string', alias: ['b'] },
@@ -77,19 +77,22 @@ test('unit:core:commands:help:outputHelp:1', async () => {
   outputHelp(cmd, ctx)
   expect(log.mock.calls[0][0]).toBe('Usage:')
   expect(log.mock.calls[1][0]).toBe(`  $ ${ctx.bin} ${cmd.name} [options]`)
+  expect(log.mock.calls[2][0]).toBe('')
+  expect(log.mock.calls[3][0]).toBe('Options:')
+  // expect(log.mock.calls[4][0]).toBe('  --')
 })
 
 test('unit:core:commands:help:outputHelp:2', async () => {
-  const cmd = createFakeCommand({ examples: 'test help' })
+  const cmd = createFakeCommand({ examples: '# test help' })
   const ctx = createFakeContext({ primary: 'foo' })
   outputHelp(cmd, ctx)
   expect(log.mock.calls[0][0]).toBe(cmd.description)
   expect(log.mock.calls[5][0]).toBe('Examples:')
-  expect(log.mock.calls[6][0]).toBe(`  $ ${ctx.bin} test help`)
+  expect(log.mock.calls[6][0]).toBe(`  # test help`)
 })
 
 test('unit:core:commands:help:outputHelp:3', async () => {
-  const cmd = createFakeCommand({ examples: ['test help'] })
+  const cmd = createFakeCommand({ examples: ['$ [bin] test help'] })
   const ctx = createFakeContext({ primary: 'foo' })
   outputHelp(cmd, ctx)
   expect(log.mock.calls[0][0]).toBe(cmd.description)
@@ -103,11 +106,11 @@ test('unit:core:commands:help:outputHelp:4', async () => {
   outputHelp(cmd, ctx)
   expect(log.mock.calls[0][0]).toBe(cmd.description)
   expect(log.mock.calls[5][0]).toBe('Suggestions:')
-  expect(log.mock.calls[6][0]).toBe(`  $ ${ctx.bin} test help`)
+  expect(log.mock.calls[6][0]).toBe(`  test help`)
 })
 
 test('unit:core:commands:help:outputHelp:5', async () => {
-  const cmd = createFakeCommand({ suggestions: ['test help'] })
+  const cmd = createFakeCommand({ suggestions: ['$ [bin] test help'] })
   const ctx = createFakeContext({ primary: 'foo' })
   outputHelp(cmd, ctx)
   expect(log.mock.calls[0][0]).toBe(cmd.description)

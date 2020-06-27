@@ -16,7 +16,7 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
   logger.info('Usage:')
   logger.info(logger.indent(`$ ${ctx.bin} ${cmd.usage || `${cmd.name} [options]`}`))
 
-  if (!ctx.primary) {
+  if (cmd.name === 'default') {
     const cmds = Object.values(commands).filter(i => !i.hidden && i.name !== 'default')
 
     /* istanbul ignore else */
@@ -59,9 +59,9 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
 
     let { examples } = cmd
     if (typeof examples !== 'string') {
-      examples = examples.join(`\n$ ${ctx.bin} `)
+      examples = examples.join(`\n`)
     }
-    logger.info(logger.indent(`$ ${ctx.bin} ${examples}`))
+    logger.info(logger.indent(examples.replace(/\[bin\]/g, ctx.bin)))
   }
 
   if (cmd.suggestions) {
@@ -70,9 +70,9 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
 
     let { suggestions } = cmd
     if (typeof suggestions !== 'string') {
-      suggestions = suggestions.join(`\n$ ${ctx.bin} `)
+      suggestions = suggestions.join(`\n`)
     }
-    logger.info(logger.indent(`$ ${ctx.bin} ${suggestions}`))
+    logger.info(logger.indent(suggestions.replace(/\[bin\]/g, ctx.bin)))
   }
 }
 
