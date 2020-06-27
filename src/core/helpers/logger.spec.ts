@@ -1,4 +1,5 @@
 import * as logger from './logger'
+import readline from 'readline'
 
 let log: jest.SpyInstance
 
@@ -10,23 +11,8 @@ afterEach(async () => {
   log && log.mockRestore()
 })
 
-test('unit:core:helpers:logger', async () => {
+test('unit:core:helpers:logger:color', async () => {
   expect(typeof logger.color).toBe('function')
-  expect(typeof logger.log).toBe('function')
-  expect(typeof logger.info).toBe('function')
-  expect(typeof logger.success).toBe('function')
-  expect(typeof logger.warn).toBe('function')
-  expect(typeof logger.error).toBe('function')
-  expect(typeof logger.debug).toBe('function')
-  expect(typeof logger.table).toBe('function')
-  expect(typeof logger.indent).toBe('function')
-  expect(typeof logger.newline).toBe('function')
-  expect(typeof logger.divider).toBe('function')
-  expect(typeof logger.clear).toBe('function')
-  expect(typeof logger.spin).toBe('function')
-})
-
-test('unit:core:helpers:logger:chalk', async () => {
   expect(logger.color.level).toBe(0)
 })
 
@@ -66,12 +52,22 @@ test('unit:core:helpers:logger:debug', async () => {
   expect(log.mock.calls[2][0]).toBe('↑↑↑ --------------------[ test ]-------------------- ↑↑↑')
 })
 
-test('unit:core:helpers:logger:table', async () => {
-  const table1 = logger.table({ foo: '-', barbaz: '-' }, 1)
-  expect(table1).toBe('foo    -\nbarbaz -')
+// test('unit:core:helpers:logger:table', async () => {
+//   const table1 = logger.table({ foo: '-', barbaz: '-' }, 1)
+//   expect(table1).toBe('foo    -\nbarbaz -')
 
-  const table2 = logger.table({ foo: '-', bar: '-' })
-  expect(table2).toBe('foo                  -\nbar                  -')
+//   const table2 = logger.table({ foo: '-', bar: '-' })
+//   expect(table2).toBe('foo                  -\nbar                  -')
+// })
+
+test('unit:core:helpers:logger:table:1', async () => {
+  logger.table([['foo', 123], ['bar', 'baz']])
+  expect(log.mock.calls[0][0]).toBe('foo        123\nbar        baz')
+})
+
+test('unit:core:helpers:logger:table:2', async () => {
+  logger.table({ foo: 123, barbaz: 'baz' }, 1, 2)
+  expect(log.mock.calls[0][0]).toBe('  foo    123\n  barbaz baz')
 })
 
 test('unit:core:helpers:logger:indent', async () => {
@@ -98,9 +94,24 @@ test('unit:core:helpers:logger:divider', async () => {
 })
 
 test('unit:core:helpers:logger:clear', async () => {
+  const cursorTo = jest.spyOn(readline, 'cursorTo').mockImplementation()
+  const clearScreenDown = jest.spyOn(readline, 'clearScreenDown').mockImplementation()
+
   logger.clear()
   logger.clear('test')
-  expect(log).not.toHaveBeenCalled()
+
+  if (process.stdout.isTTY) {
+    expect(log).toBeCalledTimes(3)
+    expect(cursorTo).toBeCalledTimes(2)
+    expect(clearScreenDown).toBeCalledTimes(2)
+  } else {
+    expect(log).not.toHaveBeenCalled()
+    expect(cursorTo).not.toHaveBeenCalled()
+    expect(clearScreenDown).not.toHaveBeenCalled()
+  }
+
+  cursorTo.mockRestore()
+  clearScreenDown.mockRestore()
 })
 
 test('unit:core:helpers:logger:spin', async () => {

@@ -1,22 +1,12 @@
-import { cursorTo, clearScreenDown } from 'readline'
-import { Instance } from 'chalk'
+import readline from 'readline'
+import chalk from 'chalk'
 import redent from 'redent'
 import ora, { Ora } from 'ora'
 
 /**
- * Pad strings.
- * @param input input text
- * @param width width
- */
-const pad = (input: string, width: number): string => {
-  const padding = Math.max(0, width - input.length)
-  return input + Array(padding + 1).join(' ')
-}
-
-/**
  * Chalk instance
  */
-export const color = new Instance({
+export const color = new chalk.Instance({
   // Disable colors output for testing
   level: process.env.NODE_ENV === 'test' ? 0 : /* istanbul ignore next */ 3
 })
@@ -77,25 +67,20 @@ export const debug = (message: unknown, title = 'DEBUG'): void => {
 }
 
 /**
- * Table message.
- * @param obj indent text
- * @param size indent size
+ * Writes an table message.
+ * @param infos infos
+ * @param width column width
+ * @param indent indent size
  */
-export const table = (obj: Record<string, unknown>, minCels = 20): string => {
-  const keys = Object.keys(obj)
-  minCels = Math.max(minCels, ...keys.map(k => k.length))
-  return keys.map(k => `${pad(k, minCels)} ${obj[k]}`).join('\n')
+export const table = (infos: [string, unknown][] | Record<string, unknown>, min = 10, indent = 0): void => {
+  if (!Array.isArray(infos)) {
+    infos = Object.entries(infos)
+  }
+  min = Math.max(min, ...infos.map(i => i[0].length))
+  let text = infos.map(i => `${i[0].padEnd(min)} ${i[1]}`).join('\n')
+  text = indent ? redent(text, indent) : text
+  log(text)
 }
-
-/**
- * Indent message.
- * @param input indent text
- * @param size indent size
- */
-export const indent = (input: string, size = 2): string => {
-  return redent(input, size)
-}
-
 /**
  * Print a blank line.
  */
@@ -107,7 +92,7 @@ export const newline = (): void => {
  * Prints a divider line
  */
 export const divider = (): void => {
-  log(color.gray('--------------------------------------------------------------------------------'))
+  log(color.gray('-'.repeat(80)))
 }
 
 /**
@@ -118,10 +103,20 @@ export const divider = (): void => {
 export const clear = (title?: string): void => {
   if (!process.stdout.isTTY) return
   log('\n'.repeat(process.stdout.rows || 30))
-  cursorTo(process.stdout, 0, 0)
-  clearScreenDown(process.stdout)
+  readline.cursorTo(process.stdout, 0, 0)
+  readline.clearScreenDown(process.stdout)
   title && log(title)
 }
+
+/**
+ * Indent message.
+ * @param input indent text
+ * @param size indent size
+ */
+export const indent = (input: string, size = 2): string => {
+  return redent(input, size)
+}
+
 
 /**
  * Creates a spinner and starts it up.

@@ -15,8 +15,7 @@ export const loadCommands = (dir: string): Record<string, Command> => {
       const { default: mod } = require(join(commandDir, item))
 
       // ignore not command
-      if (typeof mod === 'undefined' || typeof mod.name !== 'string' || typeof mod.action !== 'function')
-        return cmds
+      if (typeof mod === 'undefined' || typeof mod.name !== 'string' || typeof mod.action !== 'function') return cmds
 
       const cmd = mod as Command
 
@@ -29,6 +28,7 @@ export const loadCommands = (dir: string): Record<string, Command> => {
         })
       }
     } catch {}
+    // } catch (e) { console.error(e) }
     return cmds
   }, {} as Record<string, Command>)
 }

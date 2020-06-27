@@ -24,13 +24,12 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
       logger.newline()
       logger.info('Commands:')
 
-      const cmdInfos = cmds.reduce((prev, current) => {
-        const key = `${current.name}${current.alias ? ` (${current.alias})` : ''}`
-        const value = current.description || /* istanbul ignore next */ '-'
-        return { ...prev, [key]: value }
-      }, {} as Record<string, string>)
+      const infos = cmds.map(i => [
+        `${i.name}${i.alias ? ` (${i.alias})` : ''}`,
+        i.description || /* istanbul ignore next */ '-'
+      ] as [string, unknown])
 
-      logger.info(logger.indent(logger.table(cmdInfos)))
+      logger.table(infos, 10, 2)
     }
   }
 
@@ -39,18 +38,19 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
     logger.info('Options:')
 
     const opts = cmd.options
-    const optInfos = Object.keys(opts).reduce((prev, current) => {
-      const opt = opts[current]
-      let key = `--${current}`
+
+    const infos = Object.keys(opts).map(k => {
+      const opt = opts[k]
+      let key = `--${k}`
       let value = '-'
       if (typeof opt === 'object') {
-        key = `--${current}${opt.alias ? `, -${opt.alias}` : ''}`
+        key = `--${k}${opt.alias ? `, -${opt.alias}` : ''}`
         value = (opt as Record<string, string>).description || '-'
       }
-      return { ...prev, [key]: value }
-    }, {} as Record<string, string>)
+      return [key, value] as [string, unknown]
+    })
 
-    logger.info(logger.indent(logger.table(optInfos)))
+    logger.table(infos, 10, 2)
   }
 
   if (cmd.examples) {
