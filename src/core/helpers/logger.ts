@@ -80,7 +80,7 @@ export const table = (infos: [string, unknown][] | Record<string, unknown>, min 
     infos = Object.entries(infos)
   }
   min = Math.max(min, ...infos.map(i => i[0].length))
-  let text = infos.map(i => `${i[0].padEnd(min)} ${i[1]}`).join('\n')
+  let text = infos.map(i => `${i[0].padEnd(min)}  ${i[1]}`).join('\n')
   text = indent ? redent(text, indent) : text
   log(text)
 }

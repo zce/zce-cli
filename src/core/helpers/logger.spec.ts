@@ -62,12 +62,12 @@ test('unit:core:helpers:logger:debug', async () => {
 
 test('unit:core:helpers:logger:table:1', async () => {
   logger.table([['foo', 123], ['barbarbarbar', 'baz']])
-  expect(log.mock.calls[0][0]).toBe('foo          123\nbarbarbarbar baz')
+  expect(log.mock.calls[0][0]).toBe('foo           123\nbarbarbarbar  baz')
 })
 
 test('unit:core:helpers:logger:table:2', async () => {
   logger.table({ foo: 123, bar: 'baz' }, 12, 2)
-  expect(log.mock.calls[0][0]).toBe('  foo          123\n  bar          baz')
+  expect(log.mock.calls[0][0]).toBe('  foo           123\n  bar           baz')
 })
 
 test('unit:core:helpers:logger:indent', async () => {
