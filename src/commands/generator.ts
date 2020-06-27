@@ -1,7 +1,5 @@
 import { logger, http, missingArgument, Command, Context } from '../core'
 
-const { color: c } = logger
-
 /**
  * Fetch user's repos
  * @param username GitHub username
@@ -13,7 +11,7 @@ const fetchRepos = async (username: string) => {
       client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38',
       per_page: 100
     },
-    timeout: 10000
+    timeout: 5 * 1000 // 5s
   })
   return res.body
 }
@@ -51,17 +49,14 @@ export const showTemplates = async (ctx: Context) => {
     logger.info(`👇  Available ${isOfficial ? 'official' : username}'s templates:`)
     logger.newline()
 
-    const infos = repos.map(i => [`${c.yellow('→')} ${c.blue(isOfficial ? i.name : i.full_name)}`, i.description] as [string, unknown])
-    logger.table(infos, 10, 2)
+    const infos = repos.map(i => [
+      logger.color`{yellow →} {blue ${isOfficial ? i.name : i.full_name}}`,
+      i.description
+    ] as [string, unknown])
+    logger.table(infos, 32, 2)
 
-    // repos.forEach(item =>
-    //   logger.info(
-    //     `  ${color.yellow('→')} ${color.blue(isOfficial ? item.name : item.full_name)} ${color.gray('-')} ${item.description}`
-    //   )
-    // )
   } catch (e) {
-    spinner.fail()
-    logger.info(`😞  Failed to load list from remote: ${c.red(e.message)}.`)
+    spinner.fail(logger.color`😞  Failed to load list from remote: {red ${e.message}}.`)
   }
 }
 
@@ -78,6 +73,7 @@ const command: Command = {
     },
     list: {
       type: 'boolean',
+      alias: 'ls',
       default: false,
       description: 'list available templates'
     },
@@ -98,8 +94,10 @@ const command: Command = {
     }
   },
   examples: [
-    `init <template> [project] ${c.gray('# create a new project with an official template')}`,
-    `init <username>/<repo> [project] ${c.gray('# create a new project straight from a github template')}`
+    logger.color.gray('# create a new project with an official template'),
+    '$ [bin] init <template> [project]',
+    logger.color.gray('# create a new project straight from a github template'),
+    '$ [bin] init <username>/<repo> [project]'
   ],
   action: async (ctx: Context) => {
     if (ctx.options.list) {

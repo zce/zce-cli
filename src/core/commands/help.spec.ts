@@ -69,7 +69,8 @@ test('unit:core:commands:help:outputHelp:1', async () => {
     alias: ['foo'],
     options: {
       foo: 'string',
-      bar: { type: 'string', alias: ['b'] },
+      bar: { type: 'string', alias: 'b' },
+      bay: { type: 'string', alias: ['ba', 'y'] },
       baz: { type: 'string', description: 'baz option' }
     }
   })
@@ -79,7 +80,9 @@ test('unit:core:commands:help:outputHelp:1', async () => {
   expect(log.mock.calls[1][0]).toBe(`  $ ${ctx.bin} ${cmd.name} [options]`)
   expect(log.mock.calls[2][0]).toBe('')
   expect(log.mock.calls[3][0]).toBe('Options:')
-  // expect(log.mock.calls[4][0]).toBe('  --')
+  expect(log.mock.calls[4][0]).toBe(
+    '  --foo           -\n  --bar, -b       -\n  --bay, --ba, -y -\n  --baz           baz option'
+  )
 })
 
 test('unit:core:commands:help:outputHelp:2', async () => {

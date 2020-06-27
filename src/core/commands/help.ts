@@ -1,6 +1,58 @@
 import { logger } from '../helpers'
 import { load, commands } from '../loader'
-import { Command, Context } from '../types'
+import { Command, Context, Options } from '../types'
+
+const outputCommands = () => {
+  const cmds = Object.values(commands).filter(i => !i.hidden && i.name !== 'default')
+
+  /* istanbul ignore else */
+  if (cmds.length) {
+    logger.newline()
+    logger.info('Commands:')
+
+    const infos = cmds.map(i => [
+      `${i.name}${i.alias ? ` (${i.alias})` : ''}`,
+      i.description || /* istanbul ignore next */ '-'
+    ] as [string, unknown])
+
+    logger.table(infos, 10, 2)
+  }
+}
+
+const outputOptions = (options: Options) => {
+  logger.newline()
+  logger.info('Options:')
+
+  // 'l' => '-l'
+  // 'ls' => '--ls'
+  const optKey = (k: string) => `${k.length === 1 ? '-' : '--'}${k}`
+
+  const infos = Object.keys(options).map(k => {
+    const opt = options[k]
+    const keys = [`--${k}`]
+    let value = '-'
+    if (typeof opt === 'object') {
+      if (Array.isArray(opt.alias)) {
+        keys.push(...opt.alias.map(optKey))
+      } else if (typeof opt.alias === 'string') {
+        keys.push(optKey(opt.alias))
+      }
+      value = (opt as Record<string, string>).description || '-'
+    }
+    return [keys.join(', '), value] as [string, unknown]
+  })
+
+  logger.table(infos, 10, 2)
+}
+
+const outputTips = (title: string, tips: string | string[], bin: string) => {
+  logger.newline()
+  logger.info(title)
+  if (typeof tips !== 'string') {
+    tips = tips.join(`\n`)
+  }
+  logger.info(logger.indent(tips.replace(/\[bin\]/g, bin)))
+}
 
 /**
  * Print help info.
@@ -17,62 +69,19 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
   logger.info(logger.indent(`$ ${ctx.bin} ${cmd.usage || `${cmd.name} [options]`}`))
 
   if (cmd.name === 'default') {
-    const cmds = Object.values(commands).filter(i => !i.hidden && i.name !== 'default')
-
-    /* istanbul ignore else */
-    if (cmds.length) {
-      logger.newline()
-      logger.info('Commands:')
-
-      const infos = cmds.map(i => [
-        `${i.name}${i.alias ? ` (${i.alias})` : ''}`,
-        i.description || /* istanbul ignore next */ '-'
-      ] as [string, unknown])
-
-      logger.table(infos, 10, 2)
-    }
+    outputCommands()
   }
 
   if (cmd.options) {
-    logger.newline()
-    logger.info('Options:')
-
-    const opts = cmd.options
-
-    const infos = Object.keys(opts).map(k => {
-      const opt = opts[k]
-      let key = `--${k}`
-      let value = '-'
-      if (typeof opt === 'object') {
-        key = `--${k}${opt.alias ? `, -${opt.alias}` : ''}`
-        value = (opt as Record<string, string>).description || '-'
-      }
-      return [key, value] as [string, unknown]
-    })
-
-    logger.table(infos, 10, 2)
+    outputOptions(cmd.options)
   }
 
   if (cmd.examples) {
-    logger.newline()
-    logger.info('Examples:')
-
-    let { examples } = cmd
-    if (typeof examples !== 'string') {
-      examples = examples.join(`\n`)
-    }
-    logger.info(logger.indent(examples.replace(/\[bin\]/g, ctx.bin)))
+    outputTips('Examples:', cmd.examples, ctx.bin)
   }
 
   if (cmd.suggestions) {
-    logger.newline()
-    logger.info('Suggestions:')
-
-    let { suggestions } = cmd
-    if (typeof suggestions !== 'string') {
-      suggestions = suggestions.join(`\n`)
-    }
-    logger.info(logger.indent(suggestions.replace(/\[bin\]/g, ctx.bin)))
+    outputTips('Suggestions:', cmd.suggestions, ctx.bin)
   }
 }
 
