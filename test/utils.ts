@@ -1,7 +1,9 @@
-import { join } from 'path'
+import path from 'path'
 import execa, { ExecaChildProcess } from 'execa'
 
 import { Command, Context } from '../src/core/types'
+
+export { execa }
 
 /**
  * Executes a commandline via execa.
@@ -14,25 +16,27 @@ export const runCommand = async (args: string | string[] = []): Promise<ExecaChi
   }
   // // test compiled
   // args && args.push('--compiled-build')
-  return await execa(join(__dirname, '../bin/zce.js'), args)
+  return await execa(path.join(__dirname, '../bin/zce.js'), args)
 }
 
 /**
- * Create a fake command
+ * Create a fake command for testing.
  * @param overrides override default
  */
-export const createFakeCommand = (overrides?: Command): Command => {
-  const defaultCommand = {
-    name: 'fake',
-    description: 'fake command',
-    usage: 'fake [options]',
-    action: jest.fn()
-  }
-  return Object.assign(defaultCommand, overrides)
+export const createFakeCommand = (overrides?: Record<string, unknown>): Command => {
+  return Object.assign(
+    {
+      name: 'fake',
+      description: 'fake command',
+      usage: 'fake [options]',
+      action: jest.fn()
+    },
+    overrides
+  )
 }
 
 /**
- * Create a fake context
+ * Create a fake context for testing.
  * @param overrides override default
  */
 export const createFakeContext = (overrides?: Record<string, unknown>): Context => {
@@ -50,5 +54,3 @@ export const createFakeContext = (overrides?: Record<string, unknown>): Context 
     overrides
   )
 }
-
-export { execa }

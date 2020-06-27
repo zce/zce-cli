@@ -1,6 +1,5 @@
 import { satisfies } from 'semver'
 import { logger } from './helpers'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { name, engines } = require('../../package.json')
 
 /**

@@ -1,12 +1,11 @@
-import command from './default'
+import command from './unknown'
 import { createFakeContext } from '../../../test/utils'
-import { description } from '../../../package.json'
 
 let log: jest.SpyInstance
 let exit: jest.SpyInstance
 
 beforeEach(async () => {
-  log = jest.spyOn(console, 'log')
+  log = jest.spyOn(console, 'log').mockImplementation()
   exit = jest.spyOn(process, 'exit').mockImplementation()
 })
 
@@ -15,15 +14,13 @@ afterEach(async () => {
   exit && exit.mockRestore()
 })
 
-test('unit:core:commands:default', async () => {
-  expect(command.name).toBe('default')
-  expect(command.usage).toBe('<command> [options]')
-  expect(command.description).toBe(description)
+test('unit:core:commands:unknown', async () => {
+  expect(command.name).toBe('unknown')
   expect(command.hidden).toBe(true)
   expect(typeof command.action).toBe('function')
 })
 
-test('unit:core:commands:default:action', async () => {
+test('unit:core:commands:unknown:action', async () => {
   const ctx1 = createFakeContext()
   await command.action(ctx1)
 

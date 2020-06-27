@@ -19,9 +19,7 @@ const command: Command = {
       description: 'debug mode'
     }
   },
-  examples: [
-    'hello zce'
-  ],
+  examples: ['hello zce'],
   action: async (ctx: Context) => {
     if (!ctx.primary) {
       return missingArgument('name')

@@ -13,14 +13,8 @@ afterEach(async () => {
   exit && exit.mockRestore()
 })
 
-test('unit:core:error', async () => {
-  expect(error.unknownCommand).toBeTruthy()
-  expect(error.missingArgument).toBeTruthy()
-})
-
 test('unit:core:error:unknownCommand', async () => {
   error.unknownCommand('foo')
-
   expect(log.mock.calls[0][0]).toBe('Unknown command: `%s`.')
   expect(log.mock.calls[0][1]).toBe('foo')
   expect(log.mock.calls[1][0]).toBe('Type `%s` to view all commands.')
@@ -30,7 +24,6 @@ test('unit:core:error:unknownCommand', async () => {
 
 test('unit:core:error:unknownCommand:fallback', async () => {
   error.unknownCommand('foo', 'zce --help')
-
   expect(log.mock.calls[0][0]).toBe('Unknown command: `%s`.')
   expect(log.mock.calls[0][1]).toBe('foo')
   expect(log.mock.calls[1][0]).toBe('Type `%s` to view all commands.')
@@ -40,7 +33,6 @@ test('unit:core:error:unknownCommand:fallback', async () => {
 
 test('unit:core:error:missingArgument', async () => {
   error.missingArgument('foo')
-
   expect(log.mock.calls[0][0]).toBe('Missing required argument: `<%s>`.')
   expect(log.mock.calls[0][1]).toBe('foo')
   expect(exit.mock.calls[0][0]).toBe(1)
