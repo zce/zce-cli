@@ -1,6 +1,6 @@
 import path from 'path'
 import crypto from 'crypto'
-import { file, http, prompt, logger, missingArgument, Command, Context } from '../core'
+import { file, http, prompt, logger, missingArgument, Command, Context, Question } from '../core'
 
 // #region template list
 /**
@@ -66,7 +66,7 @@ export const showTemplates = async (ctx: Context) => {
 // #endregion
 
 /**
- * Get template url
+ * Get template url.
  * @param template template name or uri
  * @todo template download link config
  */
@@ -135,9 +135,9 @@ export const comfirm = async (project: string) => {
 }
 
 /**
- * Resolve template from local or remote
+ * Resolve template from local or remote.
  * @param template template name or uri
- * @param offline  offline mode
+ * @param offline offline mode
  * @todo
  * - template version
  */
@@ -187,6 +187,98 @@ export const resolve = async (template: string, offline: boolean) => {
     spinner.fail('Download failed.')
     throw new Error(`Failed to fetch template "${template}": ${e.message}.`)
   }
+}
+/**
+ * Load template options.
+ * @param src source path
+ * @todo
+ * - template validate
+ * - docs tips
+ */
+export const load = async (src: string) => {
+  try {
+    const options = require(src)
+
+    if (Object.prototype.toString.call(options) !== '[object Object]') {
+      throw new TypeError('template needs to expose an object.')
+    }
+
+    return options
+  } catch (e) {
+    if (e.code !== 'MODULE_NOT_FOUND') {
+      e.message = `This template is invalid: ${e.message}`
+      throw e
+    }
+
+    // return default template options
+    return {}
+  }
+}
+
+/**
+ * Inquire questions.
+ * @param prompts prompts
+ * @param dest destination path
+ */
+export const inquire = async (prompts: Question, dest: string) => {
+  return await prompt.ask(prompts)
+  // if (!(prompts && Object.keys(prompts).length)) {
+  //   prompts = { name: { type: 'input', message: 'name' } }
+  // }
+
+  // // defaults
+  // const defaults = await Defaults.init(dest)
+
+  // // set prompt defaults
+  // for (const name in prompts) {
+  //   const item = prompts[name]
+  //   if ('default' in item) continue
+
+  //   const def = defaults[name]
+  //   if (def === undefined) continue
+
+  //   item.default = typeof def === 'function'
+  //     ? def.bind(defaults)
+  //     : def
+  // }
+
+  // // set prompt validates
+  // for (const name in prompts) {
+  //   if (name === 'name') {
+  //     setNameValidate(prompts[name])
+  //   } else if (name === 'version') {
+  //     setVersionValidate(prompts[name])
+  //   }
+  // }
+
+  // // clear console
+  // logger.clear()
+  // logger.log('\n🍭  Press ^C at any time to quit.\n')
+
+  // const questions = Object.keys(prompts).map(key => Object.assign({}, prompts[key], { name: key }))
+
+  // const answers = await prompt.ask(questions)
+
+  // return answers
+}
+
+/**
+ * Generate files from template.
+ * @param src source path
+ * @param dest destination path
+ * @param answers answers
+ * @param options template options
+ */
+export const generate = async (src: string, dest: string, answers: Record<string, unknown>, options: Record<string, unknown>) => {
+
+}
+/**
+ * Execute template complete .
+ * @param complete template complete callback
+ * @param context generator context
+ */
+export const complete = async (options: Record<string, unknown>, context: Record<string, unknown>) => {
+
 }
 
 const command: Command = {
@@ -247,6 +339,19 @@ const command: Command = {
 
       // resolve template
       const src = await resolve(template, offline)
+
+      // load template options
+      const options = await load(src) // Types
+      console.log(options)
+
+      // inquire questions
+      const answers = await inquire(options.prompts, dest) as Record<string, unknown>
+
+      // generate files
+      const files = await generate(src, dest, answers, options)
+
+      // execute complete
+      await complete(options, { src, dest, answers, files })
     } catch (e) {
       logger.error(e)
     }
