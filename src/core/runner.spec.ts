@@ -17,7 +17,7 @@ afterEach(async () => {
 })
 
 test('unit:core:runner:extract:1', async () => {
-  const [name, argv] = runner.extract(''.split(' '))
+  const [name, argv] = runner.extract([])
   expect(name).toBe('default')
   expect(argv).toEqual([])
 })

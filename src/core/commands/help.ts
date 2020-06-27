@@ -3,7 +3,7 @@ import { load, commands } from '../loader'
 import { Command, Context, Options } from '../types'
 
 const outputCommands = () => {
-  const cmds = Object.values(commands).filter(i => !i.hidden && i.name !== 'default')
+  const cmds = [...new Set(Object.values(commands))].filter(i => !i.hidden && i.name !== 'default')
 
   /* istanbul ignore else */
   if (cmds.length) {

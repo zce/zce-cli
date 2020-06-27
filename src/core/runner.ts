@@ -5,12 +5,6 @@ import { invoke } from './invoker'
 /**
  * Extract command name and extra args.
  * @param args command arguments
- * @example
- *  $ zce
- *  $ zce --help
- *  $ zce --version
- *  $ zce <command>
- *  $ zce <command> --help
  */
 export const extract = (args: string[]): [string, string[]] => {
   // // help command
@@ -19,22 +13,22 @@ export const extract = (args: string[]): [string, string[]] => {
 
   const [first, ...rest] = args
 
-  // e.g. '$ zce'
-  if (!first) return ['default', rest]
+  if (first) {
+    // sub command
+    // e.g. '$ zce foo'
+    if (!first.startsWith('-')) return [first, rest]
 
-  // e.g. '$ zce foo'
-  if (!first.startsWith('-')) return [first, rest]
+    // help command
+    // e.g. '$ zce --help' | '$ zce -h'
+    if (['--help', '-h'].includes(first)) return ['help', args]
 
-  // help command
-  // e.g. '$ zce --help' | '$ zce -h'
-  if (['--help', '-h'].includes(first)) return ['help', args]
-
-  // version command
-  // e.g. '$ zce --version' | '$ zce -h'
-  if (['--version', '-v'].includes(first)) return ['version', args]
+    // version command
+    // e.g. '$ zce --version' | '$ zce -h'
+    if (['--version', '-v'].includes(first)) return ['version', args]
+  }
 
   // default command
-  // e.g. '$ zce --foo'
+  // e.g. '$ zce' | '$ zce --other'
   return ['default', args]
 }
 

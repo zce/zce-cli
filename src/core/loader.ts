@@ -19,6 +19,14 @@ export const loadCommands = (dir: string): Record<string, Command> => {
 
       const cmd = mod as Command
 
+      if (cmd.options && !cmd.options.help) {
+        cmd.options.help = {
+          type: 'boolean',
+          alias: 'h',
+          description: 'output command help info'
+        }
+      }
+
       cmds[cmd.name] = cmd
       if (typeof cmd.alias === 'string') {
         cmds[cmd.alias] = cmd

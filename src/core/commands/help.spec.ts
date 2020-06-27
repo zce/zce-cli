@@ -62,6 +62,18 @@ test('unit:core:commands:help:invokeHelp:3', async () => {
   expect(exit.mock.calls[0][0]).toBe(undefined)
 })
 
+test('unit:core:commands:help:outputHelp:0', async () => {
+  const cmd = createFakeCommand({ name: 'default' })
+  const ctx = createFakeContext()
+  outputHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe(cmd.description)
+  expect(log.mock.calls[1][0]).toBe('')
+  expect(log.mock.calls[2][0]).toBe('Usage:')
+  expect(log.mock.calls[3][0]).toBe(`  $ ${ctx.bin} fake [options]`)
+  expect(log.mock.calls[4][0]).toBe('')
+  expect(log.mock.calls[5][0]).toBe('Commands:')
+})
+
 test('unit:core:commands:help:outputHelp:1', async () => {
   const cmd = createFakeCommand({
     usage: undefined,
