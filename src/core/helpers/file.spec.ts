@@ -7,6 +7,10 @@ const pkg = require('../../../package.json')
 
 const tempPrefix = path.join(os.tmpdir(), 'zce-cli-test-')
 
+test('unit:core:helpers:file:extract', async () => {
+  expect(typeof file.extract).toBe('function')
+})
+
 test('unit:core:helpers:file:remove', async () => {
   const temp = await fs.promises.mkdtemp(tempPrefix)
 

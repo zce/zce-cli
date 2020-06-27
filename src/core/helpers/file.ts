@@ -1,4 +1,5 @@
 import os from 'os'
+import extract from 'extract-zip'
 import { promises as fs, MakeDirectoryOptions } from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
@@ -6,6 +7,8 @@ import rimraf from 'rimraf'
 const { name } = require('../../../package.json')
 
 const identify = process.env.NODE_ENV === 'test' ? `${name}-test` : /* istanbul ignore next */ name
+
+export { extract }
 
 /**
  * Remove input path.
@@ -88,7 +91,7 @@ export const isEmpty = async (input: string): Promise<boolean> => {
  * @param paths additional paths
  */
 export const getTempPath = (...paths: string[]): string => {
-  return path.join(os.tmpdir(), identify, ...paths)
+  return path.join(os.tmpdir(), identify, Date.now().toString(), ...paths)
 }
 
 /**
