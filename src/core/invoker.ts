@@ -7,7 +7,7 @@ import { Context, Command } from './types'
  * @param ctx context
  */
 export const invoke = async (cmd: Command, ctx: Context): Promise<void> => {
-  if (cmd.name !== 'unknown' && (ctx.options.help || ctx.options.h)) {
+  if (cmd.name !== 'unknown' && ctx.options.help) {
     return await invokeHelp(cmd, ctx)
   }
 
