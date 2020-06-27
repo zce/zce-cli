@@ -28,7 +28,7 @@ const command: Command = {
     if (ctx.options.lang === 'en') {
       logger.success(`Hey! ${ctx.primary}~`)
     } else if (ctx.options.lang === 'zh') {
-      logger.success(`嘿！${ctx.primary}`)
+      logger.success(`嘿！${ctx.primary}~`)
     }
 
     if (ctx.options.debug) {

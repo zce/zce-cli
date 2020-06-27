@@ -19,13 +19,14 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
   if (!ctx.primary) {
     const cmds = Object.values(commands).filter(i => !i.hidden && i.name !== 'default')
 
+    /* istanbul ignore else */
     if (cmds.length) {
       logger.newline()
       logger.info('Commands:')
 
       const cmdInfos = cmds.reduce((prev, current) => {
         const key = `${current.name}${current.alias ? ` (${current.alias})` : ''}`
-        const value = current.description || '-'
+        const value = current.description || /* istanbul ignore next */ '-'
         return { ...prev, [key]: value }
       }, {} as Record<string, string>)
 
@@ -84,9 +85,10 @@ export const invokeHelp = async (cmd: Command, ctx: Context): Promise<void> => {
   if (cmd.help) {
     // custom help
     if (typeof cmd.help === 'string') {
-      return logger.info(cmd.help)
+      logger.info(cmd.help)
+    } else {
+      await cmd.help(ctx)
     }
-    await cmd.help(ctx)
   } else {
     // default help
     outputHelp(cmd, ctx)
@@ -99,9 +101,6 @@ const command: Command = {
   name: 'help',
   usage: 'help <command>',
   description: 'output usage information.',
-  // for testing
-  // alias: process.env.NODE_ENV === 'test' ? ['h'] : undefined,
-  // hidden: false,
   action: async (ctx: Context) => {
     const cmd = await load(ctx.primary || 'default')
     return await invokeHelp(cmd, ctx)

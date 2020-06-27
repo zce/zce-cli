@@ -12,6 +12,7 @@ test('unit:core:loader:load:custom', async () => {
 test('unit:core:loader:load:version', async () => {
   const cmd = await loader.load('version')
   expect(cmd.name).toBe('version')
+  expect(cmd.usage).toBe('--version')
   expect(cmd.description).toBe('output the version number.')
   expect(typeof cmd.action).toBe('function')
 })

@@ -1,5 +1,5 @@
-import command from './help'
-import { createFakeContext } from '../../../test/utils'
+import command, { outputHelp, invokeHelp } from './help'
+import { createFakeCommand, createFakeContext } from '../../../test/utils'
 const pkg = require('../../../package.json')
 
 let log: jest.SpyInstance
@@ -22,11 +22,95 @@ test('unit:core:commands:help', async () => {
   expect(typeof command.action).toBe('function')
 })
 
-test('unit:core:commands:help:action', async () => {
+test('unit:core:commands:help:action:1', async () => {
   const ctx = createFakeContext()
   await command.action(ctx)
   expect(log.mock.calls[0][0]).toBe(pkg.description)
   expect(exit.mock.calls[0][0]).toBe(undefined)
 })
 
-// TODO: need more help test
+test('unit:core:commands:help:action:2', async () => {
+  const ctx = createFakeContext({ primary: 'version' })
+  await command.action(ctx)
+  expect(log.mock.calls[0][0]).toBe('output the version number.')
+  expect(exit.mock.calls[0][0]).toBe(undefined)
+})
+
+test('unit:core:commands:help:invokeHelp:1', async () => {
+  const cmd = createFakeCommand({ help: 'custom help message' })
+  const ctx = createFakeContext()
+  await invokeHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe('custom help message')
+  expect(exit.mock.calls[0][0]).toBe(undefined)
+})
+
+test('unit:core:commands:help:invokeHelp:2', async () => {
+  const help = jest.fn()
+  const cmd = createFakeCommand({ help })
+  const ctx = createFakeContext()
+  await invokeHelp(cmd, ctx)
+  expect(help).toHaveBeenCalled()
+  expect(help.mock.calls[0][0]).toBe(ctx)
+  expect(exit.mock.calls[0][0]).toBe(undefined)
+})
+
+test('unit:core:commands:help:invokeHelp:3', async () => {
+  const cmd = createFakeCommand()
+  const ctx = createFakeContext()
+  await invokeHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe(cmd.description)
+  expect(exit.mock.calls[0][0]).toBe(undefined)
+})
+
+test('unit:core:commands:help:outputHelp:1', async () => {
+  const cmd = createFakeCommand({
+    usage: undefined,
+    alias: ['foo'],
+    description: undefined,
+    options: {
+      foo: 'string',
+      bar: { type: 'string', alias: ['b'] },
+      baz: { type: 'string', description: 'baz option' }
+    }
+  })
+  const ctx = createFakeContext()
+  outputHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe('Usage:')
+  expect(log.mock.calls[1][0]).toBe(`  $ ${ctx.bin} ${cmd.name} [options]`)
+})
+
+test('unit:core:commands:help:outputHelp:2', async () => {
+  const cmd = createFakeCommand({ examples: 'test help' })
+  const ctx = createFakeContext({ primary: 'foo' })
+  outputHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe(cmd.description)
+  expect(log.mock.calls[5][0]).toBe('Examples:')
+  expect(log.mock.calls[6][0]).toBe(`  $ ${ctx.bin} test help`)
+})
+
+test('unit:core:commands:help:outputHelp:3', async () => {
+  const cmd = createFakeCommand({ examples: ['test help'] })
+  const ctx = createFakeContext({ primary: 'foo' })
+  outputHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe(cmd.description)
+  expect(log.mock.calls[5][0]).toBe('Examples:')
+  expect(log.mock.calls[6][0]).toBe(`  $ ${ctx.bin} test help`)
+})
+
+test('unit:core:commands:help:outputHelp:4', async () => {
+  const cmd = createFakeCommand({ suggestions: 'test help' })
+  const ctx = createFakeContext({ primary: 'foo' })
+  outputHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe(cmd.description)
+  expect(log.mock.calls[5][0]).toBe('Suggestions:')
+  expect(log.mock.calls[6][0]).toBe(`  $ ${ctx.bin} test help`)
+})
+
+test('unit:core:commands:help:outputHelp:5', async () => {
+  const cmd = createFakeCommand({ suggestions: ['test help'] })
+  const ctx = createFakeContext({ primary: 'foo' })
+  outputHelp(cmd, ctx)
+  expect(log.mock.calls[0][0]).toBe(cmd.description)
+  expect(log.mock.calls[5][0]).toBe('Suggestions:')
+  expect(log.mock.calls[6][0]).toBe(`  $ ${ctx.bin} test help`)
+})

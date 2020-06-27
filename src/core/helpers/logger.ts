@@ -18,7 +18,7 @@ const pad = (input: string, width: number): string => {
  */
 export const color = new Instance({
   // Disable colors output for testing
-  level: process.env.NODE_ENV === 'test' ? 0 : 3
+  level: process.env.NODE_ENV === 'test' ? 0 : /* istanbul ignore next */ 3
 })
 
 /**
@@ -114,6 +114,7 @@ export const divider = (): void => {
  * Clear console.
  * @param title Default title
  */
+/* istanbul ignore next */
 export const clear = (title?: string): void => {
   if (!process.stdout.isTTY) return
   log('\n'.repeat(process.stdout.rows || 30))

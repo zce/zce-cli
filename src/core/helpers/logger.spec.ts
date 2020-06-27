@@ -100,6 +100,7 @@ test('unit:core:helpers:logger:divider', async () => {
 test('unit:core:helpers:logger:clear', async () => {
   logger.clear()
   logger.clear('test')
+  expect(log).not.toHaveBeenCalled()
 })
 
 test('unit:core:helpers:logger:spin', async () => {

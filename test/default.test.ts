@@ -4,7 +4,6 @@ jest.setTimeout(8000)
 
 test('integration:default', async () => {
   const { stdout } = await runCommand()
-
   expect(stdout).toBe('')
 })
 

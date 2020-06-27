@@ -17,11 +17,9 @@ const loadCommands = (dir: string): Record<string, Command> => {
       if (typeof command.alias === 'string') {
         cmds[command.alias] = command
       } else if (command.alias) {
-        command.alias.forEach(a => {
-          cmds[a] = command
-        })
+        command.alias.forEach(a => { cmds[a] = command })
       }
-    } catch (e) {}
+    } catch {}
     return cmds
   }, {} as Record<string, Command>)
 }

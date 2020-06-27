@@ -2,7 +2,7 @@ import { runCommand } from './utils'
 
 jest.setTimeout(8000)
 
-test('integration:hello:default', async () => {
+test('integration:hello', async () => {
   try {
     await runCommand('hello')
   } catch (err) {
@@ -12,6 +12,5 @@ test('integration:hello:default', async () => {
 
 test('integration:hello:name', async () => {
   const { stdout } = await runCommand(['hello', 'zce'])
-
   expect(stdout).toBe('Hey! zce~')
 })

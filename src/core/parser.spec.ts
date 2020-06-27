@@ -23,7 +23,9 @@ test('unit:core:context:parse:pkg-bin', async () => {
 
 test('unit:core:context:parse:with-options', async () => {
   const ctx = await context.parse(['--foo', '-b', '--hi', 'zce'], {
-    foo: {},
+    foo: {
+      alias: 'f'
+    },
     bar: {
       alias: ['b', 'z']
     },

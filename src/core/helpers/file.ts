@@ -5,7 +5,7 @@ import rimraf from 'rimraf'
 
 const { name } = require('../../../package.json')
 
-const identify = process.env.NODE_ENV !== 'test' ? name : `${name}-test`
+const identify = process.env.NODE_ENV === 'test' ? `${name}-test` : /* istanbul ignore next */ name
 
 /**
  * Remove input path.
@@ -17,6 +17,7 @@ const identify = process.env.NODE_ENV !== 'test' ? name : `${name}-test`
 export const remove = async (input: string, options?: rimraf.Options): Promise<void> =>
   new Promise(resolve => {
     rimraf(input, { glob: false, ...options }, err => {
+      /* istanbul ignore if */
       if (err) throw err
       resolve()
     })
@@ -38,13 +39,16 @@ export const mkdir = async (input: string, options?: MakeDirectoryOptions): Prom
 export const exists = async (input: string): Promise<false | 'file' | 'dir' | 'other'> => {
   try {
     const stat = await fs.stat(input)
+    /* istanbul ignore else */
     if (stat.isDirectory()) {
       return 'dir'
     } else if (stat.isFile()) {
       return 'file'
+    } else {
+      return 'other'
     }
-    return 'other'
   } catch (err) {
+    /* istanbul ignore if */
     if (err.code !== 'ENOENT') {
       throw err
     }

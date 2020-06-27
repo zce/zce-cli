@@ -13,6 +13,7 @@ afterEach(async () => {
 
 test('unit:core:commands:version', async () => {
   expect(command.name).toBe('version')
+  expect(command.usage).toBe('--version')
   expect(command.description).toBe('output the version number.')
   expect(typeof command.action).toBe('function')
 })

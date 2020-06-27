@@ -3,6 +3,7 @@ import { Command, Context } from '../types'
 
 const command: Command = {
   name: 'unknown',
+  alias: ['unknown1'], // for testing coverage
   hidden: true,
   action: async (ctx: Context) => {
     if (!ctx.primary) return
