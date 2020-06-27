@@ -59,7 +59,7 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
 
     let { examples } = cmd
     if (typeof examples !== 'string') {
-      examples = examples.join('\n$ ${ctx.bin} ')
+      examples = examples.join(`\n$ ${ctx.bin} `)
     }
     logger.info(logger.indent(`$ ${ctx.bin} ${examples}`))
   }
@@ -70,7 +70,7 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
 
     let { suggestions } = cmd
     if (typeof suggestions !== 'string') {
-      suggestions = suggestions.join('\n$ ${ctx.bin} ')
+      suggestions = suggestions.join(`\n$ ${ctx.bin} `)
     }
     logger.info(logger.indent(`$ ${ctx.bin} ${suggestions}`))
   }

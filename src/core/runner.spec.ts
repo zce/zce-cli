@@ -68,7 +68,7 @@ test('unit:core:runner:run:default', async () => {
   const original = process.argv
   process.argv = []
   await runner.run()
-  const mockedAction = cmd.action as unknown as jest.SpyInstance
+  const mockedAction = (cmd.action as unknown) as jest.SpyInstance
   expect(mockedAction).toHaveBeenCalled()
   expect(mockedAction.mock.calls[0][0].bin).toBe(Object.keys(pkg.bin)[0])
   expect(mockedAction.mock.calls[0][0].primary).toBe(undefined)

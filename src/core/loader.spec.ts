@@ -31,3 +31,8 @@ test('unit:core:loader:load:unknown', async () => {
   expect(cmd.hidden).toBe(true)
   expect(typeof cmd.action).toBe('function')
 })
+
+test('unit:core:loader:load:loadCommands', async () => {
+  const cmds = loader.loadCommands('./helpers') // not commands dir
+  expect(cmds).toEqual({})
+})

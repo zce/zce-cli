@@ -6,18 +6,27 @@ import { Command } from './types'
  * Load dir commands
  * @param dir dir to load
  */
-const loadCommands = (dir: string): Record<string, Command> => {
+export const loadCommands = (dir: string): Record<string, Command> => {
   const commandDir = join(__dirname, dir)
 
   // scanning commands
   return readdirSync(commandDir).reduce((cmds, item) => {
     try {
-      const command = require(join(commandDir, item)).default as Command
-      cmds[command.name] = command
-      if (typeof command.alias === 'string') {
-        cmds[command.alias] = command
-      } else if (command.alias) {
-        command.alias.forEach(a => { cmds[a] = command })
+      const { default: mod } = require(join(commandDir, item))
+
+      // ignore not command
+      if (typeof mod === 'undefined' || typeof mod.name !== 'string' || typeof mod.action !== 'function')
+        return cmds
+
+      const cmd = mod as Command
+
+      cmds[cmd.name] = cmd
+      if (typeof cmd.alias === 'string') {
+        cmds[cmd.alias] = cmd
+      } else if (cmd.alias) {
+        cmd.alias.forEach(a => {
+          cmds[a] = cmd
+        })
       }
     } catch {}
     return cmds
