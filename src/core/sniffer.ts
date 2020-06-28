@@ -14,7 +14,7 @@ export const sniff = (): void => {
     name,
     engines.node
   )
-  logger.error('Please upgrade your Node.js version before this operation.')
+  logger.info('Please upgrade your Node.js version before this operation.')
   // node version required
   process.exit(1)
 }

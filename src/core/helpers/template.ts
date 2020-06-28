@@ -1,4 +1,4 @@
-import { template } from 'lodash'
+import { template, TemplateOptions } from 'lodash'
 
 const imports = {}
 
@@ -17,8 +17,19 @@ export const registerHelpers = (helpers: Record<string, unknown>): void => {
  * @param options template options
  * @return render result
  */
-export const render = (input: string, data: Record<string, unknown>, options?: Record<string, unknown>): string => {
+export const render = (input: string, data: Record<string, unknown>, options?: TemplateOptions): string => {
   options = Object.assign({ imports }, options)
   const compiled = template(input, options)
   return compiled(data)
 }
+
+// /**
+//  * Compile an ES6 template literals string to a Template function.
+//  * @param source ES6 template literals.
+//  */
+// export const compile = (source: string) => {
+//   return (context: Record<string, unknown>) => {
+//     const props = Object.keys(context).join(', ')
+//     return new Function(`{ ${props} }`, `return \`${source}\``)(context)
+//   }
+// }

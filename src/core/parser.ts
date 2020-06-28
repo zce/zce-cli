@@ -23,7 +23,7 @@ export const parse = async (args: string[], opts: Options = {}): Promise<Context
 
   // pick options
   const keys = Object.keys(opts)
-  const options = Object.keys(result).reduce((o, i) => keys.includes(i) ? { ...o, [i]: result[i] } : o, {})
+  const options = Object.keys(result).reduce((o, i) => (keys.includes(i) ? { ...o, [i]: result[i] } : o), {})
 
   // return context
   return { bin, primary, secondary, thirdly, fourthly, extras, inputs, options, pkg }

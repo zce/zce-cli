@@ -1,5 +1,10 @@
 sudo: false
 
+os:
+  - windows
+  - linux
+  - osx
+
 language: node_js
 
 node_js:
@@ -13,6 +18,7 @@ notifications:
 script:
   - npm run build
   - npm run coverage
+  - npx commitlint-travis
 
 after_script:
   - npx codecov

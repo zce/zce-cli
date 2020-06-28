@@ -61,7 +61,10 @@ test('unit:core:helpers:logger:debug', async () => {
 // })
 
 test('unit:core:helpers:logger:table:1', async () => {
-  logger.table([['foo', 123], ['barbarbarbar', 'baz']])
+  logger.table([
+    ['foo', 123],
+    ['barbarbarbar', 'baz']
+  ])
   expect(log.mock.calls[0][0]).toBe('foo           123\nbarbarbarbar  baz')
 })
 

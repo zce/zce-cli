@@ -135,7 +135,7 @@ export const untildify = (input: string): string => {
  * @param output output path
  * @see https://github.com/shinnn/node-strip-dirs
  */
-export const extract = async (input: string, output: string, strip: number = 0) => {
+export const extract = async (input: string, output: string, strip = 0): Promise<void> => {
   await extractZip(input, {
     dir: output,
     onEntry: entry => {

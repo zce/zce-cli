@@ -2,11 +2,6 @@
 
 import * as template from './template'
 
-test('unit:core:helpers:template', async () => {
-  expect(typeof template.render).toBe('function')
-  expect(typeof template.registerHelpers).toBe('function')
-})
-
 test('unit:core:helpers:template:render', async () => {
   const result1 = template.render('foo <%= bar %>', { bar: 'baz' })
   expect(result1).toBe('foo baz')
@@ -21,6 +16,5 @@ test('unit:core:helpers:template:registerHelpers', async () => {
     bar: () => 'baz'
   })
   const result = template.render('<%= foo %> <%= bar() %>', {})
-
   expect(result).toBe('bar baz')
 })

@@ -81,7 +81,7 @@ interface BasePromptOptions {
   required?: boolean
   format?(value: string): string | Promise<string>
   result?(value: string): string | Promise<string>
-  skip?: ((state: object) => boolean | Promise<boolean>) | boolean
+  skip?: ((state: unknown) => boolean | Promise<boolean>) | boolean
   validate?(value: string): boolean | Promise<boolean> | string | Promise<string>
   onSubmit?(name: string, value: any, prompt: Enquirer.Prompt): boolean | Promise<boolean>
   onCancel?(name: string, value: any, prompt: Enquirer.Prompt): boolean | Promise<boolean>
@@ -98,15 +98,7 @@ interface Choice {
 }
 
 interface ArrayPromptOptions extends BasePromptOptions {
-  type:
-    | 'autocomplete'
-    | 'editable'
-    | 'form'
-    | 'multiselect'
-    | 'select'
-    | 'survey'
-    | 'list'
-    | 'scale'
+  type: 'autocomplete' | 'editable' | 'form' | 'multiselect' | 'select' | 'survey' | 'list' | 'scale'
   choices: string[] | Choice[]
   maxChoices?: number
   muliple?: boolean

@@ -44,7 +44,7 @@ test('unit:core:helpers:file:mkdir', async () => {
   const target3 = tempPrefix + Date.now()
   await file.mkdir(target3, { mode: 0o755, recursive: false })
   const stat3 = await fs.promises.stat(target3)
-  expect(stat3.mode).toBe(process.platform === 'win32' ? 16822 : 0o755)
+  expect(stat3.mode).toBe(process.platform === 'win32' ? 16822 : 16877)
   await fs.promises.rmdir(target3)
 })
 

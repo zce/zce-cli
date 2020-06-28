@@ -10,10 +10,10 @@ const outputCommands = () => {
     logger.newline()
     logger.info('Commands:')
 
-    const infos = cmds.map(i => [
+    const infos: [string, string][] = cmds.map(i => [
       `${i.name}${i.alias ? ` (${i.alias})` : ''}`,
       i.description || /* istanbul ignore next */ '-'
-    ] as [string, unknown])
+    ])
 
     logger.table(infos, 10, 2)
   }
@@ -27,7 +27,7 @@ const outputOptions = (options: Options) => {
   // 'ls' => '--ls'
   const optKey = (k: string) => `${k.length === 1 ? '-' : '--'}${k}`
 
-  const infos = Object.keys(options).map(k => {
+  const infos: [string, string][] = Object.keys(options).map(k => {
     const opt = options[k]
     const keys = [`--${k}`]
     let value = '-'
@@ -39,7 +39,7 @@ const outputOptions = (options: Options) => {
       }
       value = (opt as Record<string, string>).description || '-'
     }
-    return [keys.join(', '), value] as [string, unknown]
+    return [keys.join(', '), value]
   })
 
   logger.table(infos, 10, 2)
@@ -49,7 +49,7 @@ const outputTips = (title: string, tips: string | string[], bin: string) => {
   logger.newline()
   logger.info(title)
   if (typeof tips !== 'string') {
-    tips = tips.join(`\n`)
+    tips = tips.join('\n')
   }
   logger.info(logger.indent(tips.replace(/\[bin\]/g, bin)))
 }

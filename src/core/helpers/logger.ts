@@ -120,7 +120,6 @@ export const indent = (input: string, size = 2): string => {
   return redent(input, size)
 }
 
-
 /**
  * Creates a spinner and starts it up.
  * @param options The text for the spinner or an ora options.

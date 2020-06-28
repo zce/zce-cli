@@ -107,7 +107,7 @@ test('unit:core:commands:help:outputHelp:2', async () => {
   expect(log.mock.calls[3][0]).toBe(`  $ ${ctx.bin} ${cmd.name} [options]`)
   expect(log.mock.calls[4][0]).toBe('')
   expect(log.mock.calls[5][0]).toBe('Examples:')
-  expect(log.mock.calls[6][0]).toBe(`  # test help`)
+  expect(log.mock.calls[6][0]).toBe('  # test help')
 })
 
 test('unit:core:commands:help:outputHelp:3', async () => {
@@ -133,7 +133,7 @@ test('unit:core:commands:help:outputHelp:4', async () => {
   expect(log.mock.calls[3][0]).toBe(`  $ ${ctx.bin} ${cmd.name} [options]`)
   expect(log.mock.calls[4][0]).toBe('')
   expect(log.mock.calls[5][0]).toBe('Suggestions:')
-  expect(log.mock.calls[6][0]).toBe(`  test help`)
+  expect(log.mock.calls[6][0]).toBe('  test help')
 })
 
 test('unit:core:commands:help:outputHelp:5', async () => {

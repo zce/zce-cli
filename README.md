@@ -13,6 +13,14 @@
 
 ## Todos
 
+- [x] CLI Frameworks
+- [ ] Generate command
+  - [x] list command
+- [ ] Docs
+- [ ] Extract core into package
+
+---
+
 - [x] invoke help
 - [x] integration tests
 - [x] unit tests
@@ -112,44 +120,43 @@ lazy-import
 [style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [style-url]: http://standardjs.com
 
+chalk got minimist minimist-options mkdirp ora redent rimraf tildify untildify zce
 
- chalk got minimist minimist-options mkdirp ora redent rimraf tildify untildify zce
-
- @commitlint/cli @commitlint/config-conventional @types/execa @types/got @types/jest @types/lodash @types/minimist @types/mkdirp @types/node @types/rimraf @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commitizen cz-conventional-changelog eslint execa husky jest lint-staged prettier standard-version ts-jest ts-node typescript
+@commitlint/cli @commitlint/config-conventional @types/execa @types/got @types/jest @types/lodash @types/minimist @types/mkdirp @types/node @types/rimraf @types/semver @typescript-eslint/eslint-plugin @typescript-eslint/parser commitizen cz-conventional-changelog eslint execa husky jest lint-staged prettier standard-version ts-jest ts-node typescript
 
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": "src",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "outDir": "lib",
-    "paths": {
-      "@*": ["src/*"]
-    },
-    "strict": true,
-    "target": "es2017"
-  },
-  "exclude": ["src/**/*.test.ts"],
-  "include": ["src/**/*.ts"]
+"compilerOptions": {
+"allowSyntheticDefaultImports": true,
+"baseUrl": "src",
+"esModuleInterop": true,
+"experimentalDecorators": true,
+"module": "commonjs",
+"moduleResolution": "node",
+"noImplicitAny": true,
+"noImplicitThis": true,
+"noUnusedLocals": true,
+"outDir": "lib",
+"paths": {
+"@_": ["src/_"]
+},
+"strict": true,
+"target": "es2017"
+},
+"exclude": ["src/**/*.test.ts"],
+"include": ["src/**/*.ts"]
 }
 
 const loadCommands = (dir: string) => new Proxy<Record<string, Command>>({}, {
-  get (target, name) {
-    if (Reflect.has(target, name)) return Reflect.get(target, name)
-    try {
-      const cmd = require(dir + '/' + name.toString()) as Command
-      Reflect.set(target, name, cmd)
-      return cmd
-    } catch (e) {
-      if (e.code !== 'MODULE_NOT_FOUND') {
-        throw e
-      }
-    }
-  }
+get (target, name) {
+if (Reflect.has(target, name)) return Reflect.get(target, name)
+try {
+const cmd = require(dir + '/' + name.toString()) as Command
+Reflect.set(target, name, cmd)
+return cmd
+} catch (e) {
+if (e.code !== 'MODULE_NOT_FOUND') {
+throw e
+}
+}
+}
 })
