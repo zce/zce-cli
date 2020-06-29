@@ -7,6 +7,7 @@ const pkg = require('../../package.json')
  * parse context from cli argv
  * @param args cli argv
  * @param opts command options
+ * @todo pkg.bin === undefined
  */
 export const parse = async (args: string[], opts: Options = {}): Promise<Context> => {
   // cli bin name

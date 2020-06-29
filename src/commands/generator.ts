@@ -1,6 +1,6 @@
 // import path from 'path'
 // import crypto from 'crypto'
-// import { file, http, prompt, logger, missingArgument, Command, Context, Question } from '../core'
+// import { file, http, config, prompt, logger, missingArgument, Command, Context, Question } from '../core'
 
 // // #region template list
 // /**
@@ -69,7 +69,7 @@
 //  * @param template template name or uri
 //  * @todo template download link config
 //  */
-// export const getTemplateUrl = (template: string): string => {
+// export const getTemplateUrl = async (template: string): Promise<string> => {
 //   // full url
 //   if (/^https?:/.test(template)) return template
 //   // short name
@@ -78,7 +78,8 @@
 //   // branch
 //   const temp = template.split('#')
 //   // github archive link
-//   return `https://github.com/${temp[0]}/archive/${temp[1] || 'master'}.zip`
+//   // return `https://github.com/${temp[0]}/archive/${temp[1] || 'master'}.zip`
+//   const conf = await config.get('')
 // }
 
 // /**
@@ -146,7 +147,7 @@
 //   }
 
 //   // fetch remote template
-//   const url = getTemplateUrl(template)
+//   const url = await getTemplateUrl(template)
 
 //   // url hash
 //   const hash = crypto.createHash('md5').update(url).digest('hex')
@@ -325,7 +326,7 @@
 //       return await showTemplates(ctx)
 //     }
 
-//     const { primary: template, secondary: project = '.', config } = ctx
+//     const { primary: template, secondary: project = '.' } = ctx
 //     const { offline } = ctx.options as { offline: boolean }
 
 //     // required arguments
