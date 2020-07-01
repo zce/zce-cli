@@ -1,6 +1,7 @@
-import { template, TemplateOptions } from 'lodash'
+import template from 'lodash/template'
+import { TemplateOptions } from 'lodash'
 
-const imports = {}
+const imports: Record<string, unknown> = {}
 
 /**
  * Register helpers.

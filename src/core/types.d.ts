@@ -43,6 +43,8 @@ declare module 'minimist-options' {
   }
 }
 
+export type Dictionary<T> = { [key: string]: T }
+
 export { Options }
 
 export interface Context {
@@ -77,14 +79,14 @@ interface BasePromptOptions {
   name: string | (() => string)
   type: string | (() => string)
   message: string | (() => string) | (() => Promise<string>)
-  initial?: any
+  initial?: unknown
   required?: boolean
   format?(value: string): string | Promise<string>
   result?(value: string): string | Promise<string>
   skip?: ((state: unknown) => boolean | Promise<boolean>) | boolean
   validate?(value: string): boolean | Promise<boolean> | string | Promise<string>
-  onSubmit?(name: string, value: any, prompt: Enquirer.Prompt): boolean | Promise<boolean>
-  onCancel?(name: string, value: any, prompt: Enquirer.Prompt): boolean | Promise<boolean>
+  onSubmit?(name: string, value: unknown, prompt: Enquirer.Prompt): boolean | Promise<boolean>
+  onCancel?(name: string, value: unknown, prompt: Enquirer.Prompt): boolean | Promise<boolean>
   stdin?: NodeJS.ReadStream
   stdout?: NodeJS.WriteStream
 }
@@ -157,8 +159,10 @@ type PromptOptions =
   | SnippetPromptOptions
   | SortPromptOptions
 
-export type Question =
+export type Questions =
   | PromptOptions
   | ((this: Enquirer) => PromptOptions)
   | (PromptOptions | ((this: Enquirer) => PromptOptions))[]
+
+export type Answers<T = unknown> = Record<string, T>
 // #endregion

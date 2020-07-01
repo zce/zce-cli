@@ -11,7 +11,7 @@ const pkg = require('../../../package.json')
  * @param options cosmiconfig options
  * @todo pkg.bin === undefined
  */
-export const get = async (name?: string, from?: string, options?: Options): Promise<Record<string, unknown>> => {
+export const get = async <T>(name?: string, from?: string, options?: Options): Promise<Record<string, T>> => {
   if (typeof name === 'undefined') {
     const bin: string = typeof pkg.bin === 'string' ? pkg.name : Object.keys(pkg.bin)[0]
     name = bin

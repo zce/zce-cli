@@ -1,6 +1,6 @@
 import * as config from './config'
 import path from 'path'
-const pkg = require('../../package.json')
+const pkg = require('../../../package.json')
 
 test('unit:core:helpers:config', async () => {
   const conf1 = await config.get()
