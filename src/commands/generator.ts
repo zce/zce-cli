@@ -1,14 +1,14 @@
 // import path from 'path'
 // import crypto from 'crypto'
-// import { file, http, config, prompt, logger, missingArgument, Command, Context, Question } from '../core'
+// import { file, http, config, prompt, logger, template, missingArgument, Command, Context, Questions, Answers } from '../core'
 
 // // #region template list
 // /**
 //  * Fetch user's repos
-//  * @param username GitHub username
+//  * @param owner GitHub username or organization
 //  */
-// export const fetchRepos = async (username: string) => {
-//   const res = await http.request<Record<string, string>[]>(`https://api.github.com/users/${username}/repos`, {
+// export const fetchRepos = async (owner: string) => {
+//   const res = await http.request<Record<string, string>[]>(`https://api.github.com/users/${owner}/repos`, {
 //     searchParams: {
 //       client_id: '0cb723972877555ffb54',
 //       client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38',
@@ -27,13 +27,13 @@
 // export const showTemplates = async (ctx: Context) => {
 //   const spinner = logger.spin('Loading available list from remote...')
 //   spinner.start()
-//   const { username, json, short } = ctx.options as { username: string; json: boolean; short: boolean }
+//   const { owner, json, short } = ctx.options as { owner: string; json: boolean; short: boolean }
 
 //   try {
-//     const repos = await fetchRepos(username)
+//     const repos = await fetchRepos(owner)
 //     spinner.stop()
 
-//     const isOfficial = username === 'zce-templates'
+//     const isOfficial = owner === 'zce-templates'
 
 //     // json output
 //     if (json) {
@@ -50,7 +50,7 @@
 //       return logger.info('😞  No available templates.')
 //     }
 
-//     logger.info(`👇  Available ${isOfficial ? 'official' : username}'s templates:`)
+//     logger.info(`👇  Available ${isOfficial ? 'official' : owner}'s templates:`)
 //     logger.newline()
 
 //     const infos: [string, unknown][] = repos.map(i => [
@@ -64,22 +64,40 @@
 // }
 // // #endregion
 
+// export interface TemplateOptions {
+//   name: string
+//   version: string
+//   source: string
+//   metadata: Record<string, unknown>
+//   questions: Questions
+//   filters: Record<string, (answers: Answers) => boolean>
+//   helpers: Record<string, unknown>
+//   plugin: (context: Record<string, unknown>, next: ) => {}
+//   complete: (context: Record<string, unknown>) => Promise<void | string> | string
+// }
+
 // /**
 //  * Get template url.
-//  * @param template template name or uri
+//  * @param input template name or uri
 //  * @todo template download link config
+//  * @example
+//  * 1. short name, e.g. 'nm'
+//  * 2. full name, e.g. 'zce/nm'
+//  * 3. with branch, e.g. 'zce/nm#next'
+//  * 4. full url, e.g. 'https://github.com/zce/nm/archive/master.zip'
 //  */
-// export const getTemplateUrl = async (template: string): Promise<string> => {
-//   // full url
-//   if (/^https?:/.test(template)) return template
-//   // short name
-//   // `zce-templates` is official templates org
-//   template = template.includes('/') ? template : `zce-templates/${template}`
-//   // branch
-//   const temp = template.split('#')
-//   // github archive link
-//   // return `https://github.com/${temp[0]}/archive/${temp[1] || 'master'}.zip`
-//   const conf = await config.get('')
+// export const getTemplateUrl = async (input: string): Promise<string> => {
+//   if (/^https?:/.test(input)) return input
+
+//   input = input.includes('/') ? input : `zce-templates/${input}`
+//   input = input.includes('#') ? input : `${input}#master`
+//   const [owner, name, branch] = input.split(/\/|#/)
+
+//   // default registry
+//   const defaultRegistry = 'https://github.com/${owner}/${name}/archive/${branch}.zip'
+//   const { registry = defaultRegistry } = await config.get<string>()
+
+//   return template.render(registry, { owner, name, branch })
 // }
 
 // /**
@@ -299,7 +317,7 @@
 //       default: false,
 //       description: 'list available templates'
 //     },
-//     username: {
+//     owner: {
 //       type: 'string',
 //       default: 'zce-templates',
 //       description: 'github user or organization slug'
@@ -319,7 +337,7 @@
 //     logger.color.gray('# create a new project with an official template'),
 //     '$ [bin] init <template> [project]',
 //     logger.color.gray('# create a new project straight from a github template'),
-//     '$ [bin] init <username>/<repo> [project]'
+//     '$ [bin] init <owner>/<repo> [project]'
 //   ],
 //   action: async (ctx: Context) => {
 //     if (ctx.options.list) {
