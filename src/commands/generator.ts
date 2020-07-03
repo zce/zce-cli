@@ -66,20 +66,20 @@
 
 // export interface TemplateOptions {
 //   name: string
-//   version: string
-//   source: string
-//   metadata: Record<string, unknown>
-//   questions: Questions
-//   filters: Record<string, (answers: Answers) => boolean>
-//   helpers: Record<string, unknown>
-//   plugin: (context: Record<string, unknown>, next: ) => {}
-//   complete: (context: Record<string, unknown>) => Promise<void | string> | string
+//   version?: string
+//   source?: string
+//   metadata?: Record<string, unknown>
+//   questions?: Questions
+//   filters?: Record<string, (answers: Answers) => boolean>
+//   helpers?: Record<string, unknown>
+//   plugin?: (context: Record<string, unknown>) => {}
+//   complete?: (context: Record<string, unknown>) => Promise<void | string> | string
 // }
 
 // /**
 //  * Get template url.
 //  * @param input template name or uri
-//  * @todo template download link config
+//  * @todo # or @
 //  * @example
 //  * 1. short name, e.g. 'nm'
 //  * 2. full name, e.g. 'zce/nm'
@@ -104,7 +104,7 @@
 //  * Confirm destination path.
 //  * @param project project name
 //  */
-// export const comfirm = async (project: string) => {
+// export const comfirm = async (project: string): Promise<string> => {
 //   const dest = path.resolve(project)
 
 //   const exists = await file.exists(dest)
@@ -158,7 +158,7 @@
 //  * @todo
 //  * - template version
 //  */
-// export const resolve = async (template: string, offline: boolean) => {
+// export const resolve = async (template: string, offline: boolean): Promise<string> => {
 //   // local template path
 //   if (/^[./]|^[a-zA-Z]:/.test(template)) {
 //     return path.resolve(template)
@@ -213,9 +213,9 @@
 //  * - template validate
 //  * - docs tips
 //  */
-// export const load = async (src: string) => {
+// export const load = async (src: string): Promise<TemplateOptions> => {
 //   try {
-//     const options = require(src)
+//     const options = require(src) as TemplateOptions
 
 //     if (Object.prototype.toString.call(options) !== '[object Object]') {
 //       throw new TypeError('template needs to expose an object.')

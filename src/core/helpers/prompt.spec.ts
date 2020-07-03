@@ -1,14 +1,14 @@
 import Enquirer from 'enquirer'
-import * as prompt from './prompt'
+import { prompt } from './prompt'
 
 jest.mock('enquirer')
 
-test('unit:core:helpers:prompt:ask', async () => {
+test('unit:core:helpers:prompt', async () => {
   Enquirer.prompt = jest.fn().mockResolvedValue({ name: 'zce' })
 
-  expect(typeof prompt.ask).toBe('function')
+  expect(typeof prompt).toBe('function')
 
-  const answers = await prompt.ask<Record<string, string>>({
+  const answers = await prompt<Record<string, string>>({
     type: 'input',
     name: 'name',
     message: 'What is your name?'
