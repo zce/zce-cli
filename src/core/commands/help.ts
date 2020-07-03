@@ -110,7 +110,7 @@ const command: Command = {
   name: 'help',
   usage: 'help <command>',
   description: 'output usage information.',
-  action: async (ctx: Context) => {
+  action: async (ctx) => {
     const cmd = await load(ctx.primary || 'default')
     return await invokeHelp(cmd, ctx)
   }

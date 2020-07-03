@@ -1,15 +1,6 @@
+import crypto from 'crypto'
 import template from 'lodash/template'
 import { TemplateOptions } from 'lodash'
-
-const imports: Record<string, unknown> = {}
-
-/**
- * Register helpers.
- * @param helpers helper functions or data
- */
-export const registerHelpers = (helpers: Record<string, unknown>): void => {
-  Object.assign(imports, helpers)
-}
 
 /**
  * Render a template string as lodash template.
@@ -19,7 +10,6 @@ export const registerHelpers = (helpers: Record<string, unknown>): void => {
  * @return render result
  */
 export const render = (input: string, data: Record<string, unknown>, options?: TemplateOptions): string => {
-  options = Object.assign({ imports }, options)
   const compiled = template(input, options)
   return compiled(data)
 }
@@ -34,3 +24,12 @@ export const render = (input: string, data: Record<string, unknown>, options?: T
 //     return new Function(`{ ${props} }`, `return \`${source}\``)(context)
 //   }
 // }
+
+/**
+ * Compute md5 hash result
+ * @param input source input strings
+ * @return md5 strings
+ */
+export const md5 = (input: string): string => {
+  return crypto.createHash('md5').update(input).digest('hex')
+}

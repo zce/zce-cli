@@ -5,7 +5,7 @@ test('unit:core:helpers:ware', async () => {
 
   const arr: number[] = []
 
-  const app = ware<State>({ foo: 123 })
+  const app = ware<State>()
   app.use(async (state, next) => {
     expect(state.foo).toBe(123)
     state.bar = 456
@@ -28,6 +28,6 @@ test('unit:core:helpers:ware', async () => {
       arr.push(6)
     }
   ])
-  await app.run()
+  await app.run({ foo: 123 })
   expect(arr).toEqual([1, 3, 5, 6, 4, 2])
 })

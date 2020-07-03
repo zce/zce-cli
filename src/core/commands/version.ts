@@ -1,12 +1,12 @@
 import { logger } from '../helpers'
-import { Command, Context } from '../types'
+import { Command } from '../types'
 
 const command: Command = {
   name: 'version',
   usage: '--version',
   description: 'output the version number.',
-  action: async (ctx: Context) => {
-    logger.info(`${ctx.pkg.name} v${ctx.pkg.version}`)
+  action: async ({ pkg }) => {
+    logger.info(`${pkg.name} v${pkg.version}`)
   }
 }
 

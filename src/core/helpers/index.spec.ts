@@ -6,7 +6,7 @@ test('unit:core:helpers', async () => {
   expect(typeof helpers.system).toBe('object')
   expect(typeof helpers.config).toBe('object')
   expect(typeof helpers.logger).toBe('object')
-  expect(typeof helpers.template).toBe('object')
+  expect(typeof helpers.strings).toBe('object')
   expect(typeof helpers.ware).toBe('function')
   expect(typeof helpers.prompt).toBe('function')
   expect(typeof helpers.unknownCommand).toBe('function')

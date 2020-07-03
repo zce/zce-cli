@@ -1,13 +1,13 @@
 import { unknownCommand } from '../helpers'
-import { Command, Context } from '../types'
+import { Command } from '../types'
 
 const command: Command = {
   name: 'unknown',
   alias: ['unknown1'], // for testing coverage
   hidden: true,
-  action: async (ctx: Context) => {
-    if (!ctx.primary) return
-    unknownCommand(ctx.primary, `${ctx.bin} --help`)
+  action: async ({ bin, primary }) => {
+    if (!primary) return
+    unknownCommand(primary, `${bin} --help`)
   }
 }
 

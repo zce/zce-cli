@@ -6,7 +6,7 @@ test('unit:core', async () => {
   expect(typeof core.system).toBe('object')
   expect(typeof core.config).toBe('object')
   expect(typeof core.logger).toBe('object')
-  expect(typeof core.template).toBe('object')
+  expect(typeof core.strings).toBe('object')
   expect(typeof core.ware).toBe('function')
   expect(typeof core.prompt).toBe('function')
   expect(typeof core.unknownCommand).toBe('function')

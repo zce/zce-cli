@@ -1,237 +1,340 @@
-// import path from 'path'
-// import crypto from 'crypto'
-// import { file, http, config, prompt, logger, template, missingArgument, Command, Context, Questions, Answers } from '../core'
+import path from 'path'
+import { file, http, config, logger, strings, ware, prompt, missingArgument, Command, Questions, Answers } from '../core'
+import { Middleware } from '../core/types'
 
-// // #region template list
-// /**
-//  * Fetch user's repos
-//  * @param owner GitHub username or organization
-//  */
-// export const fetchRepos = async (owner: string) => {
-//   const res = await http.request<Record<string, string>[]>(`https://api.github.com/users/${owner}/repos`, {
-//     searchParams: {
-//       client_id: '0cb723972877555ffb54',
-//       client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38',
-//       per_page: 100,
-//       sort: 'updated'
-//     },
-//     timeout: 5 * 1000 // 5s
-//   })
-//   return res.body
-// }
+// #region template list
+/**
+ * Fetch user's repos
+ * @param owner GitHub username or organization
+ */
+export const fetchRepos = async (owner: string): Promise<Record<string, string>[]> => {
+  const res = await http.request<Record<string, string>[]>(`https://api.github.com/users/${owner}/repos`, {
+    searchParams: {
+      client_id: '0cb723972877555ffb54',
+      client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38',
+      per_page: 100,
+      sort: 'updated'
+    },
+    timeout: 5 * 1000 // 5s
+  })
+  return res.body
+}
 
-// /**
-//  * List available templates
-//  * @param ctx context
-//  */
-// export const showTemplates = async (ctx: Context) => {
-//   const spinner = logger.spin('Loading available list from remote...')
-//   spinner.start()
-//   const { owner, json, short } = ctx.options as { owner: string; json: boolean; short: boolean }
+/**
+ * List available templates
+ * @param options options
+ */
+export const showTemplates = async (owner: string, json: boolean, short: boolean): Promise<void> => {
+  const spinner = logger.spin('Loading available list from remote...')
+  spinner.start()
 
-//   try {
-//     const repos = await fetchRepos(owner)
-//     spinner.stop()
+  try {
+    const repos = await fetchRepos(owner)
+    spinner.stop()
 
-//     const isOfficial = owner === 'zce-templates'
+    const isOfficial = owner === 'zce-templates'
 
-//     // json output
-//     if (json) {
-//       return logger.info(JSON.stringify(repos))
-//     }
+    // json output
+    if (json) {
+      return logger.info(JSON.stringify(repos))
+    }
 
-//     // short output
-//     if (short) {
-//       return repos.forEach(item => logger.info(`→ ${isOfficial ? item.name : item.full_name}`))
-//     }
+    // short output
+    if (short) {
+      return repos.forEach(item => logger.info(`→ ${isOfficial ? item.name : item.full_name}`))
+    }
 
-//     // full mode
-//     if (!repos.length) {
-//       return logger.info('😞  No available templates.')
-//     }
+    // full mode
+    if (!repos.length) {
+      return logger.info('😞  No available templates.')
+    }
 
-//     logger.info(`👇  Available ${isOfficial ? 'official' : owner}'s templates:`)
-//     logger.newline()
+    logger.info(`👇  Available ${isOfficial ? 'official' : owner}'s templates:`)
+    logger.newline()
 
-//     const infos: [string, unknown][] = repos.map(i => [
-//       logger.color`{yellow →} {blue ${isOfficial ? i.name : i.full_name}}`,
-//       i.description
-//     ])
-//     logger.table(infos, 32, 2)
-//   } catch (e) {
-//     spinner.fail(logger.color`😞  Failed to load list from remote: {red ${e.message}}.`)
-//   }
-// }
-// // #endregion
+    const infos: [string, unknown][] = repos.map(i => [
+      logger.color`{yellow →} {blue ${isOfficial ? i.name : i.full_name}}`,
+      i.description
+    ])
+    logger.table(infos, 32, 2)
+  } catch (e) {
+    spinner.fail(logger.color`😞  Failed to load list from remote: {red ${e.message}}.`)
+  }
+}
+// #endregion
 
-// export interface TemplateOptions {
-//   name: string
-//   version?: string
-//   source?: string
-//   metadata?: Record<string, unknown>
-//   questions?: Questions
-//   filters?: Record<string, (answers: Answers) => boolean>
-//   helpers?: Record<string, unknown>
-//   plugin?: (context: Record<string, unknown>) => {}
-//   complete?: (context: Record<string, unknown>) => Promise<void | string> | string
-// }
+export interface TemplateOptions {
+  name: string
+  version?: string
+  source?: string
+  metadata?: Record<string, unknown>
+  questions?: Questions
+  filters?: Record<string, (answers: Answers) => boolean>
+  helpers?: Record<string, unknown>
+  plugin?: Middleware<GeneraterContext>
+  complete?: Middleware<GeneraterContext>
+}
 
-// /**
-//  * Get template url.
-//  * @param input template name or uri
-//  * @todo # or @
-//  * @example
-//  * 1. short name, e.g. 'nm'
-//  * 2. full name, e.g. 'zce/nm'
-//  * 3. with branch, e.g. 'zce/nm#next'
-//  * 4. full url, e.g. 'https://github.com/zce/nm/archive/master.zip'
-//  */
-// export const getTemplateUrl = async (input: string): Promise<string> => {
-//   if (/^https?:/.test(input)) return input
+interface GeneraterContext {
+  readonly template: string
+  readonly project: string
+  readonly offline: boolean
+  url?: string
+  src?: string
+  dest?: string
+  options?: TemplateOptions
+  answers?: Answers
+}
 
-//   input = input.includes('/') ? input : `zce-templates/${input}`
-//   input = input.includes('#') ? input : `${input}#master`
-//   const [owner, name, branch] = input.split(/\/|#/)
+/**
+ * Get template url.
+ * @param input template name or uri
+ * @todo # or @
+ * @example
+ * 1. short name, e.g. 'nm'
+ * 2. full name, e.g. 'zce/nm'
+ * 3. with branch, e.g. 'zce/nm#next'
+ * 4. full url, e.g. 'https://github.com/zce/nm/archive/master.zip'
+ */
+export const getTemplateUrl = async (input: string): Promise<string> => {
+  if (/^https?:/.test(input)) return input
 
-//   // default registry
-//   const defaultRegistry = 'https://github.com/${owner}/${name}/archive/${branch}.zip'
-//   const { registry = defaultRegistry } = await config.get<string>()
+  input = input.includes('/') ? input : `zce-templates/${input}`
+  input = input.includes('#') ? input : `${input}#master`
+  const [owner, name, branch] = input.split(/\/|#/)
 
-//   return template.render(registry, { owner, name, branch })
-// }
+  // default registry
+  // eslint-disable-next-line no-template-curly-in-string
+  const defaultRegistry = 'https://github.com/${owner}/${name}/archive/${branch}.zip'
+  const { registry = defaultRegistry } = await config.get<string>()
 
-// /**
-//  * Confirm destination path.
-//  * @param project project name
-//  */
-// export const comfirm = async (project: string): Promise<string> => {
-//   const dest = path.resolve(project)
+  return strings.render(registry, { owner, name, branch })
+}
 
-//   const exists = await file.exists(dest)
+const generater = ware<GeneraterContext>()
 
-//   //  dist not exists
-//   if (!exists) return dest
+// confirm destination
+generater.use(async (context, next) => {
+  context.dest = path.resolve(context.project)
 
-//   if (exists !== 'dir') throw new Error(`Cannot init ${project}: File exists.`)
+  const exists = await file.exists(context.dest)
 
-//   // empty dir
-//   if (await file.isEmpty(dest)) return dest
+  //  dist not exists
+  if (!exists) return next()
 
-//   // clear console
-//   logger.clear()
+  if (exists !== 'dir') throw new Error(`Cannot init ${context.project}: File exists.`)
 
-//   // confirm
-//   const { sure } = await prompt.ask({
-//     type: 'confirm',
-//     name: 'sure',
-//     initial: false,
-//     message:
-//       dest === process.cwd() ? 'Generate project in current directory?' : 'Target directory already exists. Continue?'
-//   })
+  // empty dir
+  if (await file.isEmpty(context.dest)) return next()
 
-//   // cancel task
-//   if (!sure) throw new Error('You have to cancel the init task.')
+  // clear console
+  logger.clear()
 
-//   // choose next
-//   const { choose } = await prompt.ask({
-//     type: 'select',
-//     name: 'choose',
-//     message: `Target directory is not empty. Pick an action:`,
-//     choices: ['Merge', 'Overwrite', 'Cancel']
-//   })
+  // confirm
+  const { sure } = await prompt({
+    type: 'confirm',
+    name: 'sure',
+    initial: false,
+    message: context.dest === process.cwd() ? 'Generate project in current directory?' : 'Target directory already exists. Continue?'
+  })
 
-//   // cancel task
-//   if (choose === 'Cancel') throw new Error('You have to cancel the init task.')
+  // cancel task
+  if (!sure) throw new Error('You have to cancel the init task.')
 
-//   // overwrite
-//   if (choose === 'Overwrite') {
-//     await file.remove(dest)
-//   }
+  // choose next
+  const { choose } = await prompt({
+    type: 'select',
+    name: 'choose',
+    message: 'Target directory is not empty. Pick an action:',
+    choices: ['Merge', 'Overwrite', 'Cancel']
+  })
 
-//   return dest
-// }
+  // cancel task
+  if (choose === 'Cancel') throw new Error('You have to cancel the init task.')
 
-// /**
-//  * Resolve template from local or remote.
-//  * @param template template name or uri
-//  * @param offline offline mode
-//  * @todo
-//  * - template version
-//  */
-// export const resolve = async (template: string, offline: boolean): Promise<string> => {
-//   // local template path
-//   if (/^[./]|^[a-zA-Z]:/.test(template)) {
-//     return path.resolve(template)
-//   }
+  // overwrite
+  if (choose === 'Overwrite') {
+    await file.remove(context.dest)
+  }
 
-//   // fetch remote template
-//   const url = await getTemplateUrl(template)
+  return next()
+})
 
-//   // url hash
-//   const hash = crypto.createHash('md5').update(url).digest('hex')
+// resolve template
+generater.use(async (context, next) => {
+  // local template path
+  if (/^[./]|^[a-zA-Z]:/.test(context.template)) {
+    context.src = path.resolve(context.template)
+    return next()
+  }
 
-//   const cachePath = file.getDataPath('generator', hash)
+  // fetch remote template
+  context.url = await getTemplateUrl(context.template)
 
-//   const cacheExists = (await file.exists(cachePath)) === 'dir'
+  // url hash
+  const hash = strings.md5(context.url)
 
-//   if (offline) {
-//     // offline mode
-//     if (cacheExists) {
-//       // found cached template
-//       logger.info(`🚆  Use cached template @ \`${logger.color.yellow(file.tildify(cachePath))}\`.`)
-//       return cachePath
-//     }
+  // template cache path
+  context.src = file.getDataPath('generator', hash)
 
-//     logger.info(`😔  Template cache \`${logger.color.yellow(file.tildify(cachePath))}\` not found.`)
-//   }
+  const exists = await file.isDirectory(context.src)
 
-//   // clear cache
-//   cacheExists && (await file.remove(cachePath))
+  if (context.offline) {
+    // offline mode
+    if (exists) {
+      // found cached template
+      logger.info(`🚆  Use cached template @ \`${logger.color.yellow(file.tildify(context.src))}\`.`)
+      return next()
+    }
 
-//   const spinner = logger.spin('Downloading template...')
+    logger.info(`😔  Template cache \`${logger.color.yellow(file.tildify(context.src))}\` not found.`)
+  }
 
-//   try {
-//     spinner.start()
-//     // download template zip
-//     const temp = await http.download(url)
-//     // extract template
-//     await file.extract(temp, cachePath, 1)
-//     // clean up
-//     await file.remove(temp)
-//     spinner.succeed('Download template complete.')
-//     return cachePath
-//   } catch (e) {
-//     spinner.fail('Download failed.')
-//     throw new Error(`Failed to fetch template "${template}": ${e.message}.`)
-//   }
-// }
+  // clear cache
+  exists && await file.remove(context.src)
 
-// /**
-//  * Load template options.
-//  * @param src source path
-//  * @todo
-//  * - template validate
-//  * - docs tips
-//  */
-// export const load = async (src: string): Promise<TemplateOptions> => {
-//   try {
-//     const options = require(src) as TemplateOptions
+  const spinner = logger.spin('Downloading template...')
 
-//     if (Object.prototype.toString.call(options) !== '[object Object]') {
-//       throw new TypeError('template needs to expose an object.')
-//     }
+  try {
+    spinner.start()
+    // download template zip
+    const temp = await http.download(context.url)
+    // extract template
+    await file.extract(temp, context.src, 1)
+    // clean up
+    await file.remove(temp)
+    spinner.succeed('Download template complete.')
+    return next()
+  } catch (e) {
+    spinner.fail('Download failed.')
+    throw new Error(`Failed to fetch template \`${context.template}\`: ${e.message}.`)
+  }
+})
 
-//     return options
-//   } catch (e) {
-//     if (e.code !== 'MODULE_NOT_FOUND') {
-//       e.message = `This template is invalid: ${e.message}`
-//       throw e
-//     }
+// load template options
+generater.use(async (context, next) => {
+  if (context.src) {
+    try {
+      context.options = require(context.src) as TemplateOptions
+      if (Object.prototype.toString.call(context.options) !== '[object Object]') {
+        throw new TypeError('template needs to expose an object.')
+      }
+      return next()
+    } catch (e) {
+      // TODO: template deps not found
+      if (e.code !== 'MODULE_NOT_FOUND') {
+        e.message = `This template is invalid: ${e.message}`
+        throw e
+      }
+    }
+  }
 
-//     // return default template options
-//     return {}
-//   }
-// }
+  // return default template options
+  context.options = { name: context.template }
+  return next()
+})
+
+// apply plugin
+generater.use(async (context, next) => {
+  if (!context.options?.plugin) return next()
+  return context.options.plugin(context, next)
+})
+
+// inquire questions
+generater.use(async (context, next) => {
+  if (!context.options) return next()
+
+  // default questions
+  if (!context.options.questions) {
+    context.options.questions = { name: 'name', type: 'input', message: 'Project name' }
+  }
+
+  if (!Array.isArray(context.options.questions)) {
+    context.options.questions = [context.options.questions]
+  }
+
+  // questions defaults & validate
+  // context.options.questions.forEach(item => {
+
+  // })
+
+  context.answers = await prompt(context.options.questions)
+  return next()
+})
+
+// generate files
+generater.use(async (context, next) => {
+  console.log(context)
+  await next()
+})
+
+// execute complete
+generater.use(async (context, next) => {
+  if (context.options?.complete) { return context.options.complete(context, next) }
+})
+
+const command: Command = {
+  name: 'init',
+  usage: 'init <template> [project]',
+  description: 'generate a new project from a template.',
+  options: {
+    offline: {
+      type: 'boolean',
+      alias: 'o',
+      default: false,
+      description: 'offline mode, use cached template'
+    },
+    list: {
+      type: 'boolean',
+      alias: 'ls',
+      default: false,
+      description: 'list available templates'
+    },
+    owner: {
+      type: 'string',
+      default: 'zce-templates',
+      description: 'github user or organization slug'
+    },
+    json: {
+      type: 'boolean',
+      default: false,
+      description: 'json mode templates outputs'
+    },
+    short: {
+      type: 'boolean',
+      default: false,
+      description: 'short mode templates outputs'
+    }
+  },
+  examples: [
+    logger.color.gray('# create a new project with an official template'),
+    '$ [bin] init <template> [project]',
+    logger.color.gray('# create a new project straight from a github template'),
+    '$ [bin] init <owner>/<repo> [project]'
+  ],
+  action: async ({ primary: template, secondary: project = '.', options }) => {
+    type Options = { owner: string, json: boolean, short: boolean, offline: boolean }
+    const { owner, json, short, offline } = options as Options
+
+    if (options.list) {
+      return await showTemplates(owner, json, short)
+    }
+
+    // required arguments
+    if (!template) {
+      return missingArgument('template')
+    }
+
+    try {
+      // begin
+      await generater.run({ template, project, offline })
+    } catch (e) {
+      logger.error(e)
+    }
+  }
+}
+
+export default command
 
 // /**
 //  * Inquire questions.

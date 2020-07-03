@@ -48,6 +48,6 @@ test('unit:commands:hello:action:4', async () => {
   await command.action(ctx)
   expect(log.mock.calls[0][0]).toBe('嘿！zce~')
   expect(log.mock.calls[1][0]).toBe('↓↓↓ --------------------[ DEBUG ]-------------------- ↓↓↓')
-  expect(log.mock.calls[2][0]).toBe(ctx)
+  expect(log.mock.calls[2][0]).toBe(ctx.options)
   expect(log.mock.calls[3][0]).toBe('↑↑↑ --------------------[ DEBUG ]-------------------- ↑↑↑')
 })

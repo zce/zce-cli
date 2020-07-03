@@ -1,36 +1,3 @@
-// import { BaseOption, MinimistOption } from 'minimist-options'
-
-// export type OptionType = 'string' | 'boolean' | 'number' | 'array' | 'string-array' | 'boolean-array' | 'number-array'
-
-// // export declare namespace zce { }
-// export interface BaseOptionWrapper<T extends OptionType, D> extends BaseOption<T, D> {
-//   /**
-//    * The description value for the option.
-//    */
-//   readonly description?: string
-// }
-// export type StringOption = BaseOptionWrapper<'string', string>
-// export type BooleanOption = BaseOptionWrapper<'boolean', boolean>
-// export type NumberOption = BaseOptionWrapper<'number', number>
-// export type DefaultArrayOption = BaseOptionWrapper<'array', ReadonlyArray<string>>
-// export type StringArrayOption = BaseOptionWrapper<'string-array', ReadonlyArray<string>>
-// export type BooleanArrayOption = BaseOptionWrapper<'boolean-array', ReadonlyArray<boolean>>
-// export type NumberArrayOption = BaseOptionWrapper<'number-array', ReadonlyArray<number>>
-
-// // export { Options }
-// export interface Options {
-//   [key: string]:
-//     | OptionType
-//     | StringOption
-//     | BooleanOption
-//     | NumberOption
-//     | DefaultArrayOption
-//     | StringArrayOption
-//     | BooleanArrayOption
-//     | NumberArrayOption
-//     | MinimistOption // Workaround for https://github.com/microsoft/TypeScript/issues/17867
-// }
-
 import { Options } from 'minimist-options'
 import Enquirer from 'enquirer'
 
@@ -73,6 +40,10 @@ export interface Command {
   readonly examples?: string | string[]
   readonly suggestions?: string | string[]
 }
+
+export type Next = () => Promise<void>
+
+export type Middleware<T> = (state: T, next: Next) => Promise<void>
 
 // #region enquirer types https://github.com/enquirer/enquirer/pull/252
 interface BasePromptOptions {
@@ -166,3 +137,36 @@ export type Questions =
 
 export type Answers<T = unknown> = Record<string, T>
 // #endregion
+
+// import { BaseOption, MinimistOption } from 'minimist-options'
+
+// export type OptionType = 'string' | 'boolean' | 'number' | 'array' | 'string-array' | 'boolean-array' | 'number-array'
+
+// // export declare namespace zce { }
+// export interface BaseOptionWrapper<T extends OptionType, D> extends BaseOption<T, D> {
+//   /**
+//    * The description value for the option.
+//    */
+//   readonly description?: string
+// }
+// export type StringOption = BaseOptionWrapper<'string', string>
+// export type BooleanOption = BaseOptionWrapper<'boolean', boolean>
+// export type NumberOption = BaseOptionWrapper<'number', number>
+// export type DefaultArrayOption = BaseOptionWrapper<'array', ReadonlyArray<string>>
+// export type StringArrayOption = BaseOptionWrapper<'string-array', ReadonlyArray<string>>
+// export type BooleanArrayOption = BaseOptionWrapper<'boolean-array', ReadonlyArray<boolean>>
+// export type NumberArrayOption = BaseOptionWrapper<'number-array', ReadonlyArray<number>>
+
+// // export { Options }
+// export interface Options {
+//   [key: string]:
+//     | OptionType
+//     | StringOption
+//     | BooleanOption
+//     | NumberOption
+//     | DefaultArrayOption
+//     | StringArrayOption
+//     | BooleanArrayOption
+//     | NumberArrayOption
+//     | MinimistOption // Workaround for https://github.com/microsoft/TypeScript/issues/17867
+// }

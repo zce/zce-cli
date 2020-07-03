@@ -1,12 +1,9 @@
-export type Next = () => Promise<void>
-export type Middleware<T> = (state: T, next: Next) => Promise<void>
+import { Middleware } from '../types'
 
 export class Ware<T> {
-  private readonly state: T
   private readonly middlewares: Middleware<T>[]
 
-  constructor (initalState: T) {
-    this.state = initalState
+  constructor () {
     this.middlewares = []
   }
 
@@ -19,13 +16,11 @@ export class Ware<T> {
     return this
   }
 
-  run (): Promise<void> {
-    // this.state = initalState || this.state
-
-    const next: Next = () => {
+  run (initalState: T): Promise<void> {
+    const next = () => {
       const current = this.middlewares.shift()
       if (!current) return Promise.resolve()
-      return current(this.state, next)
+      return current(initalState, next)
     }
     // start
     return next()
@@ -46,8 +41,8 @@ export class Ware<T> {
     // return dispatch(0)
   }
 
-  static create<T> (initalState: T): Ware<T> {
-    return new Ware<T>(initalState)
+  static create<T> (): Ware<T> {
+    return new Ware<T>()
   }
 }
 

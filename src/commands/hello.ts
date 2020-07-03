@@ -1,4 +1,4 @@
-import { logger, missingArgument, Command, Context } from '../core'
+import { logger, missingArgument, Command } from '../core'
 
 const command: Command = {
   name: 'hello',
@@ -20,19 +20,19 @@ const command: Command = {
     }
   },
   examples: ['hello zce'],
-  action: async (ctx: Context) => {
-    if (!ctx.primary) {
+  action: async ({ primary, options }) => {
+    if (!primary) {
       return missingArgument('name')
     }
 
-    if (ctx.options.lang === 'en') {
-      logger.success(`Hey! ${ctx.primary}~`)
-    } else if (ctx.options.lang === 'zh') {
-      logger.success(`嘿！${ctx.primary}~`)
+    if (options.lang === 'en') {
+      logger.success(`Hey! ${primary}~`)
+    } else if (options.lang === 'zh') {
+      logger.success(`嘿！${primary}~`)
     }
 
-    if (ctx.options.debug) {
-      logger.debug(ctx)
+    if (options.debug) {
+      logger.debug(options)
     }
   }
 }

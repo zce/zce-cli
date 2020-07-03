@@ -1,13 +1,14 @@
-import fs from 'fs'
-import path from 'path'
-import util from 'util'
-import stream from 'stream'
+import { URL } from 'url'
+import { dirname } from 'path'
+import { pipeline } from 'stream'
+import { promisify } from 'util'
+import { createWriteStream } from 'fs'
 import got, { StreamOptions } from 'got'
 import { getTempPath, mkdir } from './file'
 
 const { name, version, homepage } = require('../../../package.json')
 
-const pipe = util.promisify(stream.pipeline)
+const pipe = promisify(pipeline)
 
 const client = got.extend({
   headers: {
@@ -34,7 +35,7 @@ export const request = client.extend({
 export const download = async (url: string | URL, options?: StreamOptions): Promise<string> => {
   // const filename = getTempPath(path.basename(url.toString()))
   const filename = getTempPath(Date.now().toString() + '.tmp')
-  await mkdir(path.dirname(filename))
-  await pipe(client.stream(url, options), fs.createWriteStream(filename))
+  await mkdir(dirname(filename))
+  await pipe(client.stream(url, options), createWriteStream(filename))
   return filename
 }
