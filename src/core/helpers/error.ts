@@ -1,4 +1,4 @@
-import { logger } from './helpers'
+import { info, error, color } from './logger'
 
 /**
  * Throw unknown command error.
@@ -6,8 +6,8 @@ import { logger } from './helpers'
  * @param fallback fallback command tip
  */
 export const unknownCommand = (name: string, fallback = '[bin] --help'): void => {
-  logger.error('Unknown command: `%s`.', name)
-  logger.info('Type `%s` to view all commands.', logger.color.cyan(fallback))
+  error('Unknown command: `%s`.', name)
+  info('Type `%s` to view all commands.', color.cyan(fallback))
   process.exit(1)
 }
 
@@ -16,7 +16,7 @@ export const unknownCommand = (name: string, fallback = '[bin] --help'): void =>
  * @param name argument name
  */
 export const missingArgument = (name: string): void => {
-  logger.error('Missing required argument: `<%s>`.', name)
+  error('Missing required argument: `<%s>`.', name)
   process.exit(1)
 }
 

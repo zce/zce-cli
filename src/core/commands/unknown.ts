@@ -1,4 +1,4 @@
-import { unknownCommand } from '../error'
+import { unknownCommand } from '../helpers'
 import { Command, Context } from '../types'
 
 const command: Command = {
