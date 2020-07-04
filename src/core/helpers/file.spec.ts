@@ -193,3 +193,23 @@ test('unit:core:helpers:file:extract:strip', async () => {
   expect(stat2.isFile()).toBe(true)
   await fs.promises.rmdir(temp, { recursive: true })
 })
+
+test('unit:core:helpers:file:glob', async () => {
+  expect(typeof file.glob).toBe('function')
+})
+
+test('unit:core:helpers:file:minimatch', async () => {
+  expect(typeof file.minimatch).toBe('function')
+})
+
+test('unit:core:helpers:file:readFile', async () => {
+  expect(typeof file.readFile).toBe('function')
+})
+
+test('unit:core:helpers:file:writeFile', async () => {
+  const filename = path.join(__dirname, '../../../test/.temp/temp.txt')
+  file.writeFile(filename, 'hello zce')
+  const contents = await fs.promises.readFile(filename, 'utf8')
+  expect(contents).toBe('hello zce')
+  await fs.promises.rmdir(path.dirname(filename), { recursive: true })
+})

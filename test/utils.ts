@@ -1,7 +1,7 @@
 import path from 'path'
 import execa, { ExecaChildProcess } from 'execa'
 
-import { Command, Context } from '../src/core/types'
+import { Command, Context } from '../src/core'
 
 export { execa }
 

@@ -1,6 +1,21 @@
 import { join } from 'path'
 import { readdirSync } from 'fs'
-import { Command } from './types'
+import { Options, Context } from './parser'
+
+export interface Command {
+  readonly name: string
+  readonly usage?: string
+  readonly description?: string
+  readonly alias?: string | string[]
+  readonly hidden?: boolean
+  // TODO: arguments
+  // readonly arguments?: Arguments
+  readonly options?: Options
+  readonly action: (ctx: Context) => Promise<void>
+  readonly help?: string | ((ctx: Context) => Promise<void>)
+  readonly examples?: string | string[]
+  readonly suggestions?: string | string[]
+}
 
 /**
  * Load dir commands

@@ -3,6 +3,8 @@ import extractZip from 'extract-zip'
 import { promises as fs, MakeDirectoryOptions } from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
+import minimatch from 'minimatch'
+import { Glob, IOptions } from 'glob'
 
 const { name } = require('../../../package.json')
 
@@ -147,4 +149,32 @@ export const extract = async (input: string, output: string, strip = 0): Promise
       // console.log('<-', entry.fileName)
     }
   })
+}
+
+/**
+ * Glob.
+ * @param pattern path pattern
+ * @param options glob options
+ */
+export const glob = async (pattern: string, options: IOptions): Promise<string[]> => new Promise((resolve, reject) => {
+  return new Glob(pattern, options, (err, files) => {
+    if (err) return reject(err)
+    resolve(files)
+  })
+})
+
+export { minimatch }
+
+/**
+ * Read file
+ */
+export const readFile = fs.readFile
+
+/**
+ * Read file
+ */
+export const writeFile = async (input: string, contents: string | Uint8Array): Promise<void> => {
+  const dirname = path.dirname(input)
+  await mkdir(dirname)
+  return fs.writeFile(input, contents)
 }

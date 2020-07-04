@@ -1,7 +1,20 @@
 import minimist from 'minimist'
-import buildOptions from 'minimist-options'
-import { Context, Options } from './types'
+import buildOptions, { Options } from 'minimist-options'
 const pkg = require('../../package.json')
+
+export interface Context {
+  readonly bin: string
+  readonly primary?: string
+  readonly secondary?: string
+  readonly thirdly?: string
+  readonly fourthly?: string
+  readonly extras: string[]
+  readonly inputs: string[]
+  readonly options: Record<string, unknown>
+  readonly pkg: Record<string, unknown>
+}
+
+export { Options }
 
 /**
  * parse context from cli argv

@@ -1,5 +1,6 @@
 import { invokeHelp } from './commands/help'
-import { Context, Command } from './types'
+import { Command } from './loader'
+import { Context } from './parser'
 
 /**
  * invoke command

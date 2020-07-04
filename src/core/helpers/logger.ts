@@ -15,8 +15,8 @@ export const color = new chalk.Instance({
  * Writes a normal message.
  * @param message The message to show.
  */
-export const log = (message?: unknown, ...optionalParams: unknown[]): void => {
-  console.log(message, ...optionalParams)
+export const log = (...args: unknown[]): void => {
+  console.log(...args)
 }
 
 /**
@@ -24,8 +24,8 @@ export const log = (message?: unknown, ...optionalParams: unknown[]): void => {
  * This is the default type you should use.
  * @param message The message to show.
  */
-export const info = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(color.reset(message), ...optionalParams)
+export const info = (message?: unknown, ...args: unknown[]): void => {
+  log(color.reset(message), ...args)
 }
 
 /**
@@ -33,8 +33,8 @@ export const info = (message?: unknown, ...optionalParams: unknown[]): void => {
  * When something is successful.  Use sparingly.
  * @param message The message to show.
  */
-export const success = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(color.green(message), ...optionalParams)
+export const success = (message?: unknown, ...args: unknown[]): void => {
+  log(color.green(message), ...args)
 }
 
 /**
@@ -42,8 +42,8 @@ export const success = (message?: unknown, ...optionalParams: unknown[]): void =
  * This is when the user might not be getting what they're expecting.
  * @param message The message to show.
  */
-export const warn = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(color.yellow(message), ...optionalParams)
+export const warn = (message?: unknown, ...args: unknown[]): void => {
+  log(color.yellow(message), ...args)
 }
 
 /**
@@ -51,8 +51,8 @@ export const warn = (message?: unknown, ...optionalParams: unknown[]): void => {
  * This is when something horribly goes wrong.
  * @param message The message to show.
  */
-export const error = (message?: unknown, ...optionalParams: unknown[]): void => {
-  log(color.red(message), ...optionalParams)
+export const error = (message?: unknown, ...args: unknown[]): void => {
+  log(color.red(message), ...args)
 }
 
 /**

@@ -1,30 +1,34 @@
-// import command, { getTemplateUrl } from './generator'
+import { getTemplateUrl } from './init'
 
-// let log: jest.SpyInstance
-// let exit: jest.SpyInstance
+let log: jest.SpyInstance
+let exit: jest.SpyInstance
 
-// beforeEach(async () => {
-//   log = jest.spyOn(console, 'log').mockImplementation()
-//   exit = jest.spyOn(process, 'exit').mockImplementation()
-// })
+beforeEach(async () => {
+  log = jest.spyOn(console, 'log').mockImplementation()
+  exit = jest.spyOn(process, 'exit').mockImplementation()
+})
 
-// afterEach(async () => {
-//   log && log.mockRestore()
-//   exit && exit.mockRestore()
-// })
+afterEach(async () => {
+  log && log.mockRestore()
+  exit && exit.mockRestore()
+})
 
-// test('unit:commands:generator:getTemplateUrl', async () => {
-//   const url1 = await getTemplateUrl('tpl1')
-//   expect(url1).toBe('https://github.com/zce-templates/tpl1/archive/master.zip')
-//   const url2 = await getTemplateUrl('zce/tpl2')
-//   expect(url2).toBe('https://github.com/zce/tpl2/archive/master.zip')
-//   const url3 = await getTemplateUrl('zce/tpl3#dev')
-//   expect(url3).toBe('https://github.com/zce/tpl3/archive/dev.zip')
-//   const url4 = await getTemplateUrl('tpl4#dev')
-//   expect(url4).toBe('https://github.com/zce-templates/tpl4/archive/dev.zip')
-//   const url5 = await getTemplateUrl('https://github.com/zce/tpl5/archive/dev.zip')
-//   expect(url5).toBe('https://github.com/zce/tpl5/archive/dev.zip')
-// })
+test('unit:commands:generator:getTemplateUrl', async () => {
+  const url1 = await getTemplateUrl('tpl1')
+  expect(url1).toBe('https://github.com/zce-templates/tpl1/archive/master.zip')
+
+  const url2 = await getTemplateUrl('zce/tpl2')
+  expect(url2).toBe('https://github.com/zce/tpl2/archive/master.zip')
+
+  const url3 = await getTemplateUrl('zce/tpl3#dev')
+  expect(url3).toBe('https://github.com/zce/tpl3/archive/dev.zip')
+
+  const url4 = await getTemplateUrl('tpl4#dev')
+  expect(url4).toBe('https://github.com/zce-templates/tpl4/archive/dev.zip')
+
+  const url5 = await getTemplateUrl('https://github.com/zce/tpl5/archive/dev.zip')
+  expect(url5).toBe('https://github.com/zce/tpl5/archive/dev.zip')
+})
 
 // test('unit:commands:generator:default', async () => {
 //   expect(command.name).toBe('init')

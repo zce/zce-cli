@@ -1,4 +1,5 @@
-import { Middleware } from '../types'
+export type Next = () => Promise<void>
+export type Middleware<T> = (state: T, next: Next) => Promise<void>
 
 export class Ware<T> {
   private readonly middlewares: Middleware<T>[]

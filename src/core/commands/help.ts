@@ -1,6 +1,6 @@
 import { logger } from '../helpers'
-import { load, commands } from '../loader'
-import { Command, Context, Options } from '../types'
+import { load, commands, Command } from '../loader'
+import { Context, Options } from '../parser'
 
 const outputCommands = () => {
   const cmds = [...new Set(Object.values(commands))].filter(i => !i.hidden && i.name !== 'default')

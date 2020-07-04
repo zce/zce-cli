@@ -1,5 +1,5 @@
 import { unknownCommand } from '../helpers'
-import { Command } from '../types'
+import { Command } from '../loader'
 
 const command: Command = {
   name: 'unknown',
