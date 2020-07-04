@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/zce/zce-cli"><img src="doc/logo.png" alt="zce-cli" height="360"></a>
+  <a href="https://github.com/zce/zce-cli"><img src="docs/logo.png" alt="zce-cli" height="360"></a>
   <p align="center">A CLI tool for my personal productivity, inspired by vue-cli &amp; yeoman &amp; etc.</p>
 </p>
 <p align="center">
@@ -19,34 +19,33 @@
 
 ```sh
 # install it globally
-$ yarn global add zce-cli
-
-# or npm
 $ npm install -g zce-cli
+
+# or yarn
+$ yarn global add zce-cli
 ```
 
 ## Usage
 
-### Generator
+### init
 
 > Simple scaffolding for generate project. [How to work](doc/how-to-work.md).
-
-#### init
 
 ```sh
 # generate a new project from a template
 $ zce init <template-name> [my-project] [-o|--offline] [-f|--force] [-s|--save]
 ```
-##### Options
+
+#### Options
 
 - `-f, --force`: overwrite target directory if it exists
 - `-o, --offline`: offline mode, use cached template
 - `-s, --save`: save the answers for the next
 - `-h, --help`: output usage information
 
-##### Example
+#### Example
 
-###### Use github repo template
+##### Use github repo template
 
 ```sh
 $ zce init nm my-module
@@ -54,7 +53,7 @@ $ zce init nm my-module
 
 The above command pulls the template from [zce-templates/nm](https://github.com/zce-templates/nm), then ask some questions, and generate the project at `./my-module`.
 
-###### Use local template
+##### Use local template
 
 Instead of a GitHub repo, you can also use a template on your local file system, e.g.
 
@@ -64,24 +63,25 @@ $ zce init ~/local/foo my-foo
 
 The above command use the template from `~/local/foo`, then ask some questions, and generates the project at `./my-foo`.
 
-#### list
+### list
 
 ```sh
 # list available official templates
-$ zce list [-s|--short]
+$ zce list [-s|--short] [-j|--json]
 ```
 
-##### Options
+#### Options
 
 - `-s, --short`: short list display
+- `-json, --json`: json mode output
 - `-h, --help`: output usage information
 
-#### Official Templates
+### Official Templates
 
 Current available templates list:
 
-- [x] [template](https://github.com/zce-templates/template) - Templates template
-- [x] [nm](https://github.com/zce-templates/nm) - Node module boilerplate
+- [ ] [template](https://github.com/zce-templates/template) - Templates template
+- [ ] [nm](https://github.com/zce-templates/nm) - Node module boilerplate
 - [ ] [webapp](https://github.com/zce-templates/webapp) - :construction: Modern web app
 - [ ] [react](https://github.com/zce-templates/react) - :construction: Modern web app by React.js
 - [ ] [vue](https://github.com/zce-templates/vue) - :construction: Modern web app by Vue.js
@@ -91,15 +91,15 @@ Current available templates list:
 
 Maybe more: https://github.com/zce-templates
 
-> You can also run `zce ls` to see all available [official templates](doc/official-templates.md) in real time.
+> You can also run `zce list` to see all available [official templates](doc/official-templates.md) in real time.
 
-#### Create Your Template
+### Create Your Template
 
 To create and distribute your own template, refer to [Create new template](doc/create-template.md).
 
 > Maybe fork an official template or use [zce-templates/template](https://github.com/zce-templates/template) is a better decision.
 
-### Server (WIP)
+### serve (WIP)
 
 > Simple static site develop workflow.
 
@@ -107,40 +107,29 @@ To create and distribute your own template, refer to [Create new template](doc/c
 
 ### Maybe more...
 
-## API Usage
+## Todos
 
-You can use it in your CLI program.
+- [x] CLI Frameworks
+- [x] Generate list command
+- [x] Generate init command
+- [ ] Refactor templates
+- [ ] Generate command test
+- [ ] Integration test
+- [ ] Docs
+- [ ] Extract core into package
 
-```js
-const { generator, server } = require('zce-cli')
+## Issues
 
-// ...
-
-// generate a new project from a template
-await generator.init(template, project, { force, offline, save })
-
-// ...
-
-// list available official templates
-generator.list(username, { short })
-
-// ...
-```
-
-## TODOS
-
-### Generator
-
-- [x] list command
-- [x] init command
-- [x] unit test
-- [ ] e2e test
-- [ ] Official Templates
-- [ ] Lodash template debug
-
-### Server
-
-- [ ] Planning
+- Re-exports in typescript
+  ```javascript
+  // https://stackoverflow.com/questions/55753163/package-json-is-not-under-rootdir#61467483
+  // https://github.com/microsoft/TypeScript/issues/2726
+  // export { default as rimraf } from 'rimraf'
+  // export { default as mkdirp } from 'mkdirp'
+  // export { default as tildify } from 'tildify'
+  // export { default as untildify } from 'untildify'
+  ```
+- lazy-import
 
 ## Contributing
 
@@ -156,22 +145,3 @@ generator.list(username, { short })
 ## License
 
 [MIT](LICENSE) &copy; [汪磊](https://zce.me/)
-
-
-
-[travis-image]: https://img.shields.io/travis/zce/zce-cli.svg
-[travis-url]: https://travis-ci.org/zce/zce-cli
-[codecov-image]: https://img.shields.io/codecov/c/github/zce/zce-cli.svg
-[codecov-url]: https://codecov.io/gh/zce/zce-cli
-[downloads-image]: https://img.shields.io/npm/dm/zce-cli.svg
-[downloads-url]: https://npmjs.org/package/zce-cli
-[version-image]: https://img.shields.io/npm/v/zce-cli.svg
-[version-url]: https://npmjs.org/package/zce-cli
-[license-image]: https://img.shields.io/npm/l/zce-cli.svg
-[license-url]: https://github.com/zce/zce-cli/blob/master/LICENSE
-[dependency-image]: https://img.shields.io/david/zce/zce-cli.svg
-[dependency-url]: https://david-dm.org/zce/zce-cli
-[devdependency-image]: https://img.shields.io/david/dev/zce/zce-cli.svg
-[devdependency-url]: https://david-dm.org/zce/zce-cli?type=dev
-[style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
-[style-url]: http://standardjs.com
