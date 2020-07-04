@@ -1,6 +1,6 @@
 {
   "name": "zce-cli",
-  "version": "0.3.0-nightly.20200704",
+  "version": "0.3.0-nightly.20200705",
   "description": "A CLI tool for my personal productivity.",
   "keywords": [
     "productivity",
@@ -50,7 +50,7 @@
     "test": "run-s test:*",
     "coverage": "jest --coverage",
     "preship": "run-s build",
-    "ship": "npm publish --registry=https://registry.npmjs.org"
+    "ship": "npm publish --registry https://registry.npmjs.org"
   },
   "husky": {
     "hooks": {
