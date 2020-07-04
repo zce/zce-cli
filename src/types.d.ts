@@ -11,3 +11,5 @@ declare module 'minimist-options' {
     readonly description?: string
   }
 }
+
+declare type Dictionary<T> = { [key: string]: T }
