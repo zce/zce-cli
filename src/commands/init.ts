@@ -1,8 +1,4 @@
-/**
- * https://github.com/soldair/node-gitconfiglocal
- * https://github.com/sindresorhus/git-remote-origin-url
- */
-
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import path from 'path'
 import _ from 'lodash'
 import semver from 'semver'
