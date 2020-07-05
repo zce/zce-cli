@@ -18,7 +18,6 @@ notifications:
 script:
   - npm run build
   - npm run coverage
-  - npx commitlint-travis
 
 after_script:
   - npx codecov

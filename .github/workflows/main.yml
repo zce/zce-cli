@@ -12,12 +12,12 @@ jobs:
         uses: actions/setup-node@v2.1.0
       - name: Install Dependencies
         run: npm install
-      - name: Build
+      - name: Build Source
         run: npm run build
         env:
           NODE_ENV: production
           CI: true
-      - name: Testing
+      - name: Coverage Testing
         run: npm run coverage
-      - name: Coverage
+      - name: Coverage Report
         run: npx codecov
