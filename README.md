@@ -4,7 +4,7 @@
 </p>
 <p align="center">
   <a href="https://github.com/zce/zce-cli/actions"><img src="https://img.shields.io/github/workflow/status/zce/zce-cli/CI?label=actions" alt="GitHub Actions Status"></a>
-  <a href="https://travis-ci.org/zce/zce-cli"><img src="https://img.shields.io/travis/zce/zce-cli?label=travis" alt="Build Status"></a>
+  <a href="https://travis-ci.org/zce/zce-cli"><img src="https://img.shields.io/travis/zce/zce-cli?label=travis" alt="Travis CI Status"></a>
   <a href="https://codecov.io/gh/zce/zce-cli"><img src="https://img.shields.io/codecov/c/github/zce/zce-cli" alt="Coverage Status"></a>
   <a href="https://github.com/zce/zce-cli/blob/master/LICENSE"><img src="https://img.shields.io/github/license/zce/zce-cli" alt="License"></a>
   <a href="https://npmjs.org/package/zce-cli"><img src="https://img.shields.io/node/v/zce-cli" alt="Node Version"></a>
@@ -20,7 +20,7 @@
 
 ## Installation
 
-```sh
+```shell
 # install it globally
 $ npm install -g zce-cli
 
@@ -32,9 +32,9 @@ $ yarn global add zce-cli
 
 ### init
 
-> Simple scaffolding for generate project. [How to work](doc/how-to-work.md).
+> Simple template-based scaffolding for new projects generation. [How to work](doc/how-to-work.md).
 
-```sh
+```shell
 # generate a new project from a template
 $ zce init <template-name> [my-project] [-o|--offline]
 ```
@@ -48,17 +48,19 @@ $ zce init <template-name> [my-project] [-o|--offline]
 
 ##### Use github repo template
 
-```sh
+```shell
 $ zce init nm my-module
 ```
 
 The above command pulls the template from [zce-templates/nm](https://github.com/zce-templates/nm), then ask some questions, and generate the project at `./my-module`.
 
+> TODO: template registry config
+
 ##### Use local template
 
 Instead of a GitHub repo, you can also use a template on your local file system, e.g.
 
-```sh
+```shell
 $ zce init ~/local/foo my-foo
 ```
 
@@ -66,7 +68,7 @@ The above command use the template from `~/local/foo`, then ask some questions, 
 
 ### list
 
-```sh
+```shell
 # list available official templates
 $ zce list [-s|--short] [-j|--json]
 ```
