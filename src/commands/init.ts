@@ -216,7 +216,7 @@ generater.use(async (context, next) => {
   const gitconfig = await config.git()
 
   const username = async () => {
-    return npmrc?.['init-author-name'] || yarnrc?.['init-author-name'] || gitconfig?.['user.name'] || await config.username()
+    return npmrc?.['init-author-name'] || yarnrc?.['init-author-name'] || gitconfig?.['user.name']
   }
   const email = async () => {
     return npmrc?.['init-author-email'] || yarnrc?.['init-author-email'] || gitconfig?.['user.email']
@@ -225,11 +225,9 @@ generater.use(async (context, next) => {
     return npmrc?.['init-author-url'] || yarnrc?.['init-author-url'] || gitconfig?.['user.url']
   }
   // istanbul ignore next
-  const n = await username() || await config.fullname()
+  const n = await username()
   const e = await email()
   const u = await url()
-  // istanbul ignore next
-  const author = `${n}${e ? ` <${e}>` : ''}${u ? ` (${u})` : ''}`
 
   // questions defaults & validate
   await Promise.all(context.options.questions.map(async item => {
@@ -247,10 +245,6 @@ generater.use(async (context, next) => {
         // istanbul ignore next
         item.initial = item.initial || await username()
         break
-      case 'fullname':
-        // istanbul ignore next
-        item.initial = item.initial || await config.fullname()
-        break
       case 'email':
         // istanbul ignore next
         item.initial = item.initial || await email()
@@ -261,7 +255,7 @@ generater.use(async (context, next) => {
         break
       case 'author':
         // istanbul ignore next
-        item.initial = item.initial || author
+        item.initial = item.initial || `${n}${e ? ` <${e}>` : ''}${u ? ` (${u})` : ''}`
         break
       case 'license':
         // istanbul ignore next

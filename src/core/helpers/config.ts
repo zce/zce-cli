@@ -2,8 +2,8 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 import { parse } from 'ini'
-import username from 'username'
-import fullname from 'fullname'
+// import username from 'username'
+// import fullname from 'fullname'
 import { cosmiconfig, Options } from 'cosmiconfig'
 const pkg = require('../../../package.json')
 
@@ -63,4 +63,4 @@ export const git = async (): Promise<Record<string, string> | undefined> => {
   return ini(gitconfig)
 }
 
-export { username, fullname }
+// export { username, fullname }

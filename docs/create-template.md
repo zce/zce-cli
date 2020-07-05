@@ -95,7 +95,7 @@ Config file can contain the following fields:
   }
   ```
 - Note:
-  the `name` / `username` / `fullname` / `email` / `url` / `author` / `license` prompt will got a default value from system info.
+  the `name` / `username` / `email` / `url` / `author` / `license` prompt will got a default value from system info.
 
 ### complete
 
