@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0-alpha.1 / 2020-07-05
+
+- Refactoring with typescript
+- Require Node.js >= 12.10
+- Using enquirer instead of inquirer
+- Using jest instead of ava
+- Remove many dependencies from third-party modules, like commander, download, metalsmith
+- More helper functions
+- Registry are configurable
+
 ## 0.2.0-alpha.11 / 2019-02-13
 
 - :arrow_up: Upgraded deps

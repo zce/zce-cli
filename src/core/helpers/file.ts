@@ -1,38 +1,45 @@
 import os from 'os'
 import extractZip from 'extract-zip'
-import { promises as fs, MakeDirectoryOptions } from 'fs'
+import { promises as fs, MakeDirectoryOptions, RmDirAsyncOptions } from 'fs'
 import path from 'path'
-import rimraf from 'rimraf'
-import minimatch from 'minimatch'
-import { Glob, IOptions } from 'glob'
+import { Glob, IOptions as GOptions } from 'glob'
+import { Minimatch, IOptions as MOptions } from 'minimatch'
 
 const { name } = require('../../../package.json')
 
 const identify = process.env.NODE_ENV === 'test' ? `${name}-test` : /* istanbul ignore next */ name
 
 /**
- * Remove input path.
- * @param input input path
- * @todo
- * - https://github.com/sindresorhus/trash
- * - native api instead
+ * Read file buffer
+ * @param input file name
  */
-export const remove = async (input: string, options?: rimraf.Options): Promise<void> =>
-  new Promise(resolve => {
-    rimraf(input, { glob: false, ...options }, err => {
-      /* istanbul ignore if */
-      if (err) throw err
-      resolve()
-    })
-  })
+export const read = async (input: string): Promise<Buffer> => {
+  return fs.readFile(input)
+}
 
 /**
- * Make directory recursive.
- * @param input input path
- * @param options recursive by default
+ * Read file
  */
-export const mkdir = async (input: string, options?: MakeDirectoryOptions): Promise<void> => {
-  await fs.mkdir(input, { recursive: true, ...options })
+export const write = async (input: string, contents: string | Uint8Array): Promise<void> => {
+  const dirname = path.dirname(input)
+  await mkdir(dirname)
+  return fs.writeFile(input, contents)
+}
+
+/**
+ * Get temp path.
+ * @param paths additional paths
+ */
+export const getTempPath = (...paths: string[]): string => {
+  return path.join(os.tmpdir(), identify, ...paths)
+}
+
+/**
+ * Get data path.
+ * @param paths additional paths
+ */
+export const getDataPath = (...paths: string[]): string => {
+  return path.join(os.homedir(), '.config', identify, ...paths)
 }
 
 /**
@@ -87,19 +94,46 @@ export const isEmpty = async (input: string): Promise<boolean> => {
 }
 
 /**
- * Get temp path.
- * @param paths additional paths
+ * Make directory recursive.
+ * @param input input path
+ * @param options recursive by default
  */
-export const getTempPath = (...paths: string[]): string => {
-  return path.join(os.tmpdir(), identify, ...paths)
+export const mkdir = async (input: string, options?: MakeDirectoryOptions): Promise<void> => {
+  await fs.mkdir(input, { recursive: true, ...options })
 }
 
 /**
- * Get data path.
- * @param paths additional paths
+ * Remove input path.
+ * @param input input path
+ * @todo
+ * - https://github.com/sindresorhus/trash
  */
-export const getDataPath = (...paths: string[]): string => {
-  return path.join(os.homedir(), '.config', identify, ...paths)
+export const remove = async (input: string, options?: RmDirAsyncOptions): Promise<void> => {
+  await fs.rmdir(input, { recursive: true, ...options })
+}
+
+/**
+ * Glob.
+ * @param pattern path pattern
+ * @param options glob options
+ */
+export const glob = async (pattern: string, options: GOptions): Promise<string[]> => new Promise((resolve, reject) => {
+  return new Glob(pattern, options, (err, files) => {
+    // istanbul ignore if
+    if (err) return reject(err)
+    resolve(files)
+  })
+})
+
+/**
+ * Tests a path against the pattern using the options.
+ * @param input input path
+ * @param pattern pattern
+ * @param options options
+ */
+export const minimatch = (input: string, pattern: string, options?: MOptions): boolean => {
+  const match = new Minimatch(pattern, options)
+  return match.match(input)
 }
 
 /**
@@ -149,33 +183,4 @@ export const extract = async (input: string, output: string, strip = 0): Promise
       // console.log('<-', entry.fileName)
     }
   })
-}
-
-/**
- * Glob.
- * @param pattern path pattern
- * @param options glob options
- */
-export const glob = async (pattern: string, options: IOptions): Promise<string[]> => new Promise((resolve, reject) => {
-  return new Glob(pattern, options, (err, files) => {
-    // istanbul ignore if
-    if (err) return reject(err)
-    resolve(files)
-  })
-})
-
-export { minimatch }
-
-/**
- * Read file
- */
-export const readFile = fs.readFile
-
-/**
- * Read file
- */
-export const writeFile = async (input: string, contents: string | Uint8Array): Promise<void> => {
-  const dirname = path.dirname(input)
-  await mkdir(dirname)
-  return fs.writeFile(input, contents)
 }

@@ -7,45 +7,41 @@ const pkg = require('../../../package.json')
 
 const tempPrefix = path.join(os.tmpdir(), 'zce-cli-test-')
 
-test('unit:core:helpers:file:remove', async () => {
-  const temp = await fs.promises.mkdtemp(tempPrefix)
-
-  const filename1 = path.join(temp, 'zce-cli-remove-1.txt')
-  await fs.promises.writeFile(filename1, '')
-  await file.remove(filename1)
-  const exists1 = fs.existsSync(filename1)
-  expect(exists1).toBe(false)
-
-  const filename2 = path.join(temp, 'zce-cli-remove-2.txt')
-  await file.remove(filename2)
-  const exists2 = fs.existsSync(filename2)
-  expect(exists2).toBe(false)
-
-  await fs.promises.rmdir(temp)
+test('unit:core:helpers:file:read', async () => {
+  const filename = path.join(__dirname, '../../../test/fixtures/test.ini')
+  const buffer = await file.read(filename)
+  const contents = buffer.toString().trim()
+  expect(contents).toBe('foo = bar')
 })
 
-test('unit:core:helpers:file:mkdir', async () => {
-  // relative path recursive
-  const target1 = `test/.temp/${Date.now()}/zce/cli/mkdir/1`
-  await file.mkdir(target1)
-  const exists1 = fs.existsSync(target1)
-  expect(exists1).toBe(true)
-  await fs.promises.rmdir('test/.temp', { recursive: true })
+test('unit:core:helpers:file:write', async () => {
+  const filename = path.join(__dirname, '../../../test/.temp/temp.txt')
+  await file.write(filename, 'hello zce')
+  const contents = await fs.promises.readFile(filename, 'utf8')
+  expect(contents).toBe('hello zce')
+  await fs.promises.rmdir(path.dirname(filename), { recursive: true })
+})
 
-  // absolute path recursive
-  const root2 = tempPrefix + Date.now()
-  const target2 = `${root2}/zce/cli/mkdir/2`
-  await file.mkdir(target2)
-  const exists2 = fs.existsSync(target2)
-  expect(exists2).toBe(true)
-  await fs.promises.rmdir(root2, { recursive: true })
+test('unit:core:helpers:file:getDataPath', async () => {
+  const result1 = file.getDataPath()
+  expect(result1).toBe(path.join(os.homedir(), `.config/${pkg.name}-test`))
 
-  // mode options
-  const target3 = tempPrefix + Date.now()
-  await file.mkdir(target3, { mode: 0o755, recursive: false })
-  const stat3 = await fs.promises.stat(target3)
-  expect(stat3.mode).toBe(process.platform === 'win32' ? 16822 : 16877)
-  await fs.promises.rmdir(target3)
+  const result2 = file.getDataPath('foo')
+  expect(result2).toBe(path.join(os.homedir(), `.config/${pkg.name}-test/foo`))
+
+  const result3 = file.getDataPath('foo', 'bar')
+  expect(result3).toBe(path.join(os.homedir(), `.config/${pkg.name}-test/foo/bar`))
+})
+
+test('unit:core:helpers:file:getTempPath', async () => {
+  const result1 = file.getTempPath()
+  expect(result1).toBe(path.join(os.tmpdir(), `${pkg.name}-test`))
+
+  const result2 = file.getTempPath('foo')
+  expect(result2).toBe(path.join(os.tmpdir(), `${pkg.name}-test/foo`))
+
+  const result3 = file.getTempPath('foo', 'bar')
+  expect(result3).toBe(path.join(os.tmpdir(), `${pkg.name}-test/foo/bar`))
 })
 
 test('unit:core:helpers:file:exists', async () => {
@@ -94,26 +90,64 @@ test('unit:core:helpers:file:isEmpty', async () => {
   await fs.promises.rmdir(temp2)
 })
 
-test('unit:core:helpers:file:getDataPath', async () => {
-  const result1 = file.getDataPath()
-  expect(result1).toBe(path.join(os.homedir(), `.config/${pkg.name}-test`))
+test('unit:core:helpers:file:mkdir', async () => {
+  // relative path recursive
+  const target1 = `test/.temp/${Date.now()}/zce/cli/mkdir/1`
+  await file.mkdir(target1)
+  const exists1 = fs.existsSync(target1)
+  expect(exists1).toBe(true)
+  await fs.promises.rmdir('test/.temp', { recursive: true })
 
-  const result2 = file.getDataPath('foo')
-  expect(result2).toBe(path.join(os.homedir(), `.config/${pkg.name}-test/foo`))
+  // absolute path recursive
+  const root2 = tempPrefix + Date.now()
+  const target2 = `${root2}/zce/cli/mkdir/2`
+  await file.mkdir(target2)
+  const exists2 = fs.existsSync(target2)
+  expect(exists2).toBe(true)
+  await fs.promises.rmdir(root2, { recursive: true })
 
-  const result3 = file.getDataPath('foo', 'bar')
-  expect(result3).toBe(path.join(os.homedir(), `.config/${pkg.name}-test/foo/bar`))
+  // mode options
+  const target3 = tempPrefix + Date.now()
+  await file.mkdir(target3, { mode: 0o755, recursive: false })
+  const stat3 = await fs.promises.stat(target3)
+  expect(stat3.mode).toBe(process.platform === 'win32' ? 16822 : 16877)
+  await fs.promises.rmdir(target3)
 })
 
-test('unit:core:helpers:file:getTempPath', async () => {
-  const result1 = file.getTempPath()
-  expect(result1).toBe(path.join(os.tmpdir(), `${pkg.name}-test`))
+test('unit:core:helpers:file:remove', async () => {
+  const temp = await fs.promises.mkdtemp(tempPrefix)
 
-  const result2 = file.getTempPath('foo')
-  expect(result2).toBe(path.join(os.tmpdir(), `${pkg.name}-test/foo`))
+  const filename1 = path.join(temp, 'zce-cli-remove-1.txt')
+  await fs.promises.writeFile(filename1, '')
+  await file.remove(filename1)
+  const exists1 = fs.existsSync(filename1)
+  expect(exists1).toBe(false)
 
-  const result3 = file.getTempPath('foo', 'bar')
-  expect(result3).toBe(path.join(os.tmpdir(), `${pkg.name}-test/foo/bar`))
+  const filename2 = path.join(temp, 'zce-cli-remove-2.txt')
+  await file.remove(filename2)
+  const exists2 = fs.existsSync(filename2)
+  expect(exists2).toBe(false)
+
+  await fs.promises.rmdir(temp)
+})
+
+test('unit:core:helpers:file:glob', async () => {
+  const files = await file.glob('**/*', { cwd: __dirname })
+  expect(files).toContain(path.basename(__filename))
+})
+
+test('unit:core:helpers:file:minimatch', async () => {
+  const match1 = file.minimatch('foo.bar', '*.bar')
+  expect(match1).toBe(true)
+
+  const match2 = file.minimatch('foo.bar', '*.foo')
+  expect(match2).toBe(false)
+
+  const match3 = file.minimatch('foo.bar', '**/*.bar')
+  expect(match3).toBe(true)
+
+  const match4 = file.minimatch('.foo', '**', { dot: true })
+  expect(match4).toBe(true)
 })
 
 test('unit:core:helpers:file:tildify', async () => {
@@ -192,25 +226,4 @@ test('unit:core:helpers:file:extract:strip', async () => {
   const stat2 = fs.statSync(path.join(temp, 'README.md'))
   expect(stat2.isFile()).toBe(true)
   await fs.promises.rmdir(temp, { recursive: true })
-})
-
-test('unit:core:helpers:file:glob', async () => {
-  const files = await file.glob('**/*', { cwd: __dirname })
-  expect(files).toContain(path.basename(__filename))
-})
-
-test('unit:core:helpers:file:minimatch', async () => {
-  expect(typeof file.minimatch).toBe('function')
-})
-
-test('unit:core:helpers:file:readFile', async () => {
-  expect(typeof file.readFile).toBe('function')
-})
-
-test('unit:core:helpers:file:writeFile', async () => {
-  const filename = path.join(__dirname, '../../../test/.temp/temp.txt')
-  await file.writeFile(filename, 'hello zce')
-  const contents = await fs.promises.readFile(filename, 'utf8')
-  expect(contents).toBe('hello zce')
-  await fs.promises.rmdir(path.dirname(filename), { recursive: true })
 })

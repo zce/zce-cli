@@ -277,21 +277,20 @@ generater.use(async (context, next) => {
 // prepare template files
 generater.use(async (context, next) => {
   const cwd = path.join(context.src!, context.options?.source || 'template')
-  let filenames = await file.glob('**/*', { dot: true, nodir: true, cwd })
+  let filenames = await file.glob('**', { dot: true, nodir: true, cwd })
 
   const filters = context.options?.filters
   if (filters) {
     const patterns = Object.keys(filters).filter(item => !filters[item](context.answers!))
-
+    const mmOptions = { dot: true, matchBase: true }
     patterns.forEach(pattern => {
-      const filter = file.minimatch.filter(pattern, { dot: true, matchBase: true })
-      filenames = filenames.filter((...args) => !filter(...args))
+      filenames = filenames.filter(filename => !file.minimatch(filename, pattern, mmOptions))
     })
   }
 
   const files: Record<string, Buffer> = {}
   await Promise.all(filenames.map(item => {
-    return file.readFile(path.join(cwd, item)).then(buffer => { files[item] = buffer })
+    return file.read(path.join(cwd, item)).then(buffer => { files[item] = buffer })
   }))
   context.files = files
 
@@ -301,7 +300,6 @@ generater.use(async (context, next) => {
 // rename template files
 generater.use(async (context, next) => {
   const files = context.files!
-
   Object.keys(files).forEach(original => {
     // // windows path
     // original = original.replace('\\', '\\\\')
@@ -311,14 +309,12 @@ generater.use(async (context, next) => {
     files[current] = files[original]
     delete files[original]
   })
-
   await next()
 })
 
 // render template files
 generater.use(async (context, next) => {
   const files = context.files!
-
   Object.keys(files).forEach(name => {
     const contents = files[name].toString()
     // ignore files that do not have interpolate
@@ -331,7 +327,6 @@ generater.use(async (context, next) => {
       imports: { _, ...context.options?.metadata, ...context.options?.helpers }
     }))
   })
-
   await next()
 })
 
@@ -339,31 +334,26 @@ generater.use(async (context, next) => {
 generater.use(async (context, next) => {
   const dest = context.dest!
   const files = context.files!
-
-  await Promise.all(Object.keys(files).map(name => file.writeFile(path.join(dest, name), files[name])))
-
+  await Promise.all(Object.keys(files).map(name => file.write(path.join(dest, name), files[name])))
   await next()
 })
 
 // install deps
 generater.use(async (context, next) => {
   const isYarn = Object.keys(context.files!).includes('yarn.lock')
-
   const spinner = logger.spin('Installing dependencies...')
   await system.exec(isYarn ? 'yarn' : 'npm', ['install'], { cwd: context.dest })
-  spinner.succeed('Install completed.')
-
+  spinner.succeed('Install deps completed.')
   await next()
 })
 
 // git init
 generater.use(async (context, next) => {
-  const spinner = logger.spin('Initializing Git repo...')
+  const spinner = logger.spin('Initializing repository...')
   await system.exec('git', ['init'], { cwd: context.dest })
   await system.exec('git', ['add', '--all'], { cwd: context.dest })
   await system.exec('git', ['commit', '-m', 'feat: initial commit'], { cwd: context.dest })
-  spinner.succeed('Initial repo complete.')
-
+  spinner.succeed('Initial repo completed.')
   await next()
 })
 
