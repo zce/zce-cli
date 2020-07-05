@@ -7,12 +7,12 @@
   <a href="https://travis-ci.org/zce/zce-cli"><img src="https://img.shields.io/travis/zce/zce-cli?label=travis" alt="Build Status"></a>
   <a href="https://codecov.io/gh/zce/zce-cli"><img src="https://img.shields.io/codecov/c/github/zce/zce-cli" alt="Coverage Status"></a>
   <a href="https://github.com/zce/zce-cli/blob/master/LICENSE"><img src="https://img.shields.io/github/license/zce/zce-cli" alt="License"></a>
+  <a href="https://npmjs.org/package/zce-cli"><img src="https://img.shields.io/node/v/zce-cli" alt="Node Version"></a>
   <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen" alt="Code Style"></a>
   <br>
-  <a href="https://github.com/zce/zce-cli/blob/master/package.json"><img src="https://img.shields.io/node/v/zce-cli" alt="Node Version"></a>
-  <a href="https://github.com/zce/zce-cli"><img src="https://img.shields.io/github/repo-size/zce/zce-cli" alt="Repo size"></a>
   <a href="https://npmjs.org/package/zce-cli"><img src="https://img.shields.io/npm/v/zce-cli" alt="NPM Version"></a>
   <a href="https://npmjs.org/package/zce-cli"><img src="https://img.shields.io/npm/dm/zce-cli" alt="NPM Downloads"></a>
+  <a href="https://github.com/zce/zce-cli"><img src="https://img.shields.io/github/repo-size/zce/zce-cli" alt="Repo size"></a>
   <a href="https://david-dm.org/zce/zce-cli"><img src="https://img.shields.io/david/zce/zce-cli" alt="Dependencies Status"></a>
   <a href="https://david-dm.org/zce/zce-cli?type=dev"><img src="https://img.shields.io/david/dev/zce/zce-cli" alt="DevDependencies Status"></a>
 </p>
@@ -36,14 +36,12 @@ $ yarn global add zce-cli
 
 ```sh
 # generate a new project from a template
-$ zce init <template-name> [my-project] [-o|--offline] [-f|--force] [-s|--save]
+$ zce init <template-name> [my-project] [-o|--offline]
 ```
 
 #### Options
 
-- `-f, --force`: overwrite target directory if it exists
 - `-o, --offline`: offline mode, use cached template
-- `-s, --save`: save the answers for the next
 - `-h, --help`: output usage information
 
 #### Example

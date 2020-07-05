@@ -1,4 +1,6 @@
 import * as config from './config'
+import os from 'os'
+import fs from 'fs'
 import path from 'path'
 const pkg = require('../../../package.json')
 
@@ -33,16 +35,28 @@ test('unit:core:helpers:config:ini', async () => {
 })
 
 test('unit:core:helpers:config:npm', async () => {
+  const npmrc = path.join(os.homedir(), '.npmrc')
+  if (!fs.existsSync(npmrc)) {
+    await fs.promises.writeFile(npmrc, '')
+  }
   const conf = await config.npm()
   expect(conf).toBeTruthy()
 })
 
 test('unit:core:helpers:config:yarn', async () => {
+  const yarnrc = path.join(os.homedir(), '.yarnrc')
+  if (!fs.existsSync(yarnrc)) {
+    await fs.promises.writeFile(yarnrc, '')
+  }
   const conf = await config.yarn()
   expect(conf).toBeTruthy()
 })
 
 test('unit:core:helpers:config:git', async () => {
+  const gitconfig = path.join(os.homedir(), '.gitconfig')
+  if (!fs.existsSync(gitconfig)) {
+    await fs.promises.writeFile(gitconfig, '')
+  }
   const conf = await config.git()
   expect(conf).toBeTruthy()
 })
