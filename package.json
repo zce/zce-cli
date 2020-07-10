@@ -50,8 +50,7 @@
     "test:integration": "jest test",
     "test": "run-s test:*",
     "coverage": "jest --coverage",
-    "preship": "run-s build",
-    "ship": "npm publish --registry https://registry.npmjs.org"
+    "prepublish": "run-s build"
   },
   "husky": {
     "hooks": {
@@ -100,6 +99,9 @@
     ],
     "preset": "ts-jest",
     "testEnvironment": "node"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
     "chalk": "^4.1.0",
