@@ -215,20 +215,6 @@ generater.use(async (context, next) => {
   const yarnrc = await config.yarn()
   const gitconfig = await config.git()
 
-  const username = async () => {
-    return npmrc?.['init-author-name'] || yarnrc?.['init-author-name'] || gitconfig?.['user.name']
-  }
-  const email = async () => {
-    return npmrc?.['init-author-email'] || yarnrc?.['init-author-email'] || gitconfig?.['user.email']
-  }
-  const url = async () => {
-    return npmrc?.['init-author-url'] || yarnrc?.['init-author-url'] || gitconfig?.['user.url']
-  }
-  // istanbul ignore next
-  const n = await username()
-  const e = await email()
-  const u = await url()
-
   // questions defaults & validate
   await Promise.all(context.options.questions.map(async item => {
     switch (item.name) {
@@ -241,21 +227,17 @@ generater.use(async (context, next) => {
         // istanbul ignore next
         item.initial = item.initial || npmrc?.['init-version'] || yarnrc?.['init-version'] || '0.1.0'
         break
-      case 'username':
+      case 'author':
         // istanbul ignore next
-        item.initial = item.initial || await username()
+        item.initial = item.initial || npmrc?.['init-author-name'] || yarnrc?.['init-author-name'] || gitconfig?.['user.name']
         break
       case 'email':
         // istanbul ignore next
-        item.initial = item.initial || await email()
+        item.initial = item.initial || npmrc?.['init-author-email'] || yarnrc?.['init-author-email'] || gitconfig?.['user.email']
         break
       case 'url':
         // istanbul ignore next
-        item.initial = item.initial || await url()
-        break
-      case 'author':
-        // istanbul ignore next
-        item.initial = item.initial || `${n}${e ? ` <${e}>` : ''}${u ? ` (${u})` : ''}`
+        item.initial = item.initial || npmrc?.['init-author-url'] || yarnrc?.['init-author-url'] || gitconfig?.['user.url']
         break
       case 'license':
         // istanbul ignore next
