@@ -336,18 +336,26 @@ generater.use(async (context, next) => {
 generater.use(async (context, next) => {
   const isYarn = Object.keys(context.files!).includes('yarn.lock')
   const spinner = logger.spin('Installing dependencies...')
-  await system.exec(isYarn ? 'yarn' : 'npm', ['install'], { cwd: context.dest })
-  spinner.succeed('Install deps completed.')
+  try {
+    await system.exec(isYarn ? 'yarn' : 'npm', ['install'], { cwd: context.dest })
+    spinner.succeed('Install deps completed.')
+  } catch (e) {
+    spinner.fail('Install deps failed: ' + e.message)
+  }
   await next()
 })
 
 // git init
 generater.use(async (context, next) => {
   const spinner = logger.spin('Initializing repository...')
-  await system.exec('git', ['init'], { cwd: context.dest })
-  await system.exec('git', ['add', '--all'], { cwd: context.dest })
-  await system.exec('git', ['commit', '-m', 'feat: initial commit'], { cwd: context.dest })
-  spinner.succeed('Initial repo completed.')
+  try {
+    await system.exec('git', ['init'], { cwd: context.dest })
+    await system.exec('git', ['add', '--all'], { cwd: context.dest })
+    await system.exec('git', ['commit', '-m', 'feat: initial commit'], { cwd: context.dest })
+    spinner.succeed('Initial repo completed.')
+  } catch (e) {
+    spinner.fail('Initial repo failed: ' + e.message)
+  }
   await next()
 })
 
