@@ -4,7 +4,7 @@
 import { BaseOption } from 'minimist-options'
 
 declare module 'minimist-options' {
-  interface BaseOption {
+  interface BaseOption<TypeOptionType extends OptionType, DefaultOptionType> {
     /**
      * The description value for the option.
      */
