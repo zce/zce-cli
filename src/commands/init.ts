@@ -314,15 +314,17 @@ generater.use(async (context, next) => {
   await next()
 })
 
-// install deps
+// install deps if has package.json
 generater.use(async (context, next) => {
-  const isYarn = Object.keys(context.files!).includes('yarn.lock')
-  const spinner = logger.spin('Installing dependencies...')
-  try {
-    await system.exec(isYarn ? 'yarn' : 'npm', ['install'], { cwd: context.dest })
-    spinner.succeed('Install deps completed.')
-  } catch (e) {
-    spinner.fail('Install deps failed: ' + e.message)
+  if (Object.keys(context.files!).includes('package.json')) {
+    const useYarn = Object.keys(context.files!).includes('yarn.lock')
+    const spinner = logger.spin('Installing dependencies...')
+    try {
+      await system.exec(useYarn ? 'yarn' : 'npm', ['install'], { cwd: context.dest })
+      spinner.succeed('Install deps completed.')
+    } catch (e) {
+      spinner.fail('Install deps failed: ' + e.message)
+    }
   }
   await next()
 })
