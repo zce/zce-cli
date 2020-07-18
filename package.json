@@ -50,7 +50,7 @@
     "test:integration": "jest test",
     "test": "run-p test:*",
     "cov": "jest --coverage",
-    "prepare": "run-s build"
+    "prepare": "run-s build test"
   },
   "husky": {
     "hooks": {
