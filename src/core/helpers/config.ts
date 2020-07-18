@@ -24,7 +24,7 @@ export const get = async <T> (name?: string, from?: string, options?: Options): 
   }
   // if (cache[name]) return cache[name]
   const explorer = cosmiconfig(name, options)
-  const { config = {} } = (await explorer.search(from)) || {}
+  const { config = {} } = (await explorer.search(from)) ?? {}
   return config
 }
 
@@ -44,7 +44,7 @@ export const ini = async <T> (filename: string): Promise<Record<string, T> | und
  */
 export const npm = async (): Promise<Record<string, string> | undefined> => {
   const npmrc = path.join(os.homedir(), '.npmrc')
-  return ini(npmrc)
+  return await ini(npmrc)
 }
 
 /**
@@ -52,7 +52,7 @@ export const npm = async (): Promise<Record<string, string> | undefined> => {
  */
 export const yarn = async (): Promise<Record<string, string> | undefined> => {
   const yarnrc = path.join(os.homedir(), '.yarnrc')
-  return ini(yarnrc)
+  return await ini(yarnrc)
 }
 
 /**
@@ -60,7 +60,7 @@ export const yarn = async (): Promise<Record<string, string> | undefined> => {
  */
 export const git = async (): Promise<Record<string, string> | undefined> => {
   const gitconfig = path.join(os.homedir(), '.gitconfig')
-  return ini(gitconfig)
+  return await ini(gitconfig)
 }
 
 // export { username, fullname }

@@ -1,7 +1,7 @@
 import { ware } from './ware'
 
 test('unit:core:helpers:ware', async () => {
-  type State = { foo: number, bar?: number, baz?: number }
+  interface State { foo: number, bar?: number, baz?: number }
 
   const arr: number[] = []
 

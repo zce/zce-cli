@@ -21,7 +21,7 @@ const command: Command = {
   },
   examples: ['hello zce'],
   action: async ({ primary, options }) => {
-    if (!primary) {
+    if (primary == null) {
       return missingArgument('name')
     }
 
@@ -31,7 +31,7 @@ const command: Command = {
       logger.success(`嘿！${primary}~`)
     }
 
-    if (options.debug) {
+    if (options.debug as boolean) {
       logger.debug(options)
     }
   }

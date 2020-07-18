@@ -12,8 +12,8 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  log && log.mockRestore()
-  exit && exit.mockRestore()
+  log?.mockRestore()
+  exit?.mockRestore()
 })
 
 test('unit:core:runner:extract:1', async () => {
@@ -84,7 +84,7 @@ test('unit:core:runner:run:default', async () => {
 
 test('unit:core:runner:run:version', async () => {
   await runner.run(['version'])
-  expect(log.mock.calls[0][0]).toBe(`${pkg.name} v${pkg.version}`)
+  expect(log.mock.calls[0][0]).toBe(`${pkg.name as string} v${pkg.version as string}`)
 })
 
 test('unit:core:runner:run:help', async () => {

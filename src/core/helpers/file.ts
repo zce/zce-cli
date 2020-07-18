@@ -5,7 +5,7 @@ import path from 'path'
 import { Glob, IOptions as GOptions } from 'glob'
 import { Minimatch, IOptions as MOptions } from 'minimatch'
 
-const { name } = require('../../../package.json')
+const { name } = require('../../../package.json') as { name: string }
 
 const identify = process.env.NODE_ENV === 'test' ? `${name}-test` : /* istanbul ignore next */ name
 
@@ -14,7 +14,7 @@ const identify = process.env.NODE_ENV === 'test' ? `${name}-test` : /* istanbul 
  * @param input file name
  */
 export const read = async (input: string): Promise<Buffer> => {
-  return fs.readFile(input)
+  return await fs.readFile(input)
 }
 
 /**
@@ -23,7 +23,7 @@ export const read = async (input: string): Promise<Buffer> => {
 export const write = async (input: string, contents: string | Uint8Array): Promise<void> => {
   const dirname = path.dirname(input)
   await mkdir(dirname)
-  return fs.writeFile(input, contents)
+  return await fs.writeFile(input, contents)
 }
 
 /**
@@ -90,7 +90,7 @@ export const isDirectory = async (input: string): Promise<boolean> => {
  */
 export const isEmpty = async (input: string): Promise<boolean> => {
   const files = await fs.readdir(input)
-  return !files.length
+  return files.length === 0
 }
 
 /**
@@ -117,10 +117,10 @@ export const remove = async (input: string, options?: RmDirAsyncOptions): Promis
  * @param pattern path pattern
  * @param options glob options
  */
-export const glob = async (pattern: string, options: GOptions): Promise<string[]> => new Promise((resolve, reject) => {
+export const glob = async (pattern: string, options: GOptions): Promise<string[]> => await new Promise((resolve, reject) => {
   return new Glob(pattern, options, (err, files) => {
     // istanbul ignore if
-    if (err) return reject(err)
+    if (err != null) return reject(err)
     resolve(files)
   })
 })
@@ -175,7 +175,7 @@ export const extract = async (input: string, output: string, strip = 0): Promise
   await extractZip(input, {
     dir: output,
     onEntry: entry => {
-      if (!strip) return
+      if (strip === 0) return
       const items = entry.fileName.split(/\/|\\/)
       const start = Math.min(items.length, strip)
       // console.log('->', entry.fileName)

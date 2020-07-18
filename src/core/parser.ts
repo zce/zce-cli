@@ -2,6 +2,13 @@ import minimist from 'minimist'
 import buildOptions, { Options } from 'minimist-options'
 const pkg = require('../../package.json')
 
+export interface PackageJson extends Record<string, unknown> {
+  name: string
+  version: string
+  description?: string
+  homepage?: string
+}
+
 export interface Context {
   readonly bin: string
   readonly primary?: string
@@ -11,7 +18,7 @@ export interface Context {
   readonly extras: string[]
   readonly inputs: string[]
   readonly options: Record<string, unknown>
-  readonly pkg: Record<string, unknown>
+  readonly pkg: PackageJson
 }
 
 export { Options }

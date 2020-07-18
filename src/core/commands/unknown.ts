@@ -6,7 +6,7 @@ const command: Command = {
   alias: ['unknown1'], // for testing coverage
   hidden: true,
   action: async ({ bin, primary }) => {
-    if (!primary) return
+    if (primary == null) return
     unknownCommand(primary, `${bin} --help`)
   }
 }

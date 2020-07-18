@@ -4,8 +4,8 @@ import { http, logger, Command } from '../core'
  * Fetch user's repos
  * @param owner GitHub username or organization
  */
-export const fetchRepos = async (owner: string): Promise<Record<string, string>[]> => {
-  const res = await http.request<Record<string, string>[]>(`https://api.github.com/users/${owner}/repos`, {
+export const fetchRepos = async (owner: string): Promise<Array<Record<string, string>>> => {
+  const res = await http.request<Array<Record<string, string>>>(`https://api.github.com/users/${owner}/repos`, {
     searchParams: {
       client_id: '0cb723972877555ffb54',
       client_secret: 'ad0638a75ee90bb86c8b551f5f42f3a044725f38',
@@ -64,14 +64,14 @@ const command: Command = {
       }
 
       // full mode
-      if (!repos.length) {
+      if (repos.length === 0) {
         return logger.info('😞  No available templates.')
       }
 
       logger.info(`👇  Available ${isOfficial ? 'official' : owner}'s templates:`)
       logger.newline()
 
-      const infos: [string, string][] = repos.map(i => [
+      const infos: Array<[string, string]> = repos.map(i => [
         logger.color`{yellow →} {blue ${isOfficial ? i.name : i.full_name}}`,
         i.description
       ])

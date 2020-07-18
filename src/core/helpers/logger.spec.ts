@@ -1,5 +1,4 @@
 import * as logger from './logger'
-import readline from 'readline'
 
 let log: jest.SpyInstance
 
@@ -8,7 +7,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  log && log.mockRestore()
+  log?.mockRestore()
 })
 
 test('unit:core:helpers:logger:color', async () => {
@@ -97,24 +96,14 @@ test('unit:core:helpers:logger:divider', async () => {
 })
 
 test('unit:core:helpers:logger:clear', async () => {
-  const cursorTo = jest.spyOn(readline, 'cursorTo').mockImplementation()
-  const clearScreenDown = jest.spyOn(readline, 'clearScreenDown').mockImplementation()
+  const clear = jest.spyOn(console, 'clear').mockImplementation()
 
   logger.clear()
   logger.clear('test')
+  expect(clear).toBeCalledTimes(2)
+  expect(log).toBeCalledTimes(1)
 
-  if (process.stdout.isTTY) {
-    expect(log).toBeCalledTimes(3)
-    expect(cursorTo).toBeCalledTimes(2)
-    expect(clearScreenDown).toBeCalledTimes(2)
-  } else {
-    expect(log).not.toHaveBeenCalled()
-    expect(cursorTo).not.toHaveBeenCalled()
-    expect(clearScreenDown).not.toHaveBeenCalled()
-  }
-
-  cursorTo.mockRestore()
-  clearScreenDown.mockRestore()
+  clear.mockRestore()
 })
 
 test('unit:core:helpers:logger:spin', async () => {

@@ -6,7 +6,7 @@ import { createWriteStream } from 'fs'
 import got, { StreamOptions } from 'got'
 import { getTempPath, mkdir } from './file'
 
-const { name, version, homepage } = require('../../../package.json')
+const { name, version, homepage } = require('../../../package.json') as { name: string, version: string, homepage: string }
 
 const pipe = promisify(pipeline)
 

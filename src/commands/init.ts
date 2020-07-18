@@ -61,11 +61,11 @@ export const validater: Record<string, (input: string) => true | string> = {
   name: input => {
     const result = validateName(input)
     if (result.validForNewPackages) return true
-    return result.errors?.join(', ') || ''
+    return result.errors?.join(', ') ?? ''
   },
   version: input => {
     const valid = semver.valid(input)
-    if (valid) return true
+    if (valid != null) return true
     return `The '${input}' is not a semantic version.`
   }
 }
@@ -79,18 +79,18 @@ generater.use(async (context, next) => {
   const exists = await file.exists(context.dest)
 
   //  dist not exists
-  if (!exists) return next()
+  if (exists === false) return await next()
 
   if (exists !== 'dir') throw new Error(`Cannot init ${context.project}: File exists.`)
 
   // empty dir
-  if (await file.isEmpty(context.dest)) return next()
+  if (await file.isEmpty(context.dest)) return await next()
 
   // clear console
   logger.clear()
 
   // confirm
-  const { sure } = await prompt({
+  const { sure } = await prompt<{ sure: boolean }>({
     type: 'confirm',
     name: 'sure',
     initial: false,
@@ -116,7 +116,7 @@ generater.use(async (context, next) => {
     await file.remove(context.dest)
   }
 
-  return next()
+  return await next()
 })
 
 // resolve template
@@ -124,7 +124,7 @@ generater.use(async (context, next) => {
   // local template path
   if (/^[./]|^[a-zA-Z]:/.test(context.template)) {
     context.src = path.resolve(context.template)
-    return next()
+    return await next()
   }
 
   // fetch remote template
@@ -143,7 +143,7 @@ generater.use(async (context, next) => {
     if (exists) {
       // found cached template
       logger.info(`🚆  Use cached template @ \`${logger.color.yellow(file.tildify(context.src))}\`.`)
-      return next()
+      return await next()
     }
 
     logger.info(`😔  Template cache \`${logger.color.yellow(file.tildify(context.src))}\` not found.`)
@@ -163,10 +163,10 @@ generater.use(async (context, next) => {
     // clean up
     await file.remove(temp)
     spinner.succeed('Download template complete.')
-    return next()
+    return await next()
   } catch (e) {
     spinner.fail('Download failed.')
-    throw new Error(`Failed to fetch template \`${context.template}\`: ${e.message}.`)
+    throw new Error(`Failed to fetch template \`${context.template}\`: ${e.message as string}.`)
   }
 })
 
@@ -177,32 +177,32 @@ generater.use(async (context, next) => {
     if (Object.prototype.toString.call(context.options) !== '[object Object]') {
       throw new TypeError('template needs to expose an object.')
     }
-    return next()
+    return await next()
   } catch (e) {
     // TODO: template deps not found
     if (e.code !== 'MODULE_NOT_FOUND') {
-      e.message = `This template is invalid: ${e.message}`
+      e.message = `This template is invalid: ${e.message as string}`
       throw e
     }
   }
 
   // return default template options
   context.options = { name: context.template }
-  return next()
+  return await next()
 })
 
 // apply plugin
 generater.use(async (context, next) => {
-  if (!context.options?.plugin) return next()
-  return context.options.plugin(context, next)
+  if (context.options?.plugin == null) return await next()
+  return await context.options.plugin(context, next)
 })
 
 // inquire questions
 generater.use(async (context, next) => {
-  if (!context.options) return next()
+  if (context.options == null) return await next()
 
   // default questions
-  if (!context.options.questions) {
+  if (context.options.questions == null) {
     context.options.questions = { name: 'name', type: 'input', message: 'Project name' }
   }
 
@@ -219,44 +219,44 @@ generater.use(async (context, next) => {
   await Promise.all(context.options.questions.map(async item => {
     switch (item.name) {
       case 'name':
-        item.initial = item.initial || path.basename(context.dest!)
-        item.validate = item.validate || validater.name
+        item.initial = item.initial ?? path.basename(context.dest!)
+        item.validate = item.validate ?? validater.name
         break
       case 'version':
         item.validate = validater.version
         // istanbul ignore next
-        item.initial = item.initial || npmrc?.['init-version'] || yarnrc?.['init-version'] || '0.1.0'
+        item.initial = item.initial ?? npmrc?.['init-version'] ?? yarnrc?.['init-version'] ?? '0.1.0'
         break
       case 'author':
         // istanbul ignore next
-        item.initial = item.initial || npmrc?.['init-author-name'] || yarnrc?.['init-author-name'] || gitconfig?.['user.name']
+        item.initial = item.initial ?? npmrc?.['init-author-name'] ?? yarnrc?.['init-author-name'] ?? gitconfig?.['user.name']
         break
       case 'email':
         // istanbul ignore next
-        item.initial = item.initial || npmrc?.['init-author-email'] || yarnrc?.['init-author-email'] || gitconfig?.['user.email']
+        item.initial = item.initial ?? npmrc?.['init-author-email'] ?? yarnrc?.['init-author-email'] ?? gitconfig?.['user.email']
         break
       case 'url':
         // istanbul ignore next
-        item.initial = item.initial || npmrc?.['init-author-url'] || yarnrc?.['init-author-url'] || gitconfig?.['user.url']
+        item.initial = item.initial ?? npmrc?.['init-author-url'] ?? yarnrc?.['init-author-url'] ?? gitconfig?.['user.url']
         break
       case 'license':
         // istanbul ignore next
-        item.initial = item.initial || npmrc?.['init-license'] || yarnrc?.['init-license'] || 'MIT'
+        item.initial = item.initial ?? npmrc?.['init-license'] ?? yarnrc?.['init-license'] ?? 'MIT'
         break
     }
   }))
 
   context.answers = await prompt(context.options.questions)
-  return next()
+  return await next()
 })
 
 // prepare template files
 generater.use(async (context, next) => {
-  const cwd = path.join(context.src!, context.options?.source || 'template')
+  const cwd = path.join(context.src!, context.options?.source ?? 'template')
   let filenames = await file.glob('**', { dot: true, nodir: true, cwd })
 
   const filters = context.options?.filters
-  if (filters) {
+  if (filters != null) {
     const patterns = Object.keys(filters).filter(item => !filters[item](context.answers!))
     const mmOptions = { dot: true, matchBase: true }
     patterns.forEach(pattern => {
@@ -265,8 +265,9 @@ generater.use(async (context, next) => {
   }
 
   const files: Record<string, Buffer> = {}
-  await Promise.all(filenames.map(item => {
-    return file.read(path.join(cwd, item)).then(buffer => { files[item] = buffer })
+  await Promise.all(filenames.map(async item => {
+    const buffer = await file.read(path.join(cwd, item))
+    files[item] = buffer
   }))
   context.files = files
 
@@ -283,6 +284,7 @@ generater.use(async (context, next) => {
     if (current === original) return
     // rename it
     files[current] = files[original]
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete files[original]
   })
   await next()
@@ -310,7 +312,9 @@ generater.use(async (context, next) => {
 generater.use(async (context, next) => {
   const dest = context.dest!
   const files = context.files!
-  await Promise.all(Object.keys(files).map(name => file.write(path.join(dest, name), files[name])))
+  await Promise.all(Object.keys(files).map(async name => {
+    await file.write(path.join(dest, name), files[name])
+  }))
   await next()
 })
 
@@ -323,7 +327,7 @@ generater.use(async (context, next) => {
       await system.exec(useYarn ? 'yarn' : 'npm', ['install'], { cwd: context.dest })
       spinner.succeed('Install deps completed.')
     } catch (e) {
-      spinner.fail('Install deps failed: ' + e.message)
+      spinner.fail(`Install deps failed: ${e.message as string}`)
     }
   }
   await next()
@@ -338,14 +342,15 @@ generater.use(async (context, next) => {
     await system.exec('git', ['commit', '-m', 'feat: initial commit'], { cwd: context.dest })
     spinner.succeed('Initial repo completed.')
   } catch (e) {
-    spinner.fail('Initial repo failed: ' + e.message)
+    spinner.fail(`Initial repo failed: ${e.message as string}`)
   }
   await next()
 })
 
 // execute complete
 generater.use(async (context, next) => {
-  if (context.options?.complete) { return context.options.complete(context, next) }
+  if (context.options?.complete == null) return
+  await context.options.complete(context, next)
 })
 
 const command: Command = {
@@ -370,7 +375,7 @@ const command: Command = {
     const { offline } = options as { offline: boolean }
 
     // required arguments
-    if (!template) {
+    if (template == null) {
       return missingArgument('template')
     }
 

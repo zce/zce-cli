@@ -8,7 +8,7 @@ import { Context } from './parser'
  * @param ctx context
  */
 export const invoke = async (cmd: Command, ctx: Context): Promise<void> => {
-  if (cmd.name !== 'unknown' && ctx.options.help) {
+  if (cmd.name !== 'unknown' && ctx.options.help as boolean) {
     return await invokeHelp(cmd, ctx)
   }
 

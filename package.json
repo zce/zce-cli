@@ -43,14 +43,14 @@
   ],
   "scripts": {
     "clean": "rimraf lib",
-    "lint": "eslint \"**/*.ts\"",
-    "compile": "tsc --project .",
+    "lint": "eslint src",
+    "compile": "tsc",
     "build": "run-s clean lint compile",
     "test:unit": "jest src",
     "test:integration": "jest test",
-    "test": "run-s test:*",
-    "coverage": "jest --coverage",
-    "prepublish": "run-s build"
+    "test": "run-p test:*",
+    "cov": "jest --coverage",
+    "prepare": "run-s build"
   },
   "husky": {
     "hooks": {
@@ -67,36 +67,15 @@
     "*.{ts,js}": "eslint --fix"
   },
   "eslintConfig": {
-    "env": {
-      "es2020": true,
-      "jest": true,
-      "node": true
-    },
-    "parser": "@typescript-eslint/parser",
+    "extends": "standard-ts",
     "parserOptions": {
-      "ecmaVersion": 11,
-      "project": "tsconfig.eslint.json",
-      "sourceType": "module"
+      "project": "tsconfig.eslint.json"
     },
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "standard"
-    ],
     "rules": {
       "@typescript-eslint/no-var-requires": 0
     }
   },
   "jest": {
-    "collectCoverage": true,
-    "coverageDirectory": "./coverage/",
-    "collectCoverageFrom": [
-      "src/**/*.ts",
-      "!**/*.d.ts",
-      "!**/*.spec.ts"
-    ],
     "preset": "ts-jest",
     "testEnvironment": "node"
   },
@@ -134,20 +113,14 @@
     "@types/rimraf": "^3.0.0",
     "@types/semver": "^7.3.1",
     "@types/validate-npm-package-name": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^3.6.0",
-    "@typescript-eslint/parser": "^3.6.0",
     "eslint": "^7.4.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
+    "eslint-config-standard-ts": "^18.0.2",
     "husky": "^4.2.5",
     "jest": "^26.1.0",
     "lint-staged": "^10.2.11",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.1.1",
+    "ts-jest": "^26.1.3",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
   },

@@ -10,7 +10,7 @@ export interface Command {
   readonly hidden?: boolean
   // TODO: arguments
   // readonly arguments?: Arguments
-  readonly options?: Options
+  options?: Options
   readonly action: (ctx: Context) => Promise<void>
   readonly help?: string | ((ctx: Context) => Promise<void>)
   readonly examples?: string | string[]
@@ -25,7 +25,7 @@ export const loadCommands = (dir: string): Record<string, Command> => {
   const commandDir = join(__dirname, dir)
 
   // scanning commands
-  return readdirSync(commandDir).reduce((cmds, item) => {
+  return readdirSync(commandDir).reduce<Record<string, Command>>((cmds, item) => {
     try {
       const { default: mod } = require(join(commandDir, item))
 
@@ -34,7 +34,11 @@ export const loadCommands = (dir: string): Record<string, Command> => {
 
       const cmd = mod as Command
 
-      if (cmd.options && !cmd.options.help) {
+      if (cmd.options == null) {
+        cmd.options = {}
+      }
+
+      if (cmd.options.help == null) {
         cmd.options.help = {
           type: 'boolean',
           alias: 'h',
@@ -45,7 +49,7 @@ export const loadCommands = (dir: string): Record<string, Command> => {
       cmds[cmd.name] = cmd
       if (typeof cmd.alias === 'string') {
         cmds[cmd.alias] = cmd
-      } else if (cmd.alias) {
+      } else if (cmd.alias != null) {
         cmd.alias.forEach(a => {
           cmds[a] = cmd
         })
@@ -53,7 +57,7 @@ export const loadCommands = (dir: string): Record<string, Command> => {
     } catch {}
     // } catch (e) { console.error(e) }
     return cmds
-  }, {} as Record<string, Command>)
+  }, {})
 }
 
 /**
@@ -70,8 +74,8 @@ export const commands: Record<string, Command> = {
  */
 export const load = async (name?: string): Promise<Command> => {
   // try to load command
-  if (name && commands[name]) {
-    return commands[name]
+  if (name != null && Reflect.has(commands, name)) {
+    return Reflect.get(commands, name)
   }
 
   // fallback unknown command

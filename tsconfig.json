@@ -1,21 +1,17 @@
-// https://aka.ms/tsconfig.json
+/* Visit https://aka.ms/tsconfig.json to read more about this file */
 {
   "compilerOptions": {
     "target": "ES2018",
-    "module": "commonjs",
+    "module": "CommonJS",
     "lib": ["ES2018"],
-    "outDir": "lib",
-    "rootDir": "src",
+    "sourceMap": true,
+    "declaration": true,
     "removeComments": true,
+    "outDir": "lib",
     "strict": true,
     "esModuleInterop": true,
-    "declaration": true
+    "pretty": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ]
+  "include": ["src"], // declarations.d.ts
+  "exclude": ["src/**/*.spec.ts"]
 }

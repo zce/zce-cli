@@ -12,4 +12,6 @@ declare module 'minimist-options' {
   }
 }
 
-declare type Dictionary<T> = { [key: string]: T }
+declare interface Dictionary<T> {
+  [key: string]: T
+}

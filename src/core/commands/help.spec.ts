@@ -11,8 +11,8 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  log && log.mockRestore()
-  exit && exit.mockRestore()
+  log?.mockRestore()
+  exit?.mockRestore()
 })
 
 test('unit:core:commands:help', async () => {

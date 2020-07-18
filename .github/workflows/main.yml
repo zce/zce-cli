@@ -18,6 +18,6 @@ jobs:
           NODE_ENV: production
           CI: true
       - name: Coverage Testing
-        run: npm run coverage
+        run: npm run cov
       - name: Coverage Report
         run: npx codecov

@@ -17,7 +17,7 @@ notifications:
 
 script:
   - npm run build
-  - npm run coverage
+  - npm run cov
 
 after_script:
   - npx codecov

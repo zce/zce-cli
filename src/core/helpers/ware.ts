@@ -1,14 +1,21 @@
-export type Next = () => Promise<void>
-export type Middleware<T> = (state: T, next: Next) => Promise<void>
+export type Middleware<T> = (state: T, next: () => Promise<void>) => Promise<void> | void
 
-export class Ware<T> {
-  private readonly middlewares: Middleware<T>[]
+/**
+ * Middleware Async.
+ * @template S state type
+ */
+class Ware<S> {
+  private readonly middlewares: Array<Middleware<S>>
 
   constructor () {
     this.middlewares = []
   }
 
-  use (middleware: Middleware<T> | Middleware<T>[]): Ware<T> {
+  /**
+   * Use the given middleware.
+   * @param middleware middleware func
+   */
+  use (middleware: Middleware<S> | Array<Middleware<S>>): Ware<S> {
     if (typeof middleware === 'function') {
       this.middlewares.push(middleware)
     } else {
@@ -17,34 +24,24 @@ export class Ware<T> {
     return this
   }
 
-  run (initalState: T): Promise<void> {
-    const next = () => {
+  /**
+   * Run all middlewares.
+   * @param initalState initial state
+   */
+  async run (initalState: S): Promise<void> {
+    // https://github.com/koajs/compose/blob/master/index.js
+    const next = async (): Promise<void> => {
       const current = this.middlewares.shift()
-      if (!current) return Promise.resolve()
-      return current(initalState, next)
+      if (current == null) return await Promise.resolve()
+      const result = current(initalState, next)
+      return await Promise.resolve(result)
     }
-    // start
-    return next()
-
-    // // https://github.com/koajs/compose/blob/master/index.js
-    // // last called middleware #
-    // let last = -1
-    // const dispatch = (index: number): Promise<any> => {
-    //   if (index <= last) throw new Error('next() called multiple times')
-    //   last = index
-
-    //   const current = this.middlewares[index]
-    //   if (!current) return Promise.resolve()
-
-    //   const res = current(this.state, dispatch.bind(null, index + 1))
-    //   return Promise.resolve(res)
-    // }
-    // return dispatch(0)
-  }
-
-  static create<T> (): Ware<T> {
-    return new Ware<T>()
+    return await next()
   }
 }
 
-export const ware = Ware.create
+/**
+ * Middleware Async.
+ * @template S state type
+ */
+export const ware = <S> (): Ware<S> => new Ware<S>()

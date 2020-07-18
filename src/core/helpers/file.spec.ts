@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import * as file from './file'
 
-const pkg = require('../../../package.json')
+const pkg = require('../../../package.json') as { name: string }
 
 const tempPrefix = path.join(os.tmpdir(), 'zce-cli-test-')
 
@@ -51,7 +51,7 @@ test('unit:core:helpers:file:exists', async () => {
   const result2 = await file.exists(__filename)
   expect(result2).toBe('file')
 
-  const result3 = await file.exists(tempPrefix + Date.now())
+  const result3 = await file.exists(tempPrefix + Date.now().toString())
   expect(result3).toBe(false)
 
   // // https://github.com/nodejs/node/issues/18518
@@ -99,7 +99,7 @@ test('unit:core:helpers:file:mkdir', async () => {
   await fs.promises.rmdir('test/.temp', { recursive: true })
 
   // absolute path recursive
-  const root2 = tempPrefix + Date.now()
+  const root2 = tempPrefix + Date.now().toString()
   const target2 = `${root2}/zce/cli/mkdir/2`
   await file.mkdir(target2)
   const exists2 = fs.existsSync(target2)
@@ -107,7 +107,7 @@ test('unit:core:helpers:file:mkdir', async () => {
   await fs.promises.rmdir(root2, { recursive: true })
 
   // mode options
-  const target3 = tempPrefix + Date.now()
+  const target3 = tempPrefix + Date.now().toString()
   await file.mkdir(target3, { mode: 0o755, recursive: false })
   const stat3 = await fs.promises.stat(target3)
   expect(stat3.mode).toBe(process.platform === 'win32' ? 16822 : 16877)

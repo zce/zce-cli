@@ -9,7 +9,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  log && log.mockRestore()
+  log?.mockRestore()
 })
 
 test('unit:commands:default', async () => {

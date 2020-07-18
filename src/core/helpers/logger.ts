@@ -1,4 +1,3 @@
-import readline from 'readline'
 import chalk from 'chalk'
 import redent from 'redent'
 import ora, { Ora } from 'ora'
@@ -75,13 +74,13 @@ export const debug = (message: unknown, title = 'DEBUG'): void => {
  * support color ansi
  * - https://github.com/chalk/strip-ansi/blob/master/index.js
  */
-export const table = (infos: [string, unknown][] | Record<string, unknown>, min = 10, indent = 0): void => {
+export const table = (infos: Array<[string, unknown]> | Record<string, unknown>, min = 10, indent = 0): void => {
   if (!Array.isArray(infos)) {
     infos = Object.entries(infos)
   }
   min = Math.max(min, ...infos.map(i => i[0].length))
-  let text = infos.map(i => `${i[0].padEnd(min)}  ${i[1]}`).join('\n')
-  text = indent ? redent(text, indent) : text
+  let text = infos.map(i => `${i[0].padEnd(min)}  ${i[1] as string}`).join('\n')
+  text = indent !== 0 ? redent(text, indent) : text
   log(text)
 }
 /**
@@ -102,13 +101,13 @@ export const divider = (): void => {
  * Clear console.
  * @param title Default title
  */
-/* istanbul ignore next */
 export const clear = (title?: string): void => {
-  if (!process.stdout.isTTY) return
-  log('\n'.repeat(process.stdout.rows || 30))
-  readline.cursorTo(process.stdout, 0, 0)
-  readline.clearScreenDown(process.stdout)
-  title && log(title)
+  // if (!process.stdout.isTTY) return
+  // log('\n'.repeat(process.stdout.rows || 30))
+  // readline.cursorTo(process.stdout, 0, 0)
+  // readline.clearScreenDown(process.stdout)
+  console.clear() // node >= 8.3
+  title != null && log(title)
 }
 
 /**

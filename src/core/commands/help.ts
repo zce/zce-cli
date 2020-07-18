@@ -2,32 +2,32 @@ import { logger } from '../helpers'
 import { load, commands, Command } from '../loader'
 import { Context, Options } from '../parser'
 
-const outputCommands = () => {
-  const cmds = [...new Set(Object.values(commands))].filter(i => !i.hidden && i.name !== 'default')
+const outputCommands = (): void => {
+  const cmds = [...new Set(Object.values(commands))].filter(i => i.hidden !== true && i.name !== 'default')
 
   /* istanbul ignore else */
-  if (cmds.length) {
+  if (cmds.length > 0) {
     logger.newline()
     logger.info('Commands:')
 
-    const infos: [string, string][] = cmds.map(i => [
-      `${i.name}${i.alias ? ` (${i.alias})` : ''}`,
-      i.description || /* istanbul ignore next */ '-'
+    const infos: Array<[string, string]> = cmds.map(i => [
+      `${i.name}${i.alias == null ? '' : ` (${i.alias.toString()})`}`,
+      i.description ?? /* istanbul ignore next */ '-'
     ])
 
     logger.table(infos, 10, 2)
   }
 }
 
-const outputOptions = (options: Options) => {
+const outputOptions = (options: Options): void => {
   logger.newline()
   logger.info('Options:')
 
   // 'l' => '-l'
   // 'ls' => '--ls'
-  const optKey = (k: string) => `${k.length === 1 ? '-' : '--'}${k}`
+  const optKey = (k: string): string => `${k.length === 1 ? '-' : '--'}${k}`
 
-  const infos: [string, string][] = Object.keys(options).map(k => {
+  const infos: Array<[string, string]> = Object.keys(options).map(k => {
     const opt = options[k]
     const keys = [`--${k}`]
     let value = '-'
@@ -37,7 +37,7 @@ const outputOptions = (options: Options) => {
       } else if (typeof opt.alias === 'string') {
         keys.push(optKey(opt.alias))
       }
-      value = (opt as Record<string, string>).description || '-'
+      value = opt.description ?? '-'
     }
     return [keys.join(', '), value]
   })
@@ -45,7 +45,7 @@ const outputOptions = (options: Options) => {
   logger.table(infos, 10, 2)
 }
 
-const outputTips = (title: string, tips: string | string[], bin: string) => {
+const outputTips = (title: string, tips: string | string[], bin: string): void => {
   logger.newline()
   logger.info(title)
   if (typeof tips !== 'string') {
@@ -60,27 +60,27 @@ const outputTips = (title: string, tips: string | string[], bin: string) => {
  * @param ctx context
  */
 export const outputHelp = (cmd: Command, ctx: Context): void => {
-  if (cmd.description) {
+  if (cmd.description != null) {
     logger.info(cmd.description)
     logger.newline()
   }
 
   logger.info('Usage:')
-  logger.info(logger.indent(`$ ${ctx.bin} ${cmd.usage || `${cmd.name} [options]`}`))
+  logger.info(logger.indent(`$ ${ctx.bin} ${cmd.usage ?? `${cmd.name} [options]`}`))
 
   if (cmd.name === 'default') {
     outputCommands()
   }
 
-  if (cmd.options) {
+  if (cmd.options != null) {
     outputOptions(cmd.options)
   }
 
-  if (cmd.examples) {
+  if (cmd.examples != null) {
     outputTips('Examples:', cmd.examples, ctx.bin)
   }
 
-  if (cmd.suggestions) {
+  if (cmd.suggestions != null) {
     outputTips('Suggestions:', cmd.suggestions, ctx.bin)
   }
 }
@@ -91,7 +91,7 @@ export const outputHelp = (cmd: Command, ctx: Context): void => {
  * @param ctx context
  */
 export const invokeHelp = async (cmd: Command, ctx: Context): Promise<void> => {
-  if (cmd.help) {
+  if (cmd.help != null) {
     // custom help
     if (typeof cmd.help === 'string') {
       logger.info(cmd.help)
@@ -111,7 +111,7 @@ const command: Command = {
   usage: 'help <command>',
   description: 'output usage information.',
   action: async (ctx) => {
-    const cmd = await load(ctx.primary || 'default')
+    const cmd = await load(ctx.primary ?? 'default')
     return await invokeHelp(cmd, ctx)
   }
 }

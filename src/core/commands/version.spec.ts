@@ -8,7 +8,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  log && log.mockRestore()
+  log?.mockRestore()
 })
 
 test('unit:core:commands:version', async () => {

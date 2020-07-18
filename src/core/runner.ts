@@ -13,7 +13,7 @@ export const extract = (args: string[]): [string, string[]] => {
 
   const [first, ...rest] = args
 
-  if (first) {
+  if (first != null) {
     // sub command
     // e.g. '$ zce foo'
     if (!first.startsWith('-')) return [first, rest]
@@ -38,7 +38,7 @@ export const extract = (args: string[]): [string, string[]] => {
  */
 export const run = async (args?: string[]): Promise<void> => {
   // default args
-  args = args || process.argv.slice(2)
+  args = args ?? process.argv.slice(2)
 
   // extract command name
   const [name, argv] = extract(args)
