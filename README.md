@@ -47,6 +47,46 @@ const result = zceCli('w')
 - Details: host string
 - Default: `'zce.me'`
 
+## CLI Usage
+
+<!-- TODO: Introduction of CLI -->
+
+Use npx:
+
+```shell
+$ npx zce-cli <input> [options]
+```
+
+Globally install:
+
+```shell
+$ npm install zce-cli -g
+# or yarn
+$ yarn global add zce-cli
+```
+
+```shell
+$ zce-cli --help
+zce-cli/0.1.0
+
+Usage:
+  $ zce-cli <input>
+
+Commands:
+  <input>  Sample cli program
+
+For more info, run any command with the `--help` flag:
+  $ zce-cli --help
+
+Options:
+  --host <host>  Sample options
+  -h, --help     Display this message
+  -v, --version  Display version number
+
+Examples:
+  $ zce-cli w --host zce.me
+```
+
 ## Contributing
 
 1. **Fork** it on GitHub!

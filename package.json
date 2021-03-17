@@ -4,20 +4,25 @@
   "description": "A CLI tool for my personal productivity.",
   "keywords": [
     "zce-cli",
+    "cli",
     "zce"
   ],
   "repository": "zce/zce-cli",
   "license": "MIT",
   "author": "zce <w@zce.me> (https://zce.me)",
   "main": "lib/index.js",
+  "bin": "bin/zce-cli.js",
   "files": [
+    "bin",
     "lib"
   ],
   "scripts": {
     "lint": "standard --fix",
     "prepare": "npm run lint"
   },
-  "dependencies": {},
+  "dependencies": {
+    "cac": "^6.7.2"
+  },
   "devDependencies": {
     "standard": "16.0.3"
   },
