@@ -10,7 +10,7 @@
   "repository": "zce/zce-cli",
   "license": "MIT",
   "author": "zce <w@zce.me> (https://zce.me)",
-  "main": "cli.js",
+  "main": "index.js",
   "bin": "cli.js",
   "dependencies": {
     "caz": "latest"
