@@ -11,7 +11,9 @@
   "license": "MIT",
   "author": "zce <w@zce.me> (https://zce.me)",
   "main": "index.js",
-  "bin": "cli.js",
+  "bin": {
+    "zce": "cli.js"
+  },
   "dependencies": {
     "caz": "latest"
   },
